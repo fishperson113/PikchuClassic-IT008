@@ -1,19 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.IO;
-using System.Collections;
-
+using System.Drawing;
 namespace PikachuClassic
 {
-    public partial class MainGame : Form //GameController
+    public class GridManager
     {
+        private static GridManager instance;
+        public static GridManager Instance
+        {
+            get
+            {
+                // Kiểm tra và khởi tạo instance nếu chưa tồn tại
+                if (instance == null)
+                {
+                    instance = new GridManager();
+                }
+                return instance;
+            }
+        }
+
         // Thuộc tính của màn chơi
         private Grid grid;
         private int cols = 2;
@@ -24,16 +33,10 @@ namespace PikachuClassic
         private PictureBox firstGuessBox, secondGuessBox;
         private PictureBox[,] pictureGrid;
         private Dictionary<PictureBox, Image> originalImages = new Dictionary<PictureBox, Image>();
-
-        // Điểm số + Thời gian chơi
-        private int score = 0;
-        private Timer time;
-
-        public MainGame()
+        
+        public void GenerateGrid(Panel panel)
         {
-            // Khởi tạo puzzle
-            InitializeComponent();
-            grid = new Grid(gridPanel, cols, rows);
+            grid = new Grid(panel, cols, rows);
             grid.GenerateGrid();
             AddEventToPictureBoxes();
 
@@ -90,7 +93,7 @@ namespace PikachuClassic
             {
                 secondGuess = true;
                 secondGuessBox = clickedBox; // Gán ô thứ hai được chọn
-                                             
+
                 // Lưu lại hình ảnh gốc
                 if (!originalImages.ContainsKey(secondGuessBox))
                 {
@@ -102,10 +105,6 @@ namespace PikachuClassic
 
                 await CheckIfThePuzzlesMatch();
             }
-        }
-        private void label1_Click(object sender, EventArgs e)
-        {
-
         }
 
         private async Task CheckIfThePuzzlesMatch()
@@ -120,10 +119,10 @@ namespace PikachuClassic
                 secondGuessBox.Visible = false;
 
                 // Thêm điểm
-               // AddScore(10);
+                GameManager.Instance.AddScore(10);
 
                 // Kiểm tra xem game đã kết thúc chưa
-               CheckIfTheGameIsFinished();
+                CheckIfTheGameIsFinished();
             }
             else
             {
