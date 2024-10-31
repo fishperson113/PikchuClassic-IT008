@@ -5,10 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
+using System.Diagnostics;
 namespace PikachuClassic
 {
     public class GridManager
     {
+        #region Singleton
         private static GridManager instance;
         public static GridManager Instance
         {
@@ -22,10 +24,17 @@ namespace PikachuClassic
                 return instance;
             }
         }
-
+        public Grid Grid
+        {
+            get
+            {
+                return grid;
+            }
+        }
+        #endregion
         // Thuộc tính của màn chơi
         private Grid grid;
-        private int cols = 2;
+        private int cols = 5;
         private int rows = 2;
 
         //Logic matching
@@ -42,7 +51,17 @@ namespace PikachuClassic
 
             // Khởi tạo logic
             firstGuess = secondGuess = false;
+
+            //Lưu hình ảnh gốc
+            foreach (PictureBox pictureBox in pictureGrid)
+            {
+                if (!originalImages.ContainsKey(pictureBox))
+                {
+                    originalImages[pictureBox] = pictureBox.Image;
+                }
+            }
         }
+        #region Matching Logic and Tint Effect
         private void AddEventToPictureBoxes()
         {
             pictureGrid = grid.GetPictureBoxes();
@@ -72,7 +91,7 @@ namespace PikachuClassic
         {
             PictureBox clickedBox = sender as PictureBox;
 
-            if (clickedBox == null || clickedBox.Image == null || firstGuessBox == clickedBox) return;
+            if (clickedBox == null || !clickedBox.Visible || clickedBox.Image == null || firstGuessBox == clickedBox) return;
 
             if (!firstGuess)
             {
@@ -119,10 +138,11 @@ namespace PikachuClassic
                 secondGuessBox.Visible = false;
 
                 // Thêm điểm
-                GameManager.Instance.AddScore(10);
+                GameManager.Instance.AddScore(10,GameManager.Instance.GetCurrentPlayer());
+
 
                 // Kiểm tra xem game đã kết thúc chưa
-                CheckIfTheGameIsFinished();
+                GameManager.Instance.CheckIfTheGameIsFinished();
             }
             else
             {
@@ -131,16 +151,55 @@ namespace PikachuClassic
                 secondGuessBox.Image = originalImages[secondGuessBox];
             }
 
-            // Đặt lại trạng thái
+            // Chuyển lượt sau mỗi lần đoán
+            GameManager.Instance.SwitchTurn();
+       
+            // Đặt lại trạng thái của lượt đoán
             firstGuess = secondGuess = false;
             firstGuessBox = secondGuessBox = null;
         }
-        private void CheckIfTheGameIsFinished()
+        #endregion
+        public List<PictureBox> GetUnmatchedBoxes()
         {
-            if (grid.AllPictureBoxesHidden())
+            var unmatchedBoxes = new List<PictureBox>();
+            foreach (var pictureBox in pictureGrid)
             {
-                MessageBox.Show("Chúc mừng! Bạn đã hoàn thành trò chơi!");
+                if (pictureBox.Visible) unmatchedBoxes.Add(pictureBox);
             }
+            return unmatchedBoxes;
+        }
+        public bool AreImagesMatching(PictureBox first, PictureBox second)
+        {
+            if (originalImages.ContainsKey(first) && originalImages.ContainsKey(second))
+            {
+                return originalImages[first] == originalImages[second];
+            }
+            Debug.WriteLine("Hình ảnh không trong dictionary");
+            return false;
+        }
+        public async Task BotClickCell(PictureBox clickedBox)
+        {
+            await Task.Delay(500);
+            // Kiểm tra xem điều khiển (PictureBox) có đang trên luồng chính (UI) hay không
+            // Mọi hành động liên quan đến UI trong Window form đều phải được thực hiện trên luồng chính
+            if (clickedBox.InvokeRequired)
+            {
+                // Nếu không phải trên luồng UI, chuyển về luồng UI để gọi phương thức OnCellClick
+                clickedBox.Invoke(new Action(() =>
+                {
+                    OnCellClick(clickedBox, EventArgs.Empty); // Gọi hàm OnCellClick trên luồng UI
+                }));
+            }
+            else
+            {
+                // Nếu đã ở trên luồng UI, gọi trực tiếp OnCellClick
+                OnCellClick(clickedBox, EventArgs.Empty);
+            }
+
+        }
+        public PictureBox[,] GetPictureBoxes ()
+        {
+            return pictureGrid;
         }
     }
 }

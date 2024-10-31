@@ -55,11 +55,10 @@
     <Compile Include="GameController.Designer.cs">
       <DependentUpon>GameController.cs</DependentUpon>
     </Compile>
+    <Compile Include="Players\Bot.cs" />
+    <Compile Include="Players\Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TransparentPanel.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <EmbeddedResource Include="GameController.resx">
       <DependentUpon>GameController.cs</DependentUpon>
     </EmbeddedResource>

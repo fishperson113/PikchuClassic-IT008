@@ -23,20 +23,28 @@ namespace PikachuClassic
             gameManager = GameManager.Instance;
             
             gridManager.GenerateGrid(gridPanel);
-            gameManager.OnScoreUpdated += UpdateScoreLabel;
+
             gameManager.OnScoreUpdated += UpdateScoreLabel;
             gameManager.OnTimeUpdated += UpdateTimeLabel;
-
-            gameManager.StartTimer(60);
+            //gameManager.OnGameOver += OnGameOver;
+            gameManager.StartTimer(20);
         }
         
-        private void UpdateScoreLabel(int score)
+        private void UpdateScoreLabel(int score, Player player)
         {
-            scoreLb.Text = $"Score: {score}";
+            if (player == gameManager.player1)
+            {
+                scoreLbP1.Text = $"Score P1: {gameManager.player1.Score}";
+            }
+            else if (player == gameManager.player2)
+            {
+                scoreLbP2.Text = $"Score P2: {gameManager.player2.Score}";
+            }
         }
         private void UpdateTimeLabel(int timeRemaining)
         {
             timeLb.Text = $"Time Left: {timeRemaining}";
         }
+
     }
 }
