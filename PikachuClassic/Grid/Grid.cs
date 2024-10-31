@@ -16,7 +16,6 @@ namespace PikachuClassic
         private PictureBox[,] pictureGrid;
         private Panel gridPanel;
         private int cellSize = 50;
-
         public Grid(Panel panel, int rows, int cols)
         {
             this.gridPanel = panel;
@@ -137,5 +136,7 @@ namespace PikachuClassic
             }
             return true; // Nếu tất cả đều ẩn, trả về true
         }
+        
     }
+    
 }
