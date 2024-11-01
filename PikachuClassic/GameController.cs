@@ -46,5 +46,9 @@ namespace PikachuClassic
             timeLb.Text = $"Time Left: {timeRemaining}";
         }
 
+        private void gridPanel_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }
