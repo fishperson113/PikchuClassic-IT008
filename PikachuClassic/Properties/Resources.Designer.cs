@@ -433,6 +433,16 @@ namespace PikachuClassic.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap _7f028d56_e852_4cf3_b302_67c06f8fe60b {
+            get {
+                object obj = ResourceManager.GetObject("7f028d56-e852-4cf3-b302-67c06f8fe60b", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap _8 {
             get {
                 object obj = ResourceManager.GetObject("_8", resourceCulture);

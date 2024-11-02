@@ -10,19 +10,14 @@ using System.Windows.Forms;
 
 namespace PikachuClassic
 {
-    public partial class WinScreen : Form
+    public partial class ModeSelectionScreen : Form
     {
-        public WinScreen()
+        public ModeSelectionScreen()
         {
             InitializeComponent();
         }
 
         private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button2_Click(object sender, EventArgs e)
         {
 
         }

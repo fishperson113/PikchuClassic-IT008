@@ -46,6 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ModeSelectionScreen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ModeSelectionScreen.Designer.cs">
+      <DependentUpon>ModeSelectionScreen.cs</DependentUpon>
+    </Compile>
     <Compile Include="WinScreen.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -77,6 +83,9 @@
     <Compile Include="Players\Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="ModeSelectionScreen.resx">
+      <DependentUpon>ModeSelectionScreen.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="WinScreen.resx">
       <DependentUpon>WinScreen.cs</DependentUpon>
     </EmbeddedResource>
@@ -152,6 +161,7 @@
     <Content Include="Images\9.png" />
     <Content Include="Images\BGs\BG1.png" />
     <Content Include="Images\hint.png" />
+    <None Include="Resources\7f028d56-e852-4cf3-b302-67c06f8fe60b.jpg" />
     <None Include="Resources\4f9d753f-2428-4d5e-b882-4123cc007ff6.png" />
     <None Include="Resources\nhung-hinh-anh-pokemon-dep-nhat-1.jpg" />
     <None Include="Resources\sign-out.png" />
