@@ -45,8 +45,8 @@ namespace PikachuClassic
         {
             player1 = new Player();
             //player2 = new Player();
-            player2 = new Bot(1);
-            currentPlayer = player1; //Player 1 đi trước
+            //player2 = new Bot(1); cmt con bot lại
+            currentPlayer = player1; //Player 1 đi trước / tạm gỡ cmt
 
             // Khởi tạo Timer
             timer = new Timer();
@@ -74,7 +74,7 @@ namespace PikachuClassic
             // Kiểm tra nếu hết thời gian
             if (timeRemaining <= 0)
             {
-                SwitchTurn();
+                //SwitchTurn(); cmt lai con bot
                 //OnGameOver?.Invoke(); // Gọi sự kiện khi thời gian kết thúc
             }
         }
@@ -132,8 +132,9 @@ namespace PikachuClassic
             if (!GridManager.Instance.Grid.AllPictureBoxesHidden()) return;
 
             timer.Stop();
-            string winner = GameManager.Instance.player1.Score > GameManager.Instance.player2.Score ? "Player 1" : "Player 2";
-            MessageBox.Show($"Chúc mừng! {winner} đã chiến thắng trò chơi!");
+            // tạm cmt 2 dòng
+            //string winner = GameManager.Instance.player1.Score > GameManager.Instance.player2.Score ? "Player 1" : "Player 2";
+            //MessageBox.Show($"Chúc mừng! {winner} đã chiến thắng trò chơi!");
             OnGameOver?.Invoke();
         }
     }
