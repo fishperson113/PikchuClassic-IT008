@@ -55,6 +55,7 @@
     <Compile Include="GameController.Designer.cs">
       <DependentUpon>GameController.cs</DependentUpon>
     </Compile>
+    <Compile Include="Grid\Node.cs" />
     <Compile Include="Players\Bot.cs" />
     <Compile Include="Players\Player.cs" />
     <Compile Include="Program.cs" />
