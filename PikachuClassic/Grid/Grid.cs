@@ -78,10 +78,20 @@ namespace PikachuClassic
                 return;
             }
 
-            List<Image> imagesList = new List<Image>();
-            for (int i = 0; i < totalCells / 2; i++) // Chia đôi vì mỗi ảnh xuất hiện 2 lần
+            List<Image> imagesList = new List<Image>(); // Danh sách các cặp hình ảnh sẽ được gán vào các ô 
+            List<Image> allImages = new List<Image>(); // Danh sách tất cả các hình ảnh có sẵn trong resources
+            // Lấy tất cả các hình ảnh từ resources
+            for (int i = 0; ; i++)
             {
                 Image img = (Image)Properties.Resources.ResourceManager.GetObject($"_{i}");
+                if (img == null) break;
+                allImages.Add(img);
+            }
+            Shuffle(allImages);
+
+            for (int i = 0; i < totalCells / 2; i++) // Chia đôi vì mỗi ảnh xuất hiện 2 lần
+            {
+                Image img = allImages[i % allImages.Count]; // i% allImages.Count để đảm bảo totalCells/2 < allImages.Count (tránh lỗi index out of range) nếu vượt quá thì nó quay về index=0
                 imagesList.Add(img); // Thêm lần 1
                 imagesList.Add(img); // Thêm lần 2 (tạo cặp)
             }
