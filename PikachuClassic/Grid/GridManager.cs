@@ -136,7 +136,8 @@ namespace PikachuClassic
                 // Nếu khớp, ẩn các ô và vô hiệu hóa chúng
                 firstGuessBox.Visible = false;
                 secondGuessBox.Visible = false;
-
+                //Block.cs -> PictureBox, Score firstGuessBox, secondGuessBox
+                //GameManager.Instance.AddScore(firstGuessBox.Score,GameManager.Instance.GetCurrentPlayer());
                 // Thêm điểm
                 GameManager.Instance.AddScore(10,GameManager.Instance.GetCurrentPlayer());
 
