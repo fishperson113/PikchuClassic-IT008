@@ -46,6 +46,30 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ModeSelectionScreen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ModeSelectionScreen.Designer.cs">
+      <DependentUpon>ModeSelectionScreen.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WinScreen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WinScreen.Designer.cs">
+      <DependentUpon>WinScreen.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GameOverScreen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GameOverScreen.Designer.cs">
+      <DependentUpon>GameOverScreen.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainMenu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainMenu.Designer.cs">
+      <DependentUpon>MainMenu.cs</DependentUpon>
+    </Compile>
     <Compile Include="GameManager.cs" />
     <Compile Include="Grid\Grid.cs" />
     <Compile Include="Grid\GridManager.cs" />
@@ -59,6 +83,18 @@
     <Compile Include="Players\Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="ModeSelectionScreen.resx">
+      <DependentUpon>ModeSelectionScreen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="WinScreen.resx">
+      <DependentUpon>WinScreen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GameOverScreen.resx">
+      <DependentUpon>GameOverScreen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainMenu.resx">
+      <DependentUpon>MainMenu.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GameController.resx">
       <DependentUpon>GameController.cs</DependentUpon>
     </EmbeddedResource>
@@ -125,6 +161,15 @@
     <Content Include="Images\9.png" />
     <Content Include="Images\BGs\BG1.png" />
     <Content Include="Images\hint.png" />
+    <None Include="Resources\7f028d56-e852-4cf3-b302-67c06f8fe60b.jpg" />
+    <None Include="Resources\4f9d753f-2428-4d5e-b882-4123cc007ff6.png" />
+    <None Include="Resources\nhung-hinh-anh-pokemon-dep-nhat-1.jpg" />
+    <None Include="Resources\sign-out.png" />
+    <None Include="Resources\instructions.png" />
+    <None Include="Resources\reload.png" />
+    <None Include="Resources\start.png" />
+    <None Include="Resources\5c2fa026-7bb3-47a1-8a8f-4c3ed1645775.png" />
+    <None Include="Resources\462547649_1455548595122912_607459381853805725_n.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
