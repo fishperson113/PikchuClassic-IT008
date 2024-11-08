@@ -22,17 +22,26 @@ namespace PikachuClassic
 
         }
 
+        //Click Setting button
         private void button2_Click(object sender, EventArgs e)
         {
-
+            //SettingsScreen settingsScreen = new SettingsScreen();
+            //settingsScreen.ShowDialog(); // Mở màn hình cài đặt
         }
 
+        //Click Quit button
         private void button3_Click(object sender, EventArgs e)
         {
-
+            Close();
         }
 
-
+        //Click Play button
+        private void button1_Click(object sender, EventArgs e)
+        {
+            ModeSelectionScreen modeSelectioneScreen = new ModeSelectionScreen();
+            modeSelectioneScreen.Show();
+            this.Hide();
+        }
     }
 
 }

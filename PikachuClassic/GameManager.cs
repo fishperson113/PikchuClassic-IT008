@@ -21,6 +21,42 @@ namespace PikachuClassic
         #endregion
         #region Singleton
         private static GameManager instance;
+
+        //Backul
+        private GameController gameController;
+        private static string gameMode;
+        public static GameManager GetInstance(GameController controller, string mode)
+        {
+            if (instance == null || GameManager.gameMode != mode)
+            {
+                gameMode = mode;
+                instance = new GameManager(controller, mode); // Khởi tạo với mode mới
+            }
+            return instance;
+        }
+
+        private GameManager(GameController controller, string mode) // Constructor nội bộ cho Singleton
+        {
+            this.gameController = controller;
+            gameMode = mode; // Gán `gameMode` từ tham số mode
+            if (gameMode == "PvP")
+            {
+                player1 = new Player();
+                player2 = new Player();
+            }
+            else if (gameMode == "PvE")
+            {
+                player1 = new Player();
+                player2 = new Bot(1);
+            }
+            currentPlayer = player1;
+
+            // Khởi tạo Timer
+            timer = new Timer();
+            timer.Interval = 1000;
+            timer.Tick += Timer_Tick;
+        }
+
         public static GameManager Instance
         {
             get
@@ -53,8 +89,9 @@ namespace PikachuClassic
             timer.Interval = 1000; // Timer sẽ tick mỗi giây
             timer.Tick += Timer_Tick;
         }
+
         #region Timer and Switch Turn
-        
+
         // Hàm khởi tạo Timer với thời gian bắt đầu (giây)
         public void StartTimer(int seconds)
         {
@@ -64,6 +101,7 @@ namespace PikachuClassic
         }
 
         // Hàm xử lý mỗi khi Timer "tick"
+
         private void Timer_Tick(object sender, EventArgs e)
         {
             timeRemaining--; // Giảm thời gian còn lại
@@ -108,9 +146,9 @@ namespace PikachuClassic
         public void AddScore(int points, Player player)
         {
             player.UpdateScore(points);
-            OnScoreUpdated?.Invoke(player.Score,player); // Gọi sự kiện để cập nhật điểm trên UI
+            OnScoreUpdated?.Invoke(player.Score, player); // Gọi sự kiện để cập nhật điểm trên UI
         }
-        
+
         public Player GetCurrentPlayer()
         {
             return currentPlayer;
@@ -127,14 +165,20 @@ namespace PikachuClassic
                 pictureBox.Enabled = isPlayerTurn; // Cho phép thao tác nếu là lượt của Player
             }
         }
+
         public void CheckIfTheGameIsFinished()
         {
             if (!GridManager.Instance.Grid.AllPictureBoxesHidden()) return;
 
             timer.Stop();
-            string winner = GameManager.Instance.player1.Score > GameManager.Instance.player2.Score ? "Player 1" : "Player 2";
-            MessageBox.Show($"Chúc mừng! {winner} đã chiến thắng trò chơi!");
-            OnGameOver?.Invoke();
+
+            //string winner = GameManager.Instance.player1.Score > GameManager.Instance.player2.Score ? "Player 1" : "Player 2";
+            //MessageBox.Show($"Chúc mừng! {winner} đã chiến thắng trò chơi!");
+
+            //OnGameOver?.Invoke();
+
+            bool isWin = player1.Score > player2.Score;
+            gameController.EndGame(isWin);
         }
     }
 }
