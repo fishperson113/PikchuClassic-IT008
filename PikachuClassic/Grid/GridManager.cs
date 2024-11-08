@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Diagnostics;
+using System.Security.Cryptography;
 namespace PikachuClassic
 {
     public class GridManager
@@ -42,16 +43,17 @@ namespace PikachuClassic
         private PictureBox firstGuessBox, secondGuessBox;
         private PictureBox[,] pictureGrid;
         private Dictionary<PictureBox, Image> originalImages = new Dictionary<PictureBox, Image>();
-        
+
         public void GenerateGrid(Panel panel)
         {
-            grid = new Grid(panel, cols, rows);
+            //grid = new Grid(panel, cols, rows); // nguyên bản của anh Dương
+            grid = new Grid(panel, rows, cols); // bản sửa của Bảo
+
             grid.GenerateGrid();
-            AddEventToPictureBoxes();
 
-            // Khởi tạo logic
-            firstGuess = secondGuess = false;
+            AddEventToPictureBoxes(); // đem dòng này lên
 
+            //đem mớ này lên
             //Lưu hình ảnh gốc
             foreach (PictureBox pictureBox in pictureGrid)
             {
@@ -60,6 +62,9 @@ namespace PikachuClassic
                     originalImages[pictureBox] = pictureBox.Image;
                 }
             }
+
+            // Khởi tạo logic
+            firstGuess = secondGuess = false;
         }
         #region Matching Logic and Tint Effect
         private void AddEventToPictureBoxes()
@@ -136,11 +141,9 @@ namespace PikachuClassic
                 // Nếu khớp, ẩn các ô và vô hiệu hóa chúng
                 firstGuessBox.Visible = false;
                 secondGuessBox.Visible = false;
-                //Block.cs -> PictureBox, Score firstGuessBox, secondGuessBox
-                //GameManager.Instance.AddScore(firstGuessBox.Score,GameManager.Instance.GetCurrentPlayer());
+                ScoreGroup score= grid.GetScoreForImage(originalImages[firstGuessBox]);
                 // Thêm điểm
-                ScoreGroup score = grid.GetScoreForImage(originalImages[firstGuessBox]);
-                GameManager.Instance.AddScore((int) score,GameManager.Instance.GetCurrentPlayer());
+                GameManager.Instance.AddScore((int)score, GameManager.Instance.GetCurrentPlayer());
 
 
                 // Kiểm tra xem game đã kết thúc chưa
@@ -155,7 +158,7 @@ namespace PikachuClassic
 
             // Chuyển lượt sau mỗi lần đoán
             GameManager.Instance.SwitchTurn();
-       
+
             // Đặt lại trạng thái của lượt đoán
             firstGuess = secondGuess = false;
             firstGuessBox = secondGuessBox = null;
@@ -199,10 +202,9 @@ namespace PikachuClassic
             }
 
         }
-        public PictureBox[,] GetPictureBoxes ()
+        public PictureBox[,] GetPictureBoxes()
         {
             return pictureGrid;
         }
-
     }
 }
