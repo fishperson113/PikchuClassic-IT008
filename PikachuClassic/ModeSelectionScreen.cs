@@ -21,5 +21,41 @@ namespace PikachuClassic
         {
 
         }
+
+        //Click button PvP
+        private void button1_Click(object sender, EventArgs e)
+        {
+            GetGameMode("PvP");
+            StartGame("PvP");
+        }
+
+        //Click button PvE
+        private void button2_Click(object sender, EventArgs e)
+        {
+            GetGameMode("PvE");
+            StartGame("PvE");
+        }
+
+        //Hàm bắt đầu game
+        private void StartGame(string gameMode)
+        {
+            this.Hide();
+            // Khởi động lại với độ khó đã chọn
+            //GameManager gameManager = new GameManager(gameMode);
+            //GameManager gameManager = GameManager.GetInstance(gameMode);
+            //GameController gameController = new GameController();
+            //gameController.FormClosed += (s, args) => this.Close();
+            //gameController.Show();
+
+            GameController gameController = new GameController(gameMode);
+            gameController.FormClosed += (s, args) => this.Show(); // Hiển thị lại màn hình chọn chế độ sau khi trò chơi đóng
+            this.Hide();
+            gameController.Show();
+        }
+
+        public string GetGameMode(string gameMode)
+        {
+            return gameMode;
+        }
     }
 }

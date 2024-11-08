@@ -50,5 +50,31 @@ namespace PikachuClassic
         {
 
         }
+
+        //BACKUL
+        public GameController(string gameMode)
+        {
+            InitializeComponent();
+
+            // Khởi tạo GameManager với gameMode đã chọn
+            gameManager = GameManager.GetInstance(this, gameMode);
+            gridManager = GridManager.Instance;
+
+            gridManager.GenerateGrid(gridPanel);
+
+            gameManager.OnScoreUpdated += UpdateScoreLabel;
+            gameManager.OnTimeUpdated += UpdateTimeLabel;
+            //gameManager.OnGameOver += OnGameOver;
+            gameManager.StartTimer(20); // Bắt đầu đếm thời gian hoặc thiết lập trò chơi
+        }
+
+        public void EndGame(bool isWin)
+        {
+            this.Hide();
+            Form endScreen = isWin ? (Form)new WinScreen() : new GameOverScreen();
+
+            endScreen.FormClosed += (s, args) => this.Close();
+            endScreen.Show();
+        }
     }
 }

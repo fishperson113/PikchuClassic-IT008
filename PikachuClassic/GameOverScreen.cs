@@ -22,9 +22,29 @@ namespace PikachuClassic
 
         }
 
+        //Click Main Menu button
         private void button2_Click(object sender, EventArgs e)
         {
+            this.Hide();
+            MainMenu mainMenu = new MainMenu();
+            mainMenu.Show();
+            this.Close();
+        }
 
+        private string gameMode;
+
+        public GameOverScreen(string gameMode)
+        {
+            InitializeComponent();
+            this.gameMode = gameMode;
+        }
+        //Click Try Again button
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            ModeSelectionScreen modeSelectioneScreen = new ModeSelectionScreen();
+            modeSelectioneScreen.Show();
+            this.Hide();
         }
     }
 }

@@ -48,8 +48,9 @@
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(302, 63);
             this.button1.TabIndex = 0;
-            this.button1.Text = "PLAY";
+            this.button1.Text = "RETRY";
             this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // button3
             // 
@@ -60,8 +61,9 @@
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(302, 63);
             this.button3.TabIndex = 2;
-            this.button3.Text = "QUIT";
+            this.button3.Text = "HOME";
             this.button3.UseVisualStyleBackColor = false;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // pictureBox1
             // 
