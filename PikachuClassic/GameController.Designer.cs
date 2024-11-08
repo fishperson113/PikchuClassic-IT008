@@ -30,11 +30,11 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GameController));
             this.infoPanel = new System.Windows.Forms.Panel();
+            this.scoreLbP2 = new System.Windows.Forms.Label();
             this.timeLb = new System.Windows.Forms.Label();
             this.scoreLbP1 = new System.Windows.Forms.Label();
             this.gamePanel = new System.Windows.Forms.Panel();
             this.gridPanel = new System.Windows.Forms.Panel();
-            this.scoreLbP2 = new System.Windows.Forms.Label();
             this.infoPanel.SuspendLayout();
             this.gamePanel.SuspendLayout();
             this.SuspendLayout();
@@ -48,6 +48,18 @@
             this.infoPanel.Name = "infoPanel";
             this.infoPanel.Size = new System.Drawing.Size(665, 60);
             this.infoPanel.TabIndex = 0;
+            // 
+            // scoreLbP2
+            // 
+            this.scoreLbP2.BackColor = System.Drawing.SystemColors.ControlDark;
+            this.scoreLbP2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.scoreLbP2.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.scoreLbP2.Location = new System.Drawing.Point(471, 10);
+            this.scoreLbP2.Name = "scoreLbP2";
+            this.scoreLbP2.Size = new System.Drawing.Size(191, 38);
+            this.scoreLbP2.TabIndex = 2;
+            this.scoreLbP2.Text = "Score P2: 0";
+            this.scoreLbP2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // timeLb
             // 
@@ -68,7 +80,7 @@
             this.scoreLbP1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.scoreLbP1.Location = new System.Drawing.Point(3, 10);
             this.scoreLbP1.Name = "scoreLbP1";
-            this.scoreLbP1.Size = new System.Drawing.Size(161, 38);
+            this.scoreLbP1.Size = new System.Drawing.Size(191, 38);
             this.scoreLbP1.TabIndex = 0;
             this.scoreLbP1.Text = "Score P1: 0";
             this.scoreLbP1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -89,18 +101,6 @@
             this.gridPanel.Name = "gridPanel";
             this.gridPanel.Size = new System.Drawing.Size(661, 433);
             this.gridPanel.TabIndex = 1;
-            // 
-            // scoreLbP2
-            // 
-            this.scoreLbP2.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.scoreLbP2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.scoreLbP2.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.scoreLbP2.Location = new System.Drawing.Point(501, 10);
-            this.scoreLbP2.Name = "scoreLbP2";
-            this.scoreLbP2.Size = new System.Drawing.Size(161, 38);
-            this.scoreLbP2.TabIndex = 2;
-            this.scoreLbP2.Text = "Score P2: 0";
-            this.scoreLbP2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // GameController
             // 
