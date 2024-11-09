@@ -64,7 +64,6 @@ namespace PikachuClassic
 
             gameManager.OnScoreUpdated += UpdateScoreLabel;
             gameManager.OnTimeUpdated += UpdateTimeLabel;
-            //gameManager.OnGameOver += OnGameOver;
             gameManager.StartTimer(20); // Bắt đầu đếm thời gian hoặc thiết lập trò chơi
         }
 

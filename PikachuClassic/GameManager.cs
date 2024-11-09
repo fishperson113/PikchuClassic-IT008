@@ -75,7 +75,6 @@ namespace PikachuClassic
         public Player player1;
         public Player player2;
         private Player currentPlayer;
-        private bool isPlayerTurn = false;
         #endregion
         public GameManager()
         {
@@ -113,7 +112,6 @@ namespace PikachuClassic
             if (timeRemaining <= 0)
             {
                 SwitchTurn();
-                //OnGameOver?.Invoke(); // Gọi sự kiện khi thời gian kết thúc
             }
         }
         public void ResetTimer()
@@ -127,9 +125,9 @@ namespace PikachuClassic
             // Chuyển lượt giữa player1 và player2
             currentPlayer = (currentPlayer == player1) ? player2 : player1;
             ResetTimer();
-            SetPlayerTurn(isPlayerTurn);
             if (currentPlayer is Bot bot)
             {
+                SetPlayerTurn(false);
                 // Gọi MakeMove cho bot và chờ hoàn thành
                 try
                 {
@@ -140,7 +138,11 @@ namespace PikachuClassic
                     MessageBox.Show($"Có lỗi xảy ra khi bot thực hiện nước đi: {ex.Message}");
                 }
             }
-            isPlayerTurn = !isPlayerTurn;
+            else
+            {
+                SetPlayerTurn(true);
+            } 
+                
         }
         #endregion
         public void AddScore(int points, Player player)
@@ -152,10 +154,6 @@ namespace PikachuClassic
         public Player GetCurrentPlayer()
         {
             return currentPlayer;
-        }
-        public bool IsPlayerTurn()
-        {
-            return isPlayerTurn; // Trả về lượt hiện tại
         }
         private void SetPlayerTurn(bool isPlayerTurn)
         {
@@ -171,11 +169,6 @@ namespace PikachuClassic
             if (!GridManager.Instance.Grid.AllPictureBoxesHidden()) return;
 
             timer.Stop();
-
-            //string winner = GameManager.Instance.player1.Score > GameManager.Instance.player2.Score ? "Player 1" : "Player 2";
-            //MessageBox.Show($"Chúc mừng! {winner} đã chiến thắng trò chơi!");
-
-            //OnGameOver?.Invoke();
 
             bool isWin = player1.Score > player2.Score;
             gameController.EndGame(isWin);

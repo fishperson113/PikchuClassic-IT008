@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -8,14 +9,32 @@ using System.Windows.Forms;
 
 namespace PikachuClassic
 {
+    public enum ScoreGroup
+    {
+        Group10 = 10,
+        Group20 = 20,
+        Group30 = 30,
+        Group40 = 40,
+        Group50 = 50,
+        Group60 = 60,
+    }
     public class Grid
     {
+        #region Properties
         // Thuộc tính của grid
         private int rows;
         private int cols;
         private PictureBox[,] pictureGrid;
         private Panel gridPanel;
         private int cellSize = 50;
+        List<Image> imagesList = new List<Image>(); // Danh sách các cặp hình ảnh sẽ được gán vào các ô 
+        List<Image> allImages = new List<Image>(); // Danh sách tất cả các hình ảnh có sẵn trong resources
+
+        // Danh sách các cặp hình ảnh và nhóm điểm tương ứng
+        private static Dictionary<Image, ScoreGroup> imageScoreGroups = new Dictionary<Image, ScoreGroup>();
+        ScoreGroup[] scoreGroups = (ScoreGroup[])Enum.GetValues(typeof(ScoreGroup));
+        private static bool isScoreGroupsAssigned = false;
+        #endregion
         public Grid(Panel panel, int rows, int cols)
         {
             this.gridPanel = panel;
@@ -25,6 +44,7 @@ namespace PikachuClassic
 
             CalculateCellSize();
             gridPanel.BackgroundImageLayout = ImageLayout.Stretch;
+            
         }
         private void CalculateCellSize()
         {
@@ -41,6 +61,7 @@ namespace PikachuClassic
 
             int offsetX = (gridPanel.Width - totalGridWidth) / 2; // Căn giữa theo chiều ngang
             int offsetY = (gridPanel.Height - totalGridHeight) / 2; // Căn giữa theo chiều dọc
+
             for (int i = 0; i < rows; i++)
             {
                 for (int j = 0; j < cols; j++)
@@ -67,7 +88,22 @@ namespace PikachuClassic
 
                 }
             }
+            LoadResource(); // Load tất cả hình ảnh từ resources (tên file: _0, _1, _2, ...
+            if (!isScoreGroupsAssigned)
+            {
+                AssignScoreGroups();
+                isScoreGroupsAssigned = true; // Đánh dấu là đã gán nhóm điểm
+            }
             AssignImagesToGrid();
+        }
+        private void LoadResource()
+        {
+            for (int i = 0; ; i++)
+            {
+                Image img = (Image)Properties.Resources.ResourceManager.GetObject($"_{i}");
+                if (img == null) break;
+                allImages.Add(img);
+            }
         }
         private void AssignImagesToGrid()
         {
@@ -77,11 +113,12 @@ namespace PikachuClassic
                 MessageBox.Show("Số lượng ô phải là số chẵn để có thể gán đủ các cặp hình!");
                 return;
             }
+ 
+            Shuffle(allImages);
 
-            List<Image> imagesList = new List<Image>();
             for (int i = 0; i < totalCells / 2; i++) // Chia đôi vì mỗi ảnh xuất hiện 2 lần
             {
-                Image img = (Image)Properties.Resources.ResourceManager.GetObject($"_{i}");
+                Image img = allImages[i % allImages.Count]; // i% allImages.Count để đảm bảo totalCells/2 < allImages.Count (tránh lỗi index out of range) nếu vượt quá thì nó quay về index=0
                 imagesList.Add(img); // Thêm lần 1
                 imagesList.Add(img); // Thêm lần 2 (tạo cặp)
             }
@@ -96,6 +133,28 @@ namespace PikachuClassic
                 {
                     pictureGrid[i, j].Image = imagesList[imageIndex];
                     imageIndex++;
+                }
+            }
+        }
+        private void AssignScoreGroups()
+        {
+            imageScoreGroups.Clear();
+            int imagesPerGroup = 6; // Số lượng hình ảnh mỗi nhóm
+            int currentGroupIndex = 0;
+
+            for (int i = 0; i < allImages.Count; i++)
+            {
+                Image img = allImages[i];
+                ScoreGroup group = scoreGroups[currentGroupIndex];
+
+                // Gán nhóm điểm cho ảnh
+                imageScoreGroups[img] = group;
+                Console.WriteLine($"Ảnh: {i} - Nhóm điểm: {group}");
+
+                // Tăng nhóm khi đạt số lượng yêu cầu
+                if ((i + 1) % imagesPerGroup == 0 && currentGroupIndex < scoreGroups.Length - 1)
+                {
+                    currentGroupIndex++;
                 }
             }
         }
@@ -136,7 +195,17 @@ namespace PikachuClassic
             }
             return true; // Nếu tất cả đều ẩn, trả về true
         }
-        
+        public ScoreGroup GetScoreForImage(Image image)
+        {
+            if (imageScoreGroups.TryGetValue(image, out ScoreGroup score))
+            {
+                Console.WriteLine($"Điểm của ảnh: {score}");
+                return score;
+            }
+            Console.WriteLine("Không tìm thấy ảnh trong dictionary");
+            return ScoreGroup.Group10; // Điểm mặc định nếu không tìm thấy ảnh
+        }
+
     }
     
 }
