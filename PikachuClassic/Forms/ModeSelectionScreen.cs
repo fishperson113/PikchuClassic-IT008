@@ -40,13 +40,6 @@ namespace PikachuClassic
         private void StartGame(string gameMode)
         {
             this.Hide();
-            // Khởi động lại với độ khó đã chọn
-            //GameManager gameManager = new GameManager(gameMode);
-            //GameManager gameManager = GameManager.GetInstance(gameMode);
-            //GameController gameController = new GameController();
-            //gameController.FormClosed += (s, args) => this.Close();
-            //gameController.Show();
-
             GameController gameController = new GameController(gameMode);
             gameController.FormClosed += (s, args) => this.Show(); // Hiển thị lại màn hình chọn chế độ sau khi trò chơi đóng
             this.Hide();

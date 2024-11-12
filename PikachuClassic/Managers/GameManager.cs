@@ -17,7 +17,6 @@ namespace PikachuClassic
         // Sự kiện để cập nhật điểm số lên giao diện
         public event Action<int, Player> OnScoreUpdated;
         public event Action<int> OnTimeUpdated;
-        public event Action OnGameOver;
         #endregion
         #region Singleton
         private static GameManager instance;
@@ -25,37 +24,6 @@ namespace PikachuClassic
         //Backul
         private GameController gameController;
         private static string gameMode;
-        public static GameManager GetInstance(GameController controller, string mode)
-        {
-            if (instance == null || GameManager.gameMode != mode)
-            {
-                gameMode = mode;
-                instance = new GameManager(controller, mode); // Khởi tạo với mode mới
-            }
-            return instance;
-        }
-
-        private GameManager(GameController controller, string mode) // Constructor nội bộ cho Singleton
-        {
-            this.gameController = controller;
-            gameMode = mode; // Gán `gameMode` từ tham số mode
-            if (gameMode == "PvP")
-            {
-                player1 = new Player();
-                player2 = new Player();
-            }
-            else if (gameMode == "PvE")
-            {
-                player1 = new Player();
-                player2 = new Bot(1);
-            }
-            currentPlayer = player1;
-
-            // Khởi tạo Timer
-            timer = new Timer();
-            timer.Interval = 1000;
-            timer.Tick += Timer_Tick;
-        }
 
         public static GameManager Instance
         {
@@ -78,15 +46,30 @@ namespace PikachuClassic
         #endregion
         public GameManager()
         {
-            player1 = new Player();
-            //player2 = new Player();
-            player2 = new Bot(1);
-            currentPlayer = player1; //Player 1 đi trước
-
             // Khởi tạo Timer
             timer = new Timer();
             timer.Interval = 1000; // Timer sẽ tick mỗi giây
             timer.Tick += Timer_Tick;
+        }
+        public void Initialize(GameController controller, string mode)
+        {
+            if (gameController == null || gameMode != mode)
+            {
+                gameController = controller;
+                gameMode = mode;
+
+                if (gameMode == "PvP")
+                {
+                    player1 = new Player();
+                    player2 = new Player();
+                }
+                else if (gameMode == "PvE")
+                {
+                    player1 = new Player();
+                    player2 = new Bot(1);
+                }
+                currentPlayer = player1;
+            }
         }
 
         #region Timer and Switch Turn

@@ -96,14 +96,24 @@ namespace PikachuClassic
         {
             PictureBox clickedBox = sender as PictureBox;
 
-            if (clickedBox == null || !clickedBox.Visible || clickedBox.Image == null || firstGuessBox == clickedBox) return;
+            if (clickedBox == null || !clickedBox.Visible || clickedBox.Image == null) return;
+
+            // Kiểm tra nếu người chơi bấm vào ô đầu tiên đã chọn để huỷ chọn
+            if (firstGuess && firstGuessBox == clickedBox)
+            {
+                // Khôi phục ảnh gốc của ô và huỷ chọn ô đầu tiên
+                firstGuessBox.Image = originalImages[firstGuessBox];
+                firstGuess = false;
+                firstGuessBox = null;
+                return; // Kết thúc mà không tiếp tục logic đoán
+            }
 
             if (!firstGuess)
             {
                 firstGuess = true;
                 firstGuessBox = clickedBox; // Gán ô đầu tiên được chọn
 
-                // Lưu lại hình ảnh gốc
+                // Lưu lại hình ảnh gốc nếu chưa có trong danh sách
                 if (!originalImages.ContainsKey(firstGuessBox))
                 {
                     originalImages[firstGuessBox] = firstGuessBox.Image;
@@ -118,7 +128,7 @@ namespace PikachuClassic
                 secondGuess = true;
                 secondGuessBox = clickedBox; // Gán ô thứ hai được chọn
 
-                // Lưu lại hình ảnh gốc
+                // Lưu lại hình ảnh gốc nếu chưa có trong danh sách
                 if (!originalImages.ContainsKey(secondGuessBox))
                 {
                     originalImages[secondGuessBox] = secondGuessBox.Image;

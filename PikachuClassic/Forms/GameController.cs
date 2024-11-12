@@ -26,7 +26,6 @@ namespace PikachuClassic
 
             gameManager.OnScoreUpdated += UpdateScoreLabel;
             gameManager.OnTimeUpdated += UpdateTimeLabel;
-            //gameManager.OnGameOver += OnGameOver;
             gameManager.StartTimer(20);
         }
         
@@ -57,11 +56,12 @@ namespace PikachuClassic
             InitializeComponent();
 
             // Khởi tạo GameManager với gameMode đã chọn
-            gameManager = GameManager.GetInstance(this, gameMode);
+            gameManager = GameManager.Instance;
             gridManager = GridManager.Instance;
 
             gridManager.GenerateGrid(gridPanel);
 
+            gameManager.Initialize(this, gameMode);
             gameManager.OnScoreUpdated += UpdateScoreLabel;
             gameManager.OnTimeUpdated += UpdateTimeLabel;
             gameManager.StartTimer(20); // Bắt đầu đếm thời gian hoặc thiết lập trò chơi

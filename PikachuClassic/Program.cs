@@ -16,11 +16,6 @@ namespace PikachuClassic
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-
-
-            //Application.Run(new GameController());
-
-
             Application.Run(new MainMenu()); //Backul
         }
     }

@@ -46,56 +46,56 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ModeSelectionScreen.cs">
+    <Compile Include="Forms\ModeSelectionScreen.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ModeSelectionScreen.Designer.cs">
+    <Compile Include="Forms\ModeSelectionScreen.Designer.cs">
       <DependentUpon>ModeSelectionScreen.cs</DependentUpon>
     </Compile>
-    <Compile Include="WinScreen.cs">
+    <Compile Include="Forms\WinScreen.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="WinScreen.Designer.cs">
+    <Compile Include="Forms\WinScreen.Designer.cs">
       <DependentUpon>WinScreen.cs</DependentUpon>
     </Compile>
-    <Compile Include="GameOverScreen.cs">
+    <Compile Include="Forms\GameOverScreen.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GameOverScreen.Designer.cs">
+    <Compile Include="Forms\GameOverScreen.Designer.cs">
       <DependentUpon>GameOverScreen.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainMenu.cs">
+    <Compile Include="Forms\MainMenu.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainMenu.Designer.cs">
+    <Compile Include="Forms\MainMenu.Designer.cs">
       <DependentUpon>MainMenu.cs</DependentUpon>
     </Compile>
-    <Compile Include="GameManager.cs" />
+    <Compile Include="Managers\GameManager.cs" />
     <Compile Include="Grid\Grid.cs" />
     <Compile Include="Grid\GridManager.cs" />
-    <Compile Include="GameController.cs">
+    <Compile Include="Forms\GameController.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GameController.Designer.cs">
+    <Compile Include="Forms\GameController.Designer.cs">
       <DependentUpon>GameController.cs</DependentUpon>
     </Compile>
     <Compile Include="Players\Bot.cs" />
     <Compile Include="Players\Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="ModeSelectionScreen.resx">
+    <EmbeddedResource Include="Forms\ModeSelectionScreen.resx">
       <DependentUpon>ModeSelectionScreen.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="WinScreen.resx">
+    <EmbeddedResource Include="Forms\WinScreen.resx">
       <DependentUpon>WinScreen.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GameOverScreen.resx">
+    <EmbeddedResource Include="Forms\GameOverScreen.resx">
       <DependentUpon>GameOverScreen.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainMenu.resx">
+    <EmbeddedResource Include="Forms\MainMenu.resx">
       <DependentUpon>MainMenu.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GameController.resx">
+    <EmbeddedResource Include="Forms\GameController.resx">
       <DependentUpon>GameController.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
