@@ -25,6 +25,7 @@ namespace PikachuClassic
         //Click button PvP
         private void button1_Click(object sender, EventArgs e)
         {
+            this.Close();
             GetGameMode("PvP");
             StartGame("PvP");
         }
@@ -32,6 +33,7 @@ namespace PikachuClassic
         //Click button PvE
         private void button2_Click(object sender, EventArgs e)
         {
+            this.Close();
             GetGameMode("PvE");
             StartGame("PvE");
         }
@@ -39,10 +41,8 @@ namespace PikachuClassic
         //Hàm bắt đầu game
         private void StartGame(string gameMode)
         {
-            this.Hide();
+            this.Close();
             GameController gameController = new GameController(gameMode);
-            gameController.FormClosed += (s, args) => this.Show(); // Hiển thị lại màn hình chọn chế độ sau khi trò chơi đóng
-            this.Hide();
             gameController.Show();
         }
 
