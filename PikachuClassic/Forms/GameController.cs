@@ -71,9 +71,15 @@ namespace PikachuClassic
         {
             this.Hide();
             Form endScreen = isWin ? (Form)new WinScreen() : new GameOverScreen();
-
             endScreen.FormClosed += (s, args) => this.Close();
             endScreen.Show();
         }
+
+        private void GameOverScreen_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit(); //Thoát toàn bộ ứng dụng khi form cuối cùng bị đóng
+        }
+
+
     }
 }

@@ -503,6 +503,56 @@ namespace PikachuClassic.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Screenshot_2024_11_15_210035 {
+            get {
+                object obj = ResourceManager.GetObject("Screenshot 2024-11-15 210035", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Screenshot_2024_11_15_210729 {
+            get {
+                object obj = ResourceManager.GetObject("Screenshot 2024-11-15 210729", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Screenshot_2024_11_15_211106 {
+            get {
+                object obj = ResourceManager.GetObject("Screenshot 2024-11-15 211106", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Screenshot_2024_11_15_2111061 {
+            get {
+                object obj = ResourceManager.GetObject("Screenshot 2024-11-15 2111061", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Screenshot_2024_11_15_2111062 {
+            get {
+                object obj = ResourceManager.GetObject("Screenshot 2024-11-15 2111062", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap sign_out {
             get {
                 object obj = ResourceManager.GetObject("sign-out", resourceCulture);
@@ -516,6 +566,16 @@ namespace PikachuClassic.Properties {
         internal static System.Drawing.Bitmap start {
             get {
                 object obj = ResourceManager.GetObject("start", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap tutorial {
+            get {
+                object obj = ResourceManager.GetObject("tutorial", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

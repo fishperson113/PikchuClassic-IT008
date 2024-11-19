@@ -32,7 +32,11 @@ namespace PikachuClassic
         //Click Quit button
         private void button3_Click(object sender, EventArgs e)
         {
-            Close();
+            var result = MessageBox.Show("Are you sure you want to quit?", "Exit", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result == DialogResult.Yes)
+            {
+                Application.Exit();
+            }
         }
 
         //Click Play button
@@ -41,6 +45,11 @@ namespace PikachuClassic
             ModeSelectionScreen modeSelectioneScreen = new ModeSelectionScreen();
             modeSelectioneScreen.Show();
             this.Hide();
+        }
+
+        private void MainMenu_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit(); //Đảm bảo thoát ứng dụng khi MainMenu bị đóng
         }
     }
 
