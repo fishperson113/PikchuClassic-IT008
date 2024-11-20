@@ -25,5 +25,9 @@ namespace PikachuClassic
                 return score;
             }
         }
+        public void ResetScore()
+        {
+            score = 0;
+        }
     }
 }

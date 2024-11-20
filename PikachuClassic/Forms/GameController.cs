@@ -16,28 +16,15 @@ namespace PikachuClassic
     {
         private GridManager gridManager;
         private GameManager gameManager;
-        public GameController()
-        {
-            InitializeComponent();
-            gridManager = GridManager.Instance;
-            gameManager = GameManager.Instance;
-            
-            gridManager.GenerateGrid(gridPanel);
-
-            gameManager.OnScoreUpdated += UpdateScoreLabel;
-            gameManager.OnTimeUpdated += UpdateTimeLabel;
-            gameManager.StartTimer(20);
-        }
-        
         private void UpdateScoreLabel(int score, Player player)
         {
-            if (player == gameManager.player1)
+            if (player == gameManager.Player1)
             {
-                scoreLbP1.Text = $"Score P1: {gameManager.player1.Score}";
+                scoreLbP1.Text = $"Score P1: {gameManager.Player1.Score}";
             }
-            else if (player == gameManager.player2)
+            else if (player == gameManager.Player2)
             {
-                scoreLbP2.Text = $"Score P2: {gameManager.player2.Score}";
+                scoreLbP2.Text = $"Score P2: {gameManager.Player2.Score}";
             }
         }
         private void UpdateTimeLabel(int timeRemaining)
@@ -51,7 +38,7 @@ namespace PikachuClassic
         }
 
         //BACKUL
-        public GameController(string gameMode)
+        public GameController()
         {
             InitializeComponent();
 
@@ -61,25 +48,40 @@ namespace PikachuClassic
 
             gridManager.GenerateGrid(gridPanel);
 
-            gameManager.Initialize(this, gameMode);
             gameManager.OnScoreUpdated += UpdateScoreLabel;
             gameManager.OnTimeUpdated += UpdateTimeLabel;
-            gameManager.StartTimer(20); // Bắt đầu đếm thời gian hoặc thiết lập trò chơi
-        }
+            gameManager.OnGameFinished += EndGame;
 
+             // Bắt đầu đếm thời gian hoặc thiết lập trò chơi
+        }
+        ~GameController()
+        {
+            gameManager.OnScoreUpdated -= UpdateScoreLabel;
+            gameManager.OnTimeUpdated -= UpdateTimeLabel;
+            gameManager.OnGameFinished -= EndGame;
+        }
         public void EndGame(bool isWin)
         {
-            this.Hide();
+            ResetData();
             Form endScreen = isWin ? (Form)new WinScreen() : new GameOverScreen();
-            endScreen.FormClosed += (s, args) => this.Close();
-            endScreen.Show();
+            
+            FormManager.Instance.OpenForm(endScreen);
         }
 
-        private void GameOverScreen_FormClosed(object sender, FormClosedEventArgs e)
+        private void ResetData()
         {
-            Application.Exit(); //Thoát toàn bộ ứng dụng khi form cuối cùng bị đóng
+            gameManager.ResetData();
+            gridManager.ResetData();
         }
-
+        public void SetGameMode(string gameMode)
+        {
+            gameManager.Initialize(gameMode);
+            gameManager.StartTimer(20);
+        }
+        private void GameController_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit(); 
+        }
 
     }
 }

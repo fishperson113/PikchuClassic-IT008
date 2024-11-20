@@ -36,7 +36,7 @@ namespace PikachuClassic
         // Thuộc tính của màn chơi
         private Grid grid;
         private int cols = 5;
-        private int rows = 2;
+        private int rows = 4;
 
         //Logic matching
         private bool firstGuess, secondGuess;
@@ -46,15 +46,11 @@ namespace PikachuClassic
 
         public void GenerateGrid(Panel panel)
         {
-            //grid = new Grid(panel, cols, rows); // nguyên bản của anh Dương
-            grid = new Grid(panel, rows, cols); // bản sửa của Bảo
-
+            grid = new Grid(panel, rows, cols); 
             grid.GenerateGrid();
 
-            AddEventToPictureBoxes(); // đem dòng này lên
+            AddEventToPictureBoxes(); 
 
-            //đem mớ này lên
-            //Lưu hình ảnh gốc
             foreach (PictureBox pictureBox in pictureGrid)
             {
                 if (!originalImages.ContainsKey(pictureBox))
@@ -215,6 +211,14 @@ namespace PikachuClassic
         public PictureBox[,] GetPictureBoxes()
         {
             return pictureGrid;
+        }
+        public void ResetData()
+        {
+            grid = null;
+            firstGuess = secondGuess = false;
+            firstGuessBox = secondGuessBox = null;
+            originalImages.Clear();
+
         }
     }
 }

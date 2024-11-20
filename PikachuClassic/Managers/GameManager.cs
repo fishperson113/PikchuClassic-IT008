@@ -17,12 +17,12 @@ namespace PikachuClassic
         // Sự kiện để cập nhật điểm số lên giao diện
         public event Action<int, Player> OnScoreUpdated;
         public event Action<int> OnTimeUpdated;
+        public event Action<bool> OnGameFinished;
         #endregion
         #region Singleton
         private static GameManager instance;
 
         //Backul
-        private GameController gameController;
         private static string gameMode;
 
         public static GameManager Instance
@@ -40,22 +40,20 @@ namespace PikachuClassic
         #endregion
         #region Player
         //Player
-        public Player player1;
-        public Player player2;
+        private Player player1;
+        private Player player2;
         private Player currentPlayer;
         #endregion
-        public GameManager()
+        GameManager()
         {
             // Khởi tạo Timer
             timer = new Timer();
             timer.Interval = 1000; // Timer sẽ tick mỗi giây
             timer.Tick += Timer_Tick;
         }
-        public void Initialize(GameController controller, string mode)
+        public void Initialize(string mode)
         {
-            if (gameController == null || gameMode != mode)
-            {
-                gameController = controller;
+            if (mode == null) return;
                 gameMode = mode;
 
                 if (gameMode == "PvP")
@@ -69,9 +67,15 @@ namespace PikachuClassic
                     player2 = new Bot(1);
                 }
                 currentPlayer = player1;
-            }
         }
+        public void ResetData()
+        {
+            player1.ResetScore();
+            player2.ResetScore();
 
+            currentPlayer = player1;
+            ResetTimer();
+        }
         #region Timer and Switch Turn
 
         // Hàm khởi tạo Timer với thời gian bắt đầu (giây)
@@ -154,7 +158,13 @@ namespace PikachuClassic
             timer.Stop();
 
             bool isWin = player1.Score > player2.Score;
-            gameController.EndGame(isWin);
+            OnGameFinished?.Invoke(player1.Score > player2.Score);
+        }
+        public Player Player1 { get { return player1; } }
+        public Player Player2 { get { return player2; } }
+        public string GetGameMode()
+        {
+            return gameMode;
         }
     }
 }

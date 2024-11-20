@@ -69,12 +69,19 @@
             this.ClientSize = new System.Drawing.Size(932, 553);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "ModeSelectionScreen";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Game Mode";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ModeSelectionScreen_FormClosed);
             this.ResumeLayout(false);
 
+        }
+
+        private void ModeSelectionScreen_FormClosed1(object sender, System.Windows.Forms.FormClosedEventArgs e)
+        {
+            throw new System.NotImplementedException();
         }
 
         #endregion
