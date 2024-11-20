@@ -59,14 +59,15 @@ namespace PikachuClassic
                 try
                 {
                     string filePath = soundEffects[soundName];
-                    if (filePath.EndsWith(".mp3"))
+                    string fullPath=System.IO.Path.GetFullPath(filePath);
+                    if (fullPath.EndsWith(".mp3"))
                     {
-                        player.URL = filePath;  // Đặt đường dẫn MP3
+                        player.URL = fullPath;  // Đặt đường dẫn MP3
                         player.controls.play();  // Phát MP3
                     }
                     else
                     {
-                        var soundPlayer = new System.Media.SoundPlayer(filePath);  // Dùng SoundPlayer cho các tệp WAV
+                        var soundPlayer = new System.Media.SoundPlayer(fullPath);  // Dùng SoundPlayer cho các tệp WAV
                         soundPlayer.Play();
                     }
                 }
@@ -116,14 +117,25 @@ namespace PikachuClassic
         }
 
         // Dừng nhạc nền
-        public void StopBackgroundMusic()
+        public void ToggleBackgroundMusic()
         {
-            isPlayingBackgroundMusic = false;
-            if (backgroundMusicThread != null && backgroundMusicThread.IsAlive)
+            try
             {
-                backgroundMusicThread.Join();  // Đợi thread kết thúc
+                if (isPlayingBackgroundMusic)  // Nếu nhạc đang phát, dừng nhạc
+                {
+                    player.controls.stop();
+                    isPlayingBackgroundMusic = false;
+                }
+                else  // Nếu nhạc không phát, phát nhạc
+                {
+                    player.controls.play();
+                    isPlayingBackgroundMusic = true;
+                }
             }
-            player.controls.stop();  // Dừng nhạc nền
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Lỗi khi điều khiển nhạc nền: {ex.Message}");
+            }
         }
 
         // Phát nhạc nền theo vòng lặp (MP3)
