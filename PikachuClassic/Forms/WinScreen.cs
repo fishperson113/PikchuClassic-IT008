@@ -40,34 +40,20 @@ namespace PikachuClassic
         //Click Retry button
         private void button1_Click(object sender, EventArgs e)
         {
-            this.Close();
-            //Khởi động lại
-            //ModeSelectionScreen modeSelectioneScreen = new ModeSelectionScreen();
-            //modeSelectioneScreen.Show();
-            //GameController gameController = new GameController(gameMode); //Tạo trò chơi mới dựa trên chế độ chơi hiện tại
-            //gameController.Show(); //Hiển thị màn hình chơi mới
-            foreach (Form form in Application.OpenForms.Cast<Form>().ToList())
-            {
-                if (form is GameController && !form.IsDisposed)
-                {
-                    form.Close(); //Đóng tất cả các GameController đang mở
-                }
-            }
 
-            GameController newGame = new GameController();
-            newGame.Show();
-            this.Close(); //Đóng GameOverScreen
+            GameController gameController = new GameController();
+            gameController.SetGameMode(GameManager.Instance.GetGameMode());  // Đảm bảo gameMode được thiết lập lại trong GameController
+            FormManager.Instance.OpenForm(gameController);
         }
 
         //Click Home button
         private void button3_Click(object sender, EventArgs e)
         {
-            this.Close();
             MainMenu mainMenu = new MainMenu();
-            mainMenu.Show();
+            FormManager.Instance.OpenForm(mainMenu);
         }
 
-        private void GameOverScreen_FormClosed(object sender, FormClosedEventArgs e)
+        private void GameWinScreen_FormClosed(object sender, FormClosedEventArgs e)
         {
             Application.Exit(); //Thoát toàn bộ ứng dụng khi form cuối cùng bị đóng
         }

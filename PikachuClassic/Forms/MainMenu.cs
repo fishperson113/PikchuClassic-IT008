@@ -42,9 +42,7 @@ namespace PikachuClassic
         //Click Play button
         private void button1_Click(object sender, EventArgs e)
         {
-            ModeSelectionScreen modeSelectioneScreen = new ModeSelectionScreen();
-            modeSelectioneScreen.Show();
-            this.Hide();
+            FormManager.Instance.OpenForm(new ModeSelectionScreen());
         }
 
         private void MainMenu_FormClosed(object sender, FormClosedEventArgs e)

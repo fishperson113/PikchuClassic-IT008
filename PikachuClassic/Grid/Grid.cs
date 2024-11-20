@@ -26,13 +26,13 @@ namespace PikachuClassic
         private int cols;
         private PictureBox[,] pictureGrid;
         private Panel gridPanel;
-        private int cellSize = 50;
-        List<Image> imagesList = new List<Image>(); // Danh sách các cặp hình ảnh sẽ được gán vào các ô 
-        List<Image> allImages = new List<Image>(); // Danh sách tất cả các hình ảnh có sẵn trong resources
+        private int cellSize;
+        private List<Image> imagesList = new List<Image>(); // Danh sách các cặp hình ảnh sẽ được gán vào các ô 
 
         // Danh sách các cặp hình ảnh và nhóm điểm tương ứng
+        private static List<Image> allImages = new List<Image>(); // Danh sách tất cả các hình ảnh có sẵn trong resources
         private static Dictionary<Image, ScoreGroup> imageScoreGroups = new Dictionary<Image, ScoreGroup>();
-        ScoreGroup[] scoreGroups = (ScoreGroup[])Enum.GetValues(typeof(ScoreGroup));
+        private static ScoreGroup[] scoreGroups = (ScoreGroup[])Enum.GetValues(typeof(ScoreGroup));
         private static bool isScoreGroupsAssigned = false;
         #endregion
         public Grid(Panel panel, int rows, int cols)
@@ -44,7 +44,13 @@ namespace PikachuClassic
 
             CalculateCellSize();
             gridPanel.BackgroundImageLayout = ImageLayout.Stretch;
-            
+            if (!isScoreGroupsAssigned)
+            {
+                LoadResource(); // Load tất cả hình ảnh từ resources (tên file: _0, _1, _2, ...
+                AssignScoreGroups();
+                isScoreGroupsAssigned = true; // Đánh dấu là đã gán nhóm điểm
+            }
+
         }
         private void CalculateCellSize()
         {
@@ -88,12 +94,7 @@ namespace PikachuClassic
 
                 }
             }
-            LoadResource(); // Load tất cả hình ảnh từ resources (tên file: _0, _1, _2, ...
-            if (!isScoreGroupsAssigned)
-            {
-                AssignScoreGroups();
-                isScoreGroupsAssigned = true; // Đánh dấu là đã gán nhóm điểm
-            }
+            
             AssignImagesToGrid();
         }
         private void LoadResource()
@@ -107,13 +108,13 @@ namespace PikachuClassic
         }
         private void AssignImagesToGrid()
         {
+            //if (imagesList != null) return;
             int totalCells = rows * cols;
             if (totalCells % 2 != 0)
             {
                 MessageBox.Show("Số lượng ô phải là số chẵn để có thể gán đủ các cặp hình!");
                 return;
             }
- 
             Shuffle(allImages);
 
             for (int i = 0; i < totalCells / 2; i++) // Chia đôi vì mỗi ảnh xuất hiện 2 lần
@@ -138,7 +139,6 @@ namespace PikachuClassic
         }
         private void AssignScoreGroups()
         {
-            imageScoreGroups.Clear();
             int imagesPerGroup = 6; // Số lượng hình ảnh mỗi nhóm
             int currentGroupIndex = 0;
 

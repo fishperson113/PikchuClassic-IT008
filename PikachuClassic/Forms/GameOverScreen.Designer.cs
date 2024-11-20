@@ -70,10 +70,12 @@
             this.ClientSize = new System.Drawing.Size(932, 553);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "GameOverScreen";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Game Over";
             this.Load += new System.EventHandler(this.Form2_Load);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.GameOverScreen_FormClosed);
             this.ResumeLayout(false);
 
         }

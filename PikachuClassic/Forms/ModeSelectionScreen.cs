@@ -12,9 +12,12 @@ namespace PikachuClassic
 {
     public partial class ModeSelectionScreen : Form
     {
+        GameController gameController;
         public ModeSelectionScreen()
         {
             InitializeComponent();
+            if(gameController == null)
+            gameController = new GameController();
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -25,30 +28,26 @@ namespace PikachuClassic
         //Click button PvP
         private void button1_Click(object sender, EventArgs e)
         {
-            this.Close();
-            GetGameMode("PvP");
             StartGame("PvP");
         }
 
         //Click button PvE
         private void button2_Click(object sender, EventArgs e)
         {
-            this.Close();
-            GetGameMode("PvE");
             StartGame("PvE");
         }
 
         //Hàm bắt đầu game
         private void StartGame(string gameMode)
         {
-            this.Close();
-            GameController gameController = new GameController(gameMode);
-            gameController.Show();
+            this.Hide();
+            gameController.SetGameMode(gameMode);
+            FormManager.Instance.OpenForm(gameController);
+        }
+        private void ModeSelectionScreen_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit(); //Thoát toàn bộ ứng dụng khi form cuối cùng bị đóng
         }
 
-        public string GetGameMode(string gameMode)
-        {
-            return gameMode;
-        }
     }
 }
