@@ -59,14 +59,15 @@ namespace PikachuClassic
                 try
                 {
                     string filePath = soundEffects[soundName];
-                    if (filePath.EndsWith(".mp3"))
+                    string fullPath=System.IO.Path.GetFullPath(filePath);
+                    if (fullPath.EndsWith(".mp3"))
                     {
-                        player.URL = filePath;  // Đặt đường dẫn MP3
+                        player.URL = fullPath;  // Đặt đường dẫn MP3
                         player.controls.play();  // Phát MP3
                     }
                     else
                     {
-                        var soundPlayer = new System.Media.SoundPlayer(filePath);  // Dùng SoundPlayer cho các tệp WAV
+                        var soundPlayer = new System.Media.SoundPlayer(fullPath);  // Dùng SoundPlayer cho các tệp WAV
                         soundPlayer.Play();
                     }
                 }
