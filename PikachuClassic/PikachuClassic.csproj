@@ -70,6 +70,7 @@
     <Compile Include="Forms\MainMenu.Designer.cs">
       <DependentUpon>MainMenu.cs</DependentUpon>
     </Compile>
+    <Compile Include="Grid\Node.cs" />
     <Compile Include="Managers\GameManager.cs" />
     <Compile Include="Grid\Grid.cs" />
     <Compile Include="Grid\GridManager.cs" />

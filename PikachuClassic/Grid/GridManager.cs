@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.Diagnostics;
 using System.Security.Cryptography;
+using System.Xml.Linq;
 namespace PikachuClassic
 {
     public class GridManager
@@ -36,7 +37,7 @@ namespace PikachuClassic
         // Thuộc tính của màn chơi
         private Grid grid;
         private int cols = 5;
-        private int rows = 2;
+        private int rows = 4;
 
         //Logic matching
         private bool firstGuess, secondGuess;
@@ -44,16 +45,16 @@ namespace PikachuClassic
         private PictureBox[,] pictureGrid;
         private Dictionary<PictureBox, Image> originalImages = new Dictionary<PictureBox, Image>();
 
+        private Panel gridPanel; //Bảo thêm nhằm vẽ
+
         public void GenerateGrid(Panel panel)
         {
-            //grid = new Grid(panel, cols, rows); // nguyên bản của anh Dương
-            grid = new Grid(panel, rows, cols); // bản sửa của Bảo
+            gridPanel = panel; //để vẽ
 
+            grid = new Grid(panel, rows, cols); //Bảo định thêm + 2 vào đây
             grid.GenerateGrid();
+            AddEventToPictureBoxes();
 
-            AddEventToPictureBoxes(); // đem dòng này lên
-
-            //đem mớ này lên
             //Lưu hình ảnh gốc
             foreach (PictureBox pictureBox in pictureGrid)
             {
@@ -67,12 +68,16 @@ namespace PikachuClassic
             firstGuess = secondGuess = false;
         }
         #region Matching Logic and Tint Effect
-        private void AddEventToPictureBoxes()
+        private void AddEventToPictureBoxes() // thiết kế lại
         {
             pictureGrid = grid.GetPictureBoxes();
-            foreach (PictureBox pictureBox in pictureGrid)
+            for (int i = 0; i < rows; i++) // Bảo sửa sai: int i = 1; i < pictureGrid.GetLength(0) - 1; i++
             {
-                pictureBox.Click += OnCellClick;
+                for (int j = 0; j < cols; j++) // Bảo sửa sai: int j = 1; j < pictureGrid.GetLength(1) - 1; j++
+                {
+                    pictureGrid[i, j].Click += OnCellClick;
+                    
+                }
             }
         }
         private Image ApplyTintToImage(Image originalImage, Color tint, float opacity)
@@ -96,24 +101,14 @@ namespace PikachuClassic
         {
             PictureBox clickedBox = sender as PictureBox;
 
-            if (clickedBox == null || !clickedBox.Visible || clickedBox.Image == null) return;
-
-            // Kiểm tra nếu người chơi bấm vào ô đầu tiên đã chọn để huỷ chọn
-            if (firstGuess && firstGuessBox == clickedBox)
-            {
-                // Khôi phục ảnh gốc của ô và huỷ chọn ô đầu tiên
-                firstGuessBox.Image = originalImages[firstGuessBox];
-                firstGuess = false;
-                firstGuessBox = null;
-                return; // Kết thúc mà không tiếp tục logic đoán
-            }
+            if (clickedBox == null || !clickedBox.Visible || clickedBox.Image == null || firstGuessBox == clickedBox) return;
 
             if (!firstGuess)
             {
                 firstGuess = true;
                 firstGuessBox = clickedBox; // Gán ô đầu tiên được chọn
 
-                // Lưu lại hình ảnh gốc nếu chưa có trong danh sách
+                // Lưu lại hình ảnh gốc
                 if (!originalImages.ContainsKey(firstGuessBox))
                 {
                     originalImages[firstGuessBox] = firstGuessBox.Image;
@@ -128,7 +123,7 @@ namespace PikachuClassic
                 secondGuess = true;
                 secondGuessBox = clickedBox; // Gán ô thứ hai được chọn
 
-                // Lưu lại hình ảnh gốc nếu chưa có trong danh sách
+                // Lưu lại hình ảnh gốc
                 if (!originalImages.ContainsKey(secondGuessBox))
                 {
                     originalImages[secondGuessBox] = secondGuessBox.Image;
@@ -145,16 +140,32 @@ namespace PikachuClassic
         {
             await Task.Delay(500);
 
+            // Lấy Node từ PictureBox
+            Node firstNode = grid.GetNodeFromPictureBox(firstGuessBox);
+            Node secondNode = grid.GetNodeFromPictureBox(secondGuessBox);
+            bool hasPath = grid.HasPath(firstNode, secondNode);
+
             // Kiểm tra xem hình ảnh của hai ô có khớp không bằng cách kiểm tra hình ảnh trc khi apply tint
-            if (originalImages[firstGuessBox] == originalImages[secondGuessBox])
+            if ((originalImages[firstGuessBox] == originalImages[secondGuessBox])
+                && hasPath == true)
             {
                 // Nếu khớp, ẩn các ô và vô hiệu hóa chúng
                 firstGuessBox.Visible = false;
                 secondGuessBox.Visible = false;
-                ScoreGroup score= grid.GetScoreForImage(originalImages[firstGuessBox]);
+
+                // Bảo thêm
+                // Vẽ đường đi
+                var path = grid.findPath(firstNode, secondNode);
+                List<Node> cutPath = grid.ExtractCutPath(path);
+                if (path != null)
+                    await grid.DrawPath(cutPath, gridPanel); // Vẽ đường màu đỏ với độ dày 3
+
+                // Khiến node trở nên đi qua được
+                grid.RemoveNodes(firstGuessBox, secondGuessBox);
+
+                ScoreGroup score = grid.GetScoreForImage(originalImages[firstGuessBox]);
                 // Thêm điểm
                 GameManager.Instance.AddScore((int)score, GameManager.Instance.GetCurrentPlayer());
-
 
                 // Kiểm tra xem game đã kết thúc chưa
                 GameManager.Instance.CheckIfTheGameIsFinished();
@@ -185,7 +196,8 @@ namespace PikachuClassic
         }
         public bool AreImagesMatching(PictureBox first, PictureBox second)
         {
-            if (originalImages.ContainsKey(first) && originalImages.ContainsKey(second))
+            if (originalImages.ContainsKey(first) && originalImages.ContainsKey(second)
+                && grid.HasPath(first, second))
             {
                 return originalImages[first] == originalImages[second];
             }
@@ -217,4 +229,5 @@ namespace PikachuClassic
             return pictureGrid;
         }
     }
+
 }
