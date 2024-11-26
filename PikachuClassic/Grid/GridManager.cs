@@ -44,8 +44,12 @@ namespace PikachuClassic
         private PictureBox[,] pictureGrid;
         private Dictionary<PictureBox, Image> originalImages = new Dictionary<PictureBox, Image>();
 
+        private Panel gridPanel; //Bảo thêm nhằm vẽ
+
         public void GenerateGrid(Panel panel)
         {
+            gridPanel = panel; //Bảo thêm để vẽ
+
             grid = new Grid(panel, rows, cols); 
             grid.GenerateGrid();
 
@@ -141,12 +145,29 @@ namespace PikachuClassic
         {
             await Task.Delay(500);
 
+            // Lấy Node từ PictureBox
+            Node firstNode = grid.GetNodeFromPictureBox(firstGuessBox);
+            Node secondNode = grid.GetNodeFromPictureBox(secondGuessBox);
+            bool hasPath = grid.HasPath(firstNode, secondNode);
+
             // Kiểm tra xem hình ảnh của hai ô có khớp không bằng cách kiểm tra hình ảnh trc khi apply tint
-            if (originalImages[firstGuessBox] == originalImages[secondGuessBox])
+            if ((originalImages[firstGuessBox] == originalImages[secondGuessBox])
+                 && hasPath == true)
             {
                 // Nếu khớp, ẩn các ô và vô hiệu hóa chúng
                 firstGuessBox.Visible = false;
                 secondGuessBox.Visible = false;
+
+                // Bảo thêm
+                // Vẽ đường đi
+                var path = grid.findPath(firstNode, secondNode);
+                List<Node> cutPath = grid.ExtractCutPath(path);
+                if (path != null)
+                    await grid.DrawPath(cutPath, gridPanel);
+
+                // Khiến node trở nên đi qua được
+                grid.RemoveNodes(firstGuessBox, secondGuessBox);
+
                 ScoreGroup score= grid.GetScoreForImage(originalImages[firstGuessBox]);
                 // Thêm điểm
                 GameManager.Instance.AddScore((int)score, GameManager.Instance.GetCurrentPlayer());

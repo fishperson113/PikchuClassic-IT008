@@ -28,6 +28,7 @@ namespace PikachuClassic
         private Panel gridPanel;
         private int cellSize;
         private List<Image> imagesList = new List<Image>(); // Danh sách các cặp hình ảnh sẽ được gán vào các ô 
+        private Node[,] nodes; // Bảo thêm, khai báo mảng 2 chiều các node đồ thị
 
         // Danh sách các cặp hình ảnh và nhóm điểm tương ứng
         private static List<Image> allImages = new List<Image>(); // Danh sách tất cả các hình ảnh có sẵn trong resources
@@ -96,6 +97,12 @@ namespace PikachuClassic
             }
             
             AssignImagesToGrid();
+
+            // Bảo thêm
+            nodes = new Node[rows + 2, cols + 2];
+            initializeNodes(nodes);
+            setNeighbors(nodes);
+            // Hết Bảo
         }
         private void LoadResource()
         {
@@ -174,6 +181,48 @@ namespace PikachuClassic
             }
         }
 
+        //Bảo, khởi tạo các node
+        public void initializeNodes(Node[,] node)
+        {
+            // Khởi tạo node
+            for (int i = 0; i < nodes.GetLength(0); i++)
+            {
+                for (int j = 0; j < nodes.GetLength(1); j++)
+                {
+                    PictureBox picBox = (i > 0 && i <= rows && j > 0 && j <= cols) ? pictureGrid[i - 1, j - 1] : null;
+                    //dòng này hiểu là 1 node bên pictureGrid có tọa độ là 0,0 thì bên nodes có tọa độ là 1,1
+                    //hàm GenerateGrid bên grid.cs khởi tạo sẵn giá trị rows vs cols cho cái pictureGrid riêng rồi
+                    //nên Bảo gắn cái pictureGrid đó vô cái nền đồ thị thôi
+
+                    if (picBox != null)
+                        // Thiết lập node có hình
+                        nodes[i, j] = new Node(picBox, false, i, j);
+                    else
+                        // Thiết lập node viền ngoài
+                        nodes[i, j] = new Node(null, true, i, j);
+                }
+            }
+        }
+
+        //Bảo, khởi tạo danh sách Neighbors cho node
+        public void setNeighbors(Node[,] nodes)
+        {
+            for (int i = 0; i < nodes.GetLength(0); i++)
+            {
+                for (int j = 0; j < nodes.GetLength(1); j++)
+                {
+                    if (i > 0 && nodes[i - 1, j] != null)
+                        nodes[i, j].AddNeighbor(nodes[i - 1, j]); // Trên
+                    if (i < nodes.GetLength(0) - 1 && nodes[i + 1, j] != null)
+                        nodes[i, j].AddNeighbor(nodes[i + 1, j]); // Dưới
+                    if (j > 0 && nodes[i, j - 1] != null)
+                        nodes[i, j].AddNeighbor(nodes[i, j - 1]); // Trái
+                    if (j < nodes.GetLength(1) - 1 && nodes[i, j + 1] != null)
+                        nodes[i, j].AddNeighbor(nodes[i, j + 1]); // Phải
+                }
+            }
+        }
+
         public PictureBox[,] GetPictureBoxes()
         {
             return pictureGrid;
@@ -205,6 +254,234 @@ namespace PikachuClassic
             Console.WriteLine("Không tìm thấy ảnh trong dictionary");
             return ScoreGroup.Group10; // Điểm mặc định nếu không tìm thấy ảnh
         }
+
+        // Bảo, dùng để loại node đã bị vô hiệu hóa khi chọn 2 hình giống nhau + cập nhật lại danh sách kề
+        internal void RemoveNodes(PictureBox firstBox, PictureBox secondBox)
+        {
+            Node firstNode = GetNodeFromPictureBox(firstBox);
+            Node secondNode = GetNodeFromPictureBox(secondBox);
+
+            firstNode.isTraversable = true;
+            secondNode.isTraversable = true;
+
+            //thử nghiệm cho vẽ đường, xíu sẽ cmt lại
+            firstNode.PictureBox = null;
+            secondNode.PictureBox = null;
+        }
+
+        //Bảo, lấy ánh xạ từ vị trí của PictureBox -> vị trí của node
+        public Node GetNodeFromPictureBox(PictureBox pictureBox)
+        {
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < cols; j++)
+                {
+                    if (pictureGrid[i, j] == pictureBox)
+                    {
+                        return nodes[i + 1, j + 1];
+                    }
+                }
+            }
+            return null; // Trả về null nếu không tìm thấy
+        }
+
+        //Bảo, hàm này để tìm đường đi và trả về danh sách các node đã đi qua
+        public List<Node> findPath(Node startNode, Node endNode)
+        {
+            List<Node> path = new List<Node>();
+            if (startNode.isNeighbor(endNode)) // Nếu 2 node là hàng xóm
+            {
+                path.Add(startNode);
+                path.Add(endNode);
+                return path;
+            }
+
+            Dictionary<Node, bool> visited = new Dictionary<Node, bool>();
+            Queue<Node> queue = new Queue<Node>();
+            Dictionary<Node, Node> cameFrom = new Dictionary<Node, Node>();
+            Dictionary<Node, Direction> directionFrom = new Dictionary<Node, Direction>();
+
+            queue.Enqueue(startNode);
+            visited[startNode] = true;
+
+            while (queue.Count > 0)
+            {
+                Node current = queue.Dequeue();
+
+                if (current == endNode) // Nếu đã tìm được đường đi
+                {
+                    Node temp = endNode;
+                    while (temp != startNode)
+                    {
+                        path.Add(temp);
+                        temp = cameFrom[temp];
+                    }
+                    path.Add(startNode);
+                    path.Reverse();
+                    return path;
+                }
+
+                foreach (var neighbor in current.Neighbors)
+                {
+                    if (visited.ContainsKey(neighbor) && visited[neighbor])
+                        continue;
+                    if (!neighbor.isTraversable && neighbor != endNode)
+                        continue;
+                    visited[neighbor] = true;
+                    queue.Enqueue(neighbor);
+                    cameFrom[neighbor] = current;
+
+
+                    Direction direction = GetDirection(current, neighbor);
+                    if (directionFrom.ContainsKey(current) && directionFrom[current] != direction) // vừa rẽ hướng
+                    {
+                        if (pathChangesExceeded(cameFrom, neighbor, 2)) //Nguyên bản: cameFrom, current, 2
+                        {
+                            visited[neighbor] = false;
+                            queue = new Queue<Node>(queue.Where(n => n != neighbor)); // Loại bỏ node
+                            continue;
+                        }
+                    }
+                    directionFrom[neighbor] = direction;
+
+                }
+            }
+
+            return null; // Không tìm thấy đường đi
+        }
+
+        private Direction GetDirection(Node from, Node to)
+        {
+            if (to.X > from.X) return Direction.Down;
+            if (to.X < from.X) return Direction.Up;
+            if (to.Y > from.Y) return Direction.Right;
+            return Direction.Left;
+        }
+
+        private bool pathChangesExceeded(Dictionary<Node, Node> cameFrom, Node node, int maxChanges)
+        {
+            int changes = 0;
+            Node temp = node; // ý tưởng: temp = neighbor (ý tưởng lúc truyền tham số)
+            while (cameFrom.ContainsKey(temp))
+            {
+                //nghi ngờ, nguyên bản: (temp, cameFrom[temp]). định sửa: (cameFrom[temp], temp)
+                Direction currentDirection = GetDirection(temp, cameFrom[temp]);
+                temp = cameFrom[temp];
+
+                if (cameFrom.ContainsKey(temp) && currentDirection != GetDirection(temp, cameFrom[temp]))
+                {
+                    changes++;
+                    if (changes > maxChanges)
+                        return true;
+                }
+            }
+            return false;
+        }
+
+        public enum Direction
+        {
+            Up,
+            Down,
+            Left,
+            Right
+        }
+
+        // Bảo, hàm tạo cutPath từ danh sách đường đi đầy đủ
+        public List<Node> ExtractCutPath(List<Node> fullPath)
+        {
+            List<Node> cutPath = new List<Node>();
+            if (fullPath == null || fullPath.Count == 0)
+                return cutPath;
+
+            // Thêm node đầu tiên
+            cutPath.Add(fullPath[0]);
+
+            // Tìm các điểm rẽ nhánh
+            for (int i = 1; i < fullPath.Count - 1; i++)
+            {
+                Direction dir1 = GetDirection(fullPath[i - 1], fullPath[i]);
+                Direction dir2 = GetDirection(fullPath[i], fullPath[i + 1]);
+
+                if (dir1 != dir2) // Phát hiện rẽ nhánh
+                {
+                    cutPath.Add(fullPath[i]);
+                    if (cutPath.Count == 3) // Đảm bảo chỉ lấy tối đa 2 điểm rẽ nhánh
+                        break;
+                }
+            }
+
+            // Thêm node cuối cùng
+            cutPath.Add(fullPath[fullPath.Count - 1]);
+
+            return cutPath;
+        }
+
+
+        //Bảo, hàm này để nhận biết giữa 2 node được chọn có đường đi hay không
+        public bool HasPath(Node startNode, Node endNode)
+        {
+            // Gọi hàm FindPath để tìm đường đi
+            var path = findPath(startNode, endNode);
+
+            // Kiểm tra nếu có đường đi (nếu path không null và có ít nhất 1 node)
+            return (path != null && path.Count > 0);
+        }
+
+        public bool HasPath(PictureBox picBox1, PictureBox picBox2)
+        {
+            Node node1 = GetNodeFromPictureBox(picBox1);
+            Node node2 = GetNodeFromPictureBox(picBox2);
+
+            return HasPath(node1, node2);
+        }
+
+        public bool HasPath(List<Node> path) //ý tưởng là giảm số lần chạy findpath lại
+        {
+            return (path != null && path.Count > 0);
+        }
+
+        public async Task DrawPath(List<Node> cutPath, Panel gridPanel, int delayMs = 500)
+        {
+            if (cutPath == null || cutPath.Count < 2)
+                return;
+
+            // Kiểm tra Panel để lấy Graphics
+            using (Graphics graphics = gridPanel.CreateGraphics())
+            {
+                Pen pen = new Pen(Color.Blue, 5); // Định nghĩa bút vẽ màu xanh và độ dày 5
+
+                // Vẽ từng đoạn của đường đi
+                for (int i = 0; i < cutPath.Count - 1; i++)
+                {
+                    // Lấy tọa độ từ node hiện tại và node kế tiếp //***
+                    Point startPoint = new Point(cutPath[i].Y * cellSize, cutPath[i].X * cellSize);
+                    Point endPoint = new Point(cutPath[i + 1].Y * cellSize, cutPath[i + 1].X * cellSize);
+
+                    // Debug: In tọa độ ra console để kiểm tra
+                    Console.WriteLine($"Vẽ từ ({startPoint.X}, {startPoint.Y}) đến ({endPoint.X}, {endPoint.Y})");
+
+                    // Vẽ đường thẳng
+                    graphics.DrawLine(pen, startPoint, endPoint);
+                }
+            }
+
+            // Làm mới giao diện để xóa đường sau khi vẽ hoàn thành
+            await Task.Delay(1000); // Đợi 1 giây để người dùng thấy rõ đường đi
+            gridPanel.Invalidate();
+        }
+
+        /*
+        // Bảo, lấy tọa độ trung tâm của PictureBox (cái này thú vị)
+        private Point GetPictureBoxCenter(PictureBox pictureBox)
+        {
+            if (pictureBox == null) return Point.Empty;
+
+            return new Point(
+                pictureBox.Location.X + pictureBox.Width / 2,
+                pictureBox.Location.Y + pictureBox.Height / 2
+            );
+        }
+        */
 
     }
     
