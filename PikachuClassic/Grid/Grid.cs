@@ -447,9 +447,9 @@ namespace PikachuClassic
                 // Vẽ từng đoạn của đường đi
                 for (int i = 0; i < cutPath.Count - 1; i++)
                 {
-                    // Lấy tọa độ từ node hiện tại và node kế tiếp
-                    Point startPoint = new Point(cutPath[i].X * cellSize, cutPath[i].Y * cellSize);
-                    Point endPoint = new Point(cutPath[i + 1].X * cellSize, cutPath[i + 1].Y * cellSize);
+                    // Lấy tọa độ từ node hiện tại và node kế tiếp //***
+                    Point startPoint = new Point(cutPath[i].Y * cellSize, cutPath[i].X * cellSize);
+                    Point endPoint = new Point(cutPath[i + 1].Y * cellSize, cutPath[i + 1].X * cellSize);
 
                     // Debug: In tọa độ ra console để kiểm tra
                     Console.WriteLine($"Vẽ từ ({startPoint.X}, {startPoint.Y}) đến ({endPoint.X}, {endPoint.Y})");

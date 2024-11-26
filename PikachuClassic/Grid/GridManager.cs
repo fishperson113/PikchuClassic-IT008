@@ -158,7 +158,7 @@ namespace PikachuClassic
                 var path = grid.findPath(firstNode, secondNode);
                 List<Node> cutPath = grid.ExtractCutPath(path);
                 if (path != null)
-                    await grid.DrawPath(cutPath, gridPanel); // Vẽ đường màu đỏ với độ dày 3
+                    await grid.DrawPath(cutPath, gridPanel);
 
                 // Khiến node trở nên đi qua được
                 grid.RemoveNodes(firstGuessBox, secondGuessBox);
