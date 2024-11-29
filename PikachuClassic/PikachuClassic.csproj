@@ -143,6 +143,21 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="Audio\1-01. Opening.mp3" />
+    <Content Include="Audio\Background.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Audio\Correct.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Audio\Lose.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Audio\Win.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Audio\Wrong.mp3">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Images\0.png" />
     <Content Include="Images\1.png" />
     <Content Include="Images\10.png" />
@@ -181,6 +196,8 @@
     <Content Include="Images\9.png" />
     <Content Include="Images\BGs\BG1.png" />
     <Content Include="Images\hint.png" />
+    <None Include="Resources\tutorial2.png" />
+    <None Include="Resources\tutorial1.png" />
     <None Include="Resources\tutorial.png" />
     <None Include="Resources\Screenshot 2024-11-15 2111062.png" />
     <None Include="Resources\Screenshot 2024-11-15 2111061.png" />

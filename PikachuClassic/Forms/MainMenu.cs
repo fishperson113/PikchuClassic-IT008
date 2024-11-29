@@ -50,6 +50,12 @@ namespace PikachuClassic
             Application.Exit(); //Đảm bảo thoát ứng dụng khi MainMenu bị đóng
         }
 
+        //Click Tutorial icon
+        private void button4_Click(object sender, EventArgs e)
+        {
+            FormManager.Instance.OpenForm(new GameTutorial());
+        }
+
         //private void button4_Click(object sender, EventArgs e)
         //{
         //    AudioManager.Instance.ToggleBackgroundMusic(); // Bật/Tắt nhạc nền
