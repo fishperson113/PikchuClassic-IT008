@@ -83,5 +83,10 @@ namespace PikachuClassic
             Application.Exit(); 
         }
 
+        //Click Tutorial icon
+        private void button1_Click(object sender, EventArgs e)
+        {
+            FormManager.Instance.OpenForm(new GameTutorial());
+        }
     }
 }
