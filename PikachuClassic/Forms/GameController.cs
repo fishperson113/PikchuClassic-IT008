@@ -88,5 +88,10 @@ namespace PikachuClassic
         {
             FormManager.Instance.OpenForm(new GameTutorial());
         }
+
+        private void timeLb_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -48,7 +48,7 @@
             this.infoPanel.Controls.Add(this.scoreLbP1);
             this.infoPanel.Location = new System.Drawing.Point(3, 3);
             this.infoPanel.Name = "infoPanel";
-            this.infoPanel.Size = new System.Drawing.Size(665, 60);
+            this.infoPanel.Size = new System.Drawing.Size(902, 60);
             this.infoPanel.TabIndex = 0;
             // 
             // button1
@@ -56,7 +56,7 @@
             this.button1.BackColor = System.Drawing.SystemColors.ControlDark;
             this.button1.BackgroundImage = global::PikachuClassic.Properties.Resources.tutorial2;
             this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button1.Location = new System.Drawing.Point(408, 10);
+            this.button1.Location = new System.Drawing.Point(645, 10);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(38, 38);
             this.button1.TabIndex = 3;
@@ -68,7 +68,7 @@
             this.scoreLbP2.BackColor = System.Drawing.SystemColors.ControlDark;
             this.scoreLbP2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.scoreLbP2.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.scoreLbP2.Location = new System.Drawing.Point(471, 10);
+            this.scoreLbP2.Location = new System.Drawing.Point(708, 10);
             this.scoreLbP2.Name = "scoreLbP2";
             this.scoreLbP2.Size = new System.Drawing.Size(191, 38);
             this.scoreLbP2.TabIndex = 2;
@@ -80,12 +80,13 @@
             this.timeLb.BackColor = System.Drawing.SystemColors.ControlDark;
             this.timeLb.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.timeLb.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.timeLb.Location = new System.Drawing.Point(220, 10);
+            this.timeLb.Location = new System.Drawing.Point(371, 10);
             this.timeLb.Name = "timeLb";
             this.timeLb.Size = new System.Drawing.Size(164, 38);
             this.timeLb.TabIndex = 1;
             this.timeLb.Text = "Time Left: ";
             this.timeLb.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.timeLb.Click += new System.EventHandler(this.timeLb_Click);
             // 
             // scoreLbP1
             // 
@@ -104,16 +105,16 @@
             this.gamePanel.BackColor = System.Drawing.Color.Transparent;
             this.gamePanel.Controls.Add(this.gridPanel);
             this.gamePanel.Controls.Add(this.infoPanel);
-            this.gamePanel.Location = new System.Drawing.Point(27, 13);
+            this.gamePanel.Location = new System.Drawing.Point(12, 13);
             this.gamePanel.Name = "gamePanel";
-            this.gamePanel.Size = new System.Drawing.Size(672, 506);
+            this.gamePanel.Size = new System.Drawing.Size(908, 506);
             this.gamePanel.TabIndex = 0;
             // 
             // gridPanel
             // 
             this.gridPanel.Location = new System.Drawing.Point(7, 70);
             this.gridPanel.Name = "gridPanel";
-            this.gridPanel.Size = new System.Drawing.Size(661, 433);
+            this.gridPanel.Size = new System.Drawing.Size(898, 433);
             this.gridPanel.TabIndex = 1;
             this.gridPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.gridPanel_Paint);
             // 
@@ -123,7 +124,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(727, 531);
+            this.ClientSize = new System.Drawing.Size(932, 553);
             this.Controls.Add(this.gamePanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "GameController";
