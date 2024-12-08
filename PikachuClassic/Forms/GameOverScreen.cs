@@ -16,11 +16,12 @@ namespace PikachuClassic
         public GameOverScreen()
         {
             InitializeComponent();
+            AudioManager.Instance.StartBackgroundMusic("Lose");
         }
 
         private void Form2_Load(object sender, EventArgs e)
         {
-
+            
         }
 
         //Click Main Menu button
@@ -35,6 +36,7 @@ namespace PikachuClassic
         {
             InitializeComponent();
             this.gameMode = gameMode;
+            AudioManager.Instance.StartBackgroundMusic("Lose");
         }
 
         //Click Try Again button

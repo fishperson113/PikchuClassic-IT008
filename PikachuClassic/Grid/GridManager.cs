@@ -158,6 +158,9 @@ namespace PikachuClassic
                 firstGuessBox.Visible = false;
                 secondGuessBox.Visible = false;
 
+                // Hiển thị nhạc khi bấm đúng
+                AudioManager.Instance.PlaySound("Correct", 1);
+
                 // Bảo thêm
                 // Vẽ đường đi
                 var path = grid.findPath(firstNode, secondNode);
@@ -178,6 +181,9 @@ namespace PikachuClassic
             }
             else
             {
+                // Hiển thị nhạc khi bấm sai
+                AudioManager.Instance.PlaySound("Wrong", 1);
+
                 // Nếu không khớp, đặt lại màu cho các ô
                 firstGuessBox.Image = originalImages[firstGuessBox];
                 secondGuessBox.Image = originalImages[secondGuessBox];

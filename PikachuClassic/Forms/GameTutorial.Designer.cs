@@ -117,14 +117,16 @@
             // textBox1
             // 
             this.textBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
-            this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(29, 223);
+            this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textBox1.Location = new System.Drawing.Point(11, 173);
             this.textBox1.Margin = new System.Windows.Forms.Padding(20, 3, 3, 20);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(330, 300);
+            this.textBox1.Size = new System.Drawing.Size(334, 301);
             this.textBox1.TabIndex = 0;
+            this.textBox1.TabStop = false;
             this.textBox1.Text = resources.GetString("textBox1.Text");
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // contextMenuStrip1
             // 
@@ -136,77 +138,84 @@
             // 
             this.pictureBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
             this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pictureBox1.Location = new System.Drawing.Point(403, 224);
+            this.pictureBox1.Location = new System.Drawing.Point(365, 173);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(3, 3, 20, 20);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(500, 300);
+            this.pictureBox1.Size = new System.Drawing.Size(459, 301);
             this.pictureBox1.TabIndex = 2;
             this.pictureBox1.TabStop = false;
+            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // textBox2
             // 
             this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox2.Location = new System.Drawing.Point(417, 230);
+            this.textBox2.Location = new System.Drawing.Point(376, 177);
             this.textBox2.Margin = new System.Windows.Forms.Padding(3, 3, 3, 20);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(65, 27);
             this.textBox2.TabIndex = 3;
+            this.textBox2.TabStop = false;
             this.textBox2.Text = "10 điểm";
             // 
             // textBox3
             // 
             this.textBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox3.Location = new System.Drawing.Point(417, 280);
+            this.textBox3.Location = new System.Drawing.Point(376, 227);
             this.textBox3.Margin = new System.Windows.Forms.Padding(3, 3, 3, 20);
             this.textBox3.Name = "textBox3";
             this.textBox3.Size = new System.Drawing.Size(65, 27);
             this.textBox3.TabIndex = 4;
+            this.textBox3.TabStop = false;
             this.textBox3.Text = "20 điểm";
             // 
             // textBox4
             // 
             this.textBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox4.Location = new System.Drawing.Point(417, 330);
+            this.textBox4.Location = new System.Drawing.Point(376, 277);
             this.textBox4.Margin = new System.Windows.Forms.Padding(3, 3, 3, 20);
             this.textBox4.Name = "textBox4";
             this.textBox4.Size = new System.Drawing.Size(65, 27);
             this.textBox4.TabIndex = 5;
+            this.textBox4.TabStop = false;
             this.textBox4.Text = "30 điểm";
             // 
             // textBox5
             // 
             this.textBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox5.Location = new System.Drawing.Point(417, 380);
+            this.textBox5.Location = new System.Drawing.Point(376, 327);
             this.textBox5.Margin = new System.Windows.Forms.Padding(3, 3, 3, 20);
             this.textBox5.Name = "textBox5";
             this.textBox5.Size = new System.Drawing.Size(65, 27);
             this.textBox5.TabIndex = 6;
+            this.textBox5.TabStop = false;
             this.textBox5.Text = "40 điểm";
             // 
             // textBox6
             // 
             this.textBox6.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox6.Location = new System.Drawing.Point(417, 430);
+            this.textBox6.Location = new System.Drawing.Point(376, 377);
             this.textBox6.Margin = new System.Windows.Forms.Padding(3, 3, 3, 20);
             this.textBox6.Name = "textBox6";
             this.textBox6.Size = new System.Drawing.Size(65, 27);
             this.textBox6.TabIndex = 7;
+            this.textBox6.TabStop = false;
             this.textBox6.Text = "50 điểm";
             // 
             // textBox7
             // 
             this.textBox7.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox7.Location = new System.Drawing.Point(417, 480);
+            this.textBox7.Location = new System.Drawing.Point(376, 427);
             this.textBox7.Margin = new System.Windows.Forms.Padding(3, 3, 3, 20);
             this.textBox7.Name = "textBox7";
             this.textBox7.Size = new System.Drawing.Size(65, 27);
             this.textBox7.TabIndex = 8;
+            this.textBox7.TabStop = false;
             this.textBox7.Text = "60 điểm";
             // 
             // pictureBox2
             // 
             this.pictureBox2.BackgroundImage = global::PikachuClassic.Properties.Resources._0;
-            this.pictureBox2.Location = new System.Drawing.Point(488, 230);
+            this.pictureBox2.Location = new System.Drawing.Point(447, 177);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(40, 40);
             this.pictureBox2.TabIndex = 9;
@@ -216,7 +225,7 @@
             // pictureBox3
             // 
             this.pictureBox3.BackgroundImage = global::PikachuClassic.Properties.Resources._8;
-            this.pictureBox3.Location = new System.Drawing.Point(580, 230);
+            this.pictureBox3.Location = new System.Drawing.Point(539, 177);
             this.pictureBox3.Name = "pictureBox3";
             this.pictureBox3.Size = new System.Drawing.Size(40, 40);
             this.pictureBox3.TabIndex = 10;
@@ -225,7 +234,7 @@
             // pictureBox4
             // 
             this.pictureBox4.BackgroundImage = global::PikachuClassic.Properties.Resources._1;
-            this.pictureBox4.Location = new System.Drawing.Point(534, 230);
+            this.pictureBox4.Location = new System.Drawing.Point(493, 177);
             this.pictureBox4.Name = "pictureBox4";
             this.pictureBox4.Size = new System.Drawing.Size(40, 40);
             this.pictureBox4.TabIndex = 11;
@@ -234,7 +243,7 @@
             // pictureBox5
             // 
             this.pictureBox5.BackgroundImage = global::PikachuClassic.Properties.Resources._11;
-            this.pictureBox5.Location = new System.Drawing.Point(626, 230);
+            this.pictureBox5.Location = new System.Drawing.Point(585, 177);
             this.pictureBox5.Name = "pictureBox5";
             this.pictureBox5.Size = new System.Drawing.Size(40, 40);
             this.pictureBox5.TabIndex = 12;
@@ -243,7 +252,7 @@
             // pictureBox6
             // 
             this.pictureBox6.BackgroundImage = global::PikachuClassic.Properties.Resources._13;
-            this.pictureBox6.Location = new System.Drawing.Point(672, 230);
+            this.pictureBox6.Location = new System.Drawing.Point(631, 177);
             this.pictureBox6.Name = "pictureBox6";
             this.pictureBox6.Size = new System.Drawing.Size(40, 40);
             this.pictureBox6.TabIndex = 13;
@@ -252,16 +261,17 @@
             // pictureBox7
             // 
             this.pictureBox7.BackgroundImage = global::PikachuClassic.Properties.Resources._17;
-            this.pictureBox7.Location = new System.Drawing.Point(718, 230);
+            this.pictureBox7.Location = new System.Drawing.Point(677, 177);
             this.pictureBox7.Name = "pictureBox7";
             this.pictureBox7.Size = new System.Drawing.Size(40, 40);
             this.pictureBox7.TabIndex = 14;
             this.pictureBox7.TabStop = false;
+            this.pictureBox7.Click += new System.EventHandler(this.pictureBox7_Click);
             // 
             // pictureBox8
             // 
             this.pictureBox8.BackgroundImage = global::PikachuClassic.Properties.Resources._29;
-            this.pictureBox8.Location = new System.Drawing.Point(856, 230);
+            this.pictureBox8.Location = new System.Drawing.Point(631, 377);
             this.pictureBox8.Name = "pictureBox8";
             this.pictureBox8.Size = new System.Drawing.Size(40, 40);
             this.pictureBox8.TabIndex = 15;
@@ -270,7 +280,7 @@
             // pictureBox9
             // 
             this.pictureBox9.BackgroundImage = global::PikachuClassic.Properties.Resources._28;
-            this.pictureBox9.Location = new System.Drawing.Point(810, 230);
+            this.pictureBox9.Location = new System.Drawing.Point(769, 177);
             this.pictureBox9.Name = "pictureBox9";
             this.pictureBox9.Size = new System.Drawing.Size(40, 40);
             this.pictureBox9.TabIndex = 16;
@@ -279,7 +289,7 @@
             // pictureBox10
             // 
             this.pictureBox10.BackgroundImage = global::PikachuClassic.Properties.Resources._27;
-            this.pictureBox10.Location = new System.Drawing.Point(764, 230);
+            this.pictureBox10.Location = new System.Drawing.Point(723, 177);
             this.pictureBox10.Name = "pictureBox10";
             this.pictureBox10.Size = new System.Drawing.Size(40, 40);
             this.pictureBox10.TabIndex = 17;
@@ -288,7 +298,7 @@
             // pictureBox11
             // 
             this.pictureBox11.BackgroundImage = global::PikachuClassic.Properties.Resources._16;
-            this.pictureBox11.Location = new System.Drawing.Point(626, 280);
+            this.pictureBox11.Location = new System.Drawing.Point(585, 227);
             this.pictureBox11.Name = "pictureBox11";
             this.pictureBox11.Size = new System.Drawing.Size(40, 40);
             this.pictureBox11.TabIndex = 18;
@@ -297,7 +307,7 @@
             // pictureBox12
             // 
             this.pictureBox12.BackgroundImage = global::PikachuClassic.Properties.Resources._14;
-            this.pictureBox12.Location = new System.Drawing.Point(580, 280);
+            this.pictureBox12.Location = new System.Drawing.Point(539, 227);
             this.pictureBox12.Name = "pictureBox12";
             this.pictureBox12.Size = new System.Drawing.Size(40, 40);
             this.pictureBox12.TabIndex = 19;
@@ -306,7 +316,7 @@
             // pictureBox13
             // 
             this.pictureBox13.BackgroundImage = global::PikachuClassic.Properties.Resources._5;
-            this.pictureBox13.Location = new System.Drawing.Point(534, 280);
+            this.pictureBox13.Location = new System.Drawing.Point(493, 227);
             this.pictureBox13.Name = "pictureBox13";
             this.pictureBox13.Size = new System.Drawing.Size(40, 40);
             this.pictureBox13.TabIndex = 20;
@@ -315,7 +325,7 @@
             // pictureBox14
             // 
             this.pictureBox14.BackgroundImage = global::PikachuClassic.Properties.Resources._2;
-            this.pictureBox14.Location = new System.Drawing.Point(488, 280);
+            this.pictureBox14.Location = new System.Drawing.Point(447, 227);
             this.pictureBox14.Name = "pictureBox14";
             this.pictureBox14.Size = new System.Drawing.Size(40, 40);
             this.pictureBox14.TabIndex = 21;
@@ -324,7 +334,7 @@
             // pictureBox15
             // 
             this.pictureBox15.BackgroundImage = global::PikachuClassic.Properties.Resources._10;
-            this.pictureBox15.Location = new System.Drawing.Point(534, 380);
+            this.pictureBox15.Location = new System.Drawing.Point(493, 327);
             this.pictureBox15.Name = "pictureBox15";
             this.pictureBox15.Size = new System.Drawing.Size(40, 40);
             this.pictureBox15.TabIndex = 22;
@@ -333,7 +343,7 @@
             // pictureBox16
             // 
             this.pictureBox16.BackgroundImage = global::PikachuClassic.Properties.Resources._7;
-            this.pictureBox16.Location = new System.Drawing.Point(488, 380);
+            this.pictureBox16.Location = new System.Drawing.Point(447, 327);
             this.pictureBox16.Name = "pictureBox16";
             this.pictureBox16.Size = new System.Drawing.Size(40, 40);
             this.pictureBox16.TabIndex = 23;
@@ -342,7 +352,7 @@
             // pictureBox17
             // 
             this.pictureBox17.BackgroundImage = global::PikachuClassic.Properties.Resources._26;
-            this.pictureBox17.Location = new System.Drawing.Point(718, 280);
+            this.pictureBox17.Location = new System.Drawing.Point(677, 227);
             this.pictureBox17.Name = "pictureBox17";
             this.pictureBox17.Size = new System.Drawing.Size(40, 40);
             this.pictureBox17.TabIndex = 24;
@@ -351,7 +361,7 @@
             // pictureBox18
             // 
             this.pictureBox18.BackgroundImage = global::PikachuClassic.Properties.Resources._18;
-            this.pictureBox18.Location = new System.Drawing.Point(672, 280);
+            this.pictureBox18.Location = new System.Drawing.Point(631, 227);
             this.pictureBox18.Name = "pictureBox18";
             this.pictureBox18.Size = new System.Drawing.Size(40, 40);
             this.pictureBox18.TabIndex = 25;
@@ -360,7 +370,7 @@
             // pictureBox19
             // 
             this.pictureBox19.BackgroundImage = global::PikachuClassic.Properties.Resources._30;
-            this.pictureBox19.Location = new System.Drawing.Point(764, 280);
+            this.pictureBox19.Location = new System.Drawing.Point(723, 227);
             this.pictureBox19.Name = "pictureBox19";
             this.pictureBox19.Size = new System.Drawing.Size(40, 40);
             this.pictureBox19.TabIndex = 26;
@@ -369,7 +379,7 @@
             // pictureBox20
             // 
             this.pictureBox20.BackgroundImage = global::PikachuClassic.Properties.Resources._25;
-            this.pictureBox20.Location = new System.Drawing.Point(626, 380);
+            this.pictureBox20.Location = new System.Drawing.Point(585, 327);
             this.pictureBox20.Name = "pictureBox20";
             this.pictureBox20.Size = new System.Drawing.Size(40, 40);
             this.pictureBox20.TabIndex = 27;
@@ -378,7 +388,7 @@
             // pictureBox21
             // 
             this.pictureBox21.BackgroundImage = global::PikachuClassic.Properties.Resources._20;
-            this.pictureBox21.Location = new System.Drawing.Point(580, 380);
+            this.pictureBox21.Location = new System.Drawing.Point(539, 327);
             this.pictureBox21.Name = "pictureBox21";
             this.pictureBox21.Size = new System.Drawing.Size(40, 40);
             this.pictureBox21.TabIndex = 28;
@@ -387,7 +397,7 @@
             // pictureBox22
             // 
             this.pictureBox22.BackgroundImage = global::PikachuClassic.Properties.Resources._34;
-            this.pictureBox22.Location = new System.Drawing.Point(672, 380);
+            this.pictureBox22.Location = new System.Drawing.Point(631, 327);
             this.pictureBox22.Name = "pictureBox22";
             this.pictureBox22.Size = new System.Drawing.Size(40, 40);
             this.pictureBox22.TabIndex = 29;
@@ -396,7 +406,7 @@
             // pictureBox23
             // 
             this.pictureBox23.BackgroundImage = global::PikachuClassic.Properties.Resources._4;
-            this.pictureBox23.Location = new System.Drawing.Point(488, 330);
+            this.pictureBox23.Location = new System.Drawing.Point(447, 277);
             this.pictureBox23.Name = "pictureBox23";
             this.pictureBox23.Size = new System.Drawing.Size(40, 40);
             this.pictureBox23.TabIndex = 30;
@@ -405,7 +415,7 @@
             // pictureBox24
             // 
             this.pictureBox24.BackgroundImage = global::PikachuClassic.Properties.Resources._12;
-            this.pictureBox24.Location = new System.Drawing.Point(534, 330);
+            this.pictureBox24.Location = new System.Drawing.Point(493, 277);
             this.pictureBox24.Name = "pictureBox24";
             this.pictureBox24.Size = new System.Drawing.Size(40, 40);
             this.pictureBox24.TabIndex = 31;
@@ -414,7 +424,7 @@
             // pictureBox25
             // 
             this.pictureBox25.BackgroundImage = global::PikachuClassic.Properties.Resources._23;
-            this.pictureBox25.Location = new System.Drawing.Point(580, 330);
+            this.pictureBox25.Location = new System.Drawing.Point(539, 277);
             this.pictureBox25.Name = "pictureBox25";
             this.pictureBox25.Size = new System.Drawing.Size(40, 40);
             this.pictureBox25.TabIndex = 32;
@@ -423,7 +433,7 @@
             // pictureBox26
             // 
             this.pictureBox26.BackgroundImage = global::PikachuClassic.Properties.Resources._24;
-            this.pictureBox26.Location = new System.Drawing.Point(626, 330);
+            this.pictureBox26.Location = new System.Drawing.Point(585, 277);
             this.pictureBox26.Name = "pictureBox26";
             this.pictureBox26.Size = new System.Drawing.Size(40, 40);
             this.pictureBox26.TabIndex = 33;
@@ -432,7 +442,7 @@
             // pictureBox27
             // 
             this.pictureBox27.BackgroundImage = global::PikachuClassic.Properties.Resources._6;
-            this.pictureBox27.Location = new System.Drawing.Point(534, 430);
+            this.pictureBox27.Location = new System.Drawing.Point(493, 377);
             this.pictureBox27.Name = "pictureBox27";
             this.pictureBox27.Size = new System.Drawing.Size(40, 40);
             this.pictureBox27.TabIndex = 34;
@@ -441,7 +451,7 @@
             // pictureBox28
             // 
             this.pictureBox28.BackgroundImage = global::PikachuClassic.Properties.Resources._9;
-            this.pictureBox28.Location = new System.Drawing.Point(488, 430);
+            this.pictureBox28.Location = new System.Drawing.Point(447, 377);
             this.pictureBox28.Name = "pictureBox28";
             this.pictureBox28.Size = new System.Drawing.Size(40, 40);
             this.pictureBox28.TabIndex = 35;
@@ -450,7 +460,7 @@
             // pictureBox29
             // 
             this.pictureBox29.BackgroundImage = global::PikachuClassic.Properties.Resources._22;
-            this.pictureBox29.Location = new System.Drawing.Point(580, 430);
+            this.pictureBox29.Location = new System.Drawing.Point(539, 377);
             this.pictureBox29.Name = "pictureBox29";
             this.pictureBox29.Size = new System.Drawing.Size(40, 40);
             this.pictureBox29.TabIndex = 36;
@@ -459,7 +469,7 @@
             // pictureBox30
             // 
             this.pictureBox30.BackgroundImage = global::PikachuClassic.Properties.Resources._35;
-            this.pictureBox30.Location = new System.Drawing.Point(672, 330);
+            this.pictureBox30.Location = new System.Drawing.Point(631, 277);
             this.pictureBox30.Name = "pictureBox30";
             this.pictureBox30.Size = new System.Drawing.Size(40, 40);
             this.pictureBox30.TabIndex = 37;
@@ -468,7 +478,7 @@
             // pictureBox31
             // 
             this.pictureBox31.BackgroundImage = global::PikachuClassic.Properties.Resources._15;
-            this.pictureBox31.Location = new System.Drawing.Point(718, 330);
+            this.pictureBox31.Location = new System.Drawing.Point(677, 277);
             this.pictureBox31.Name = "pictureBox31";
             this.pictureBox31.Size = new System.Drawing.Size(40, 40);
             this.pictureBox31.TabIndex = 38;
@@ -477,7 +487,7 @@
             // pictureBox32
             // 
             this.pictureBox32.BackgroundImage = global::PikachuClassic.Properties.Resources._3;
-            this.pictureBox32.Location = new System.Drawing.Point(626, 430);
+            this.pictureBox32.Location = new System.Drawing.Point(585, 377);
             this.pictureBox32.Name = "pictureBox32";
             this.pictureBox32.Size = new System.Drawing.Size(40, 40);
             this.pictureBox32.TabIndex = 39;
@@ -486,7 +496,7 @@
             // pictureBox33
             // 
             this.pictureBox33.BackgroundImage = global::PikachuClassic.Properties.Resources._19;
-            this.pictureBox33.Location = new System.Drawing.Point(488, 480);
+            this.pictureBox33.Location = new System.Drawing.Point(447, 427);
             this.pictureBox33.Name = "pictureBox33";
             this.pictureBox33.Size = new System.Drawing.Size(40, 40);
             this.pictureBox33.TabIndex = 40;
@@ -495,7 +505,7 @@
             // pictureBox34
             // 
             this.pictureBox34.BackgroundImage = global::PikachuClassic.Properties.Resources._21;
-            this.pictureBox34.Location = new System.Drawing.Point(534, 480);
+            this.pictureBox34.Location = new System.Drawing.Point(493, 428);
             this.pictureBox34.Name = "pictureBox34";
             this.pictureBox34.Size = new System.Drawing.Size(40, 40);
             this.pictureBox34.TabIndex = 41;
@@ -504,7 +514,7 @@
             // pictureBox35
             // 
             this.pictureBox35.BackgroundImage = global::PikachuClassic.Properties.Resources._31;
-            this.pictureBox35.Location = new System.Drawing.Point(580, 480);
+            this.pictureBox35.Location = new System.Drawing.Point(539, 428);
             this.pictureBox35.Name = "pictureBox35";
             this.pictureBox35.Size = new System.Drawing.Size(40, 40);
             this.pictureBox35.TabIndex = 42;
@@ -513,7 +523,7 @@
             // pictureBox36
             // 
             this.pictureBox36.BackgroundImage = global::PikachuClassic.Properties.Resources._32;
-            this.pictureBox36.Location = new System.Drawing.Point(626, 480);
+            this.pictureBox36.Location = new System.Drawing.Point(585, 428);
             this.pictureBox36.Name = "pictureBox36";
             this.pictureBox36.Size = new System.Drawing.Size(40, 40);
             this.pictureBox36.TabIndex = 43;
@@ -522,7 +532,7 @@
             // pictureBox37
             // 
             this.pictureBox37.BackgroundImage = global::PikachuClassic.Properties.Resources._33;
-            this.pictureBox37.Location = new System.Drawing.Point(672, 480);
+            this.pictureBox37.Location = new System.Drawing.Point(631, 428);
             this.pictureBox37.Name = "pictureBox37";
             this.pictureBox37.Size = new System.Drawing.Size(40, 40);
             this.pictureBox37.TabIndex = 44;
@@ -530,10 +540,10 @@
             // 
             // GameTutorial
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackgroundImage = global::PikachuClassic.Properties.Resources.Screenshot_2024_11_15_2111062;
-            this.ClientSize = new System.Drawing.Size(932, 553);
+            this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.ClientSize = new System.Drawing.Size(832, 503);
             this.Controls.Add(this.pictureBox37);
             this.Controls.Add(this.pictureBox36);
             this.Controls.Add(this.pictureBox35);
@@ -578,9 +588,14 @@
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.textBox1);
+            this.DoubleBuffered = true;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "GameTutorial";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Game Tutorial";
+            this.TopMost = true;
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
