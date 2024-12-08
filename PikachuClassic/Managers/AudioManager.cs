@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using WMPLib;
 
 namespace PikachuClassic
@@ -52,7 +53,7 @@ namespace PikachuClassic
         }
 
         // Phát âm thanh (Hỗ trợ WAV với SoundPlayer, MP3 với WindowsMediaPlayer)
-        public void PlaySound(string soundName)
+        public async void PlaySound(string soundName, int durationInSeconds)
         {
             if (soundEffects.ContainsKey(soundName))
             {
@@ -64,11 +65,16 @@ namespace PikachuClassic
                     {
                         player.URL = fullPath;  // Đặt đường dẫn MP3
                         player.controls.play();  // Phát MP3
+
+                        // Dừng âm thanh sau 'durationInSeconds' giây
+                        await Task.Delay(durationInSeconds * 1000);  // Đợi trong thời gian dài
+                        player.controls.stop();  // Dừng âm thanh sau khi hết thời gian
                     }
                     else
                     {
                         var soundPlayer = new System.Media.SoundPlayer(fullPath);  // Dùng SoundPlayer cho các tệp WAV
                         soundPlayer.Play();
+                        await Task.Delay(durationInSeconds * 1000);  // Đợi trong thời gian dài
                     }
                 }
                 catch (Exception ex)

@@ -62,8 +62,7 @@
             // 
             // GameOverScreen
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.BackgroundImage = global::PikachuClassic.Properties.Resources._4f9d753f_2428_4d5e_b882_4123cc007ff6;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
@@ -74,8 +73,8 @@
             this.Name = "GameOverScreen";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Game Over";
-            this.Load += new System.EventHandler(this.Form2_Load);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.GameOverScreen_FormClosed);
+            this.Load += new System.EventHandler(this.Form2_Load);
             this.ResumeLayout(false);
 
         }

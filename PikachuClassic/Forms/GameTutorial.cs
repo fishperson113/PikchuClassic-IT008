@@ -15,14 +15,36 @@ namespace PikachuClassic
         public GameTutorial()
         {
             InitializeComponent();
+            this.FormClosed += FormChild_FormClosed;  // Đăng ký sự kiện FormClosed
+            this.TopMost = true; // Đảm bảo form con luôn ở trên
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+    
         }
 
         private void pictureBox2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void FormChild_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            
+        }
+
+        private void pictureBox7_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
         {
 
         }

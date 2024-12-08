@@ -52,7 +52,10 @@ namespace PikachuClassic
             gameManager.OnTimeUpdated += UpdateTimeLabel;
             gameManager.OnGameFinished += EndGame;
 
-             // Bắt đầu đếm thời gian hoặc thiết lập trò chơi
+            // Hiển thị nhạc nền trò chơi
+            AudioManager.Instance.StartBackgroundMusic("Bg");
+
+            // Bắt đầu đếm thời gian hoặc thiết lập trò chơi
         }
         ~GameController()
         {
@@ -83,13 +86,12 @@ namespace PikachuClassic
             Application.Exit(); 
         }
 
-        //Click Tutorial icon
-        private void button1_Click(object sender, EventArgs e)
+        private void timeLb_Click(object sender, EventArgs e)
         {
-            FormManager.Instance.OpenForm(new GameTutorial());
+
         }
 
-        private void timeLb_Click(object sender, EventArgs e)
+        private void GameController_Load(object sender, EventArgs e)
         {
 
         }
