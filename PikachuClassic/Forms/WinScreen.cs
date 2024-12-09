@@ -16,11 +16,12 @@ namespace PikachuClassic
         public WinScreen()
         {
             InitializeComponent();
+            AudioManager.Instance.StartBackgroundMusic("Win");
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            
         }
 
         //Click Setting button
@@ -35,6 +36,7 @@ namespace PikachuClassic
         {
             InitializeComponent();
             this.gameMode = gameMode;
+            AudioManager.Instance.StartBackgroundMusic("Win");
         }
 
         //Click Retry button
