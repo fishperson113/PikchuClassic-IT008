@@ -1,0 +1,12 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# Documentation
+*.md linguist-detectable=true
+*.md linguist-documentation=false
+*.md linguist-language=Markdown
+
+# Mermaid Diagrams
+*.mmd linguist-detectable=true
+*.mermaid linguist-detectable=true
+docs/*.md linguist-documentation=false
