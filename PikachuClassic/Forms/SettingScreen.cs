@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace PikachuClassic.Resources
+namespace PikachuClassic
 {
     public partial class SettingScreen : Form
     {

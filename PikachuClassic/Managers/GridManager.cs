@@ -247,5 +247,9 @@ namespace PikachuClassic
             originalImages.Clear();
 
         }
+        public Image GetOriginalImage(PictureBox pictureBox)
+        {
+            return originalImages.ContainsKey(pictureBox) ? originalImages[pictureBox] : null;
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace PikachuClassic.Resources
+﻿namespace PikachuClassic
 {
     partial class SettingScreen
     {
