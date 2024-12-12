@@ -36,7 +36,7 @@ namespace PikachuClassic
             isPlayingBackgroundMusic = false;
         }
 
-        // Nạp âm thanh (Lưu đường dẫn tệp âm thanh vào Dictionary)
+        // Nạp âm thanh (Lưu đư��ng dẫn tệp âm thanh vào Dictionary)
         public void LoadSound(string soundName, string filePath)
         {
             if (!soundEffects.ContainsKey(soundName))
@@ -53,38 +53,48 @@ namespace PikachuClassic
         }
 
         // Phát âm thanh (Hỗ trợ WAV với SoundPlayer, MP3 với WindowsMediaPlayer)
-        public async void PlaySound(string soundName, int durationInSeconds)
+        public async Task PlaySoundAsync(string soundName, int durationInSeconds)
         {
-            if (soundEffects.ContainsKey(soundName))
-            {
-                try
-                {
-                    string filePath = soundEffects[soundName];
-                    string fullPath=System.IO.Path.GetFullPath(filePath);
-                    if (fullPath.EndsWith(".mp3"))
-                    {
-                        player.URL = fullPath;  // Đặt đường dẫn MP3
-                        player.controls.play();  // Phát MP3
-
-                        // Dừng âm thanh sau 'durationInSeconds' giây
-                        await Task.Delay(durationInSeconds * 1000);  // Đợi trong thời gian dài
-                        player.controls.stop();  // Dừng âm thanh sau khi hết thời gian
-                    }
-                    else
-                    {
-                        var soundPlayer = new System.Media.SoundPlayer(fullPath);  // Dùng SoundPlayer cho các tệp WAV
-                        soundPlayer.Play();
-                        await Task.Delay(durationInSeconds * 1000);  // Đợi trong thời gian dài
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Lỗi khi phát âm thanh {soundName}: {ex.Message}");
-                }
-            }
-            else
+            if (!soundEffects.ContainsKey(soundName))
             {
                 Console.WriteLine($"Âm thanh {soundName} chưa được tải.");
+                return;
+            }
+
+            try
+            {
+                string filePath = soundEffects[soundName];
+                string fullPath = System.IO.Path.GetFullPath(filePath);
+
+                if (fullPath.EndsWith(".mp3"))
+                {
+                    await PlayMP3Async(fullPath, durationInSeconds);
+                }
+                else
+                {
+                    await PlayWAVAsync(fullPath, durationInSeconds);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Lỗi khi phát âm thanh {soundName}: {ex.Message}");
+            }
+        }
+
+        private async Task PlayMP3Async(string fullPath, int durationInSeconds)
+        {
+            player.URL = fullPath;
+            player.controls.play();
+            await Task.Delay(durationInSeconds * 1000);
+            player.controls.stop();
+        }
+
+        private async Task PlayWAVAsync(string fullPath, int durationInSeconds)
+        {
+            using (var soundPlayer = new System.Media.SoundPlayer(fullPath))
+            {
+                soundPlayer.Play();
+                await Task.Delay(durationInSeconds * 1000);
             }
         }
 
