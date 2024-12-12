@@ -1,3 +1,4 @@
+```mermaid
 classDiagram
     %% Base Classes
     class Form {
