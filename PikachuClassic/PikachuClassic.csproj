@@ -40,8 +40,51 @@
       <HintPath>..\packages\WMPLib.1.0.0\lib\Interop.WMPLib.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=9.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.9.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json.Bson, Version=1.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.Bson.1.0.2\lib\net45\Newtonsoft.Json.Bson.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Pipelines, Version=9.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Pipelines.9.0.0\lib\net462\System.IO.Pipelines.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=6.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.6.0.0\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Net.Http.Json.9.0.0\lib\net462\System.Net.Http.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Encodings.Web, Version=9.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encodings.Web.9.0.0\lib\net462\System.Text.Encodings.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Json.9.0.0\lib\net462\System.Text.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.4\lib\net461\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -53,78 +96,83 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Forms\GameTutorial.cs">
+    <Compile Include="ApiClient.cs" />
+    <Compile Include="Core\Models\GridModel.cs" />
+    <Compile Include="Core\Models\Player.cs" />
+    <Compile Include="Infrastructure\Network\DTOs\GameDTO.cs" />
+    <Compile Include="Infrastructure\Network\DTOs\GameStateDTO.cs" />
+    <Compile Include="Infrastructure\Network\DTOs\MoveDTO.cs" />
+    <Compile Include="Infrastructure\Network\DTOs\NodeDTO.cs" />
+    <Compile Include="Infrastructure\Network\DTOs\PlayerDTO.cs" />
+    <Compile Include="Infrastructure\Network\Enums\GameMode.cs" />
+    <Compile Include="Infrastructure\Network\Enums\GameStatus.cs" />
+    <Compile Include="UI\Forms\GameTutorial.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\GameTutorial.Designer.cs">
+    <Compile Include="UI\Forms\GameTutorial.Designer.cs">
       <DependentUpon>GameTutorial.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\ModeSelectionScreen.cs">
+    <Compile Include="UI\Forms\ModeSelectionScreen.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\ModeSelectionScreen.Designer.cs">
+    <Compile Include="UI\Forms\ModeSelectionScreen.Designer.cs">
       <DependentUpon>ModeSelectionScreen.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\WinScreen.cs">
+    <Compile Include="UI\Forms\WinScreen.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\WinScreen.Designer.cs">
+    <Compile Include="UI\Forms\WinScreen.Designer.cs">
       <DependentUpon>WinScreen.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\GameOverScreen.cs">
+    <Compile Include="UI\Forms\GameOverScreen.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\GameOverScreen.Designer.cs">
+    <Compile Include="UI\Forms\GameOverScreen.Designer.cs">
       <DependentUpon>GameOverScreen.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\MainMenu.cs">
+    <Compile Include="UI\Forms\MainMenu.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\MainMenu.Designer.cs">
+    <Compile Include="UI\Forms\MainMenu.Designer.cs">
       <DependentUpon>MainMenu.cs</DependentUpon>
     </Compile>
-    <Compile Include="Managers\AudioManager.cs" />
-    <Compile Include="Managers\FormManager.cs" />
-    <Compile Include="Managers\GameManager.cs" />
-    <Compile Include="Grid\Grid.cs" />
-    <Compile Include="Grid\GridManager.cs" />
-    <Compile Include="Forms\GameController.cs">
+    <Compile Include="Infrastructure\Audio\AudioManager.cs" />
+    <Compile Include="UI\Forms\FormManager.cs" />
+    <Compile Include="Core\Game\GameManager.cs" />
+    <Compile Include="UI\Forms\GameForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\GameController.Designer.cs">
-      <DependentUpon>GameController.cs</DependentUpon>
+    <Compile Include="UI\Forms\GameForm.Designer.cs">
+      <DependentUpon>GameForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Grid\Node.cs" />
-    <Compile Include="Players\Bot.cs" />
-    <Compile Include="Players\Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Forms\SettingScreen.cs">
+    <Compile Include="UI\Forms\SettingScreen.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Form1.Designer.cs">
+    <Compile Include="UI\Forms\Form1.Designer.cs">
       <DependentUpon>SettingScreen.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Forms\GameTutorial.resx">
+    <EmbeddedResource Include="UI\Forms\GameTutorial.resx">
       <DependentUpon>GameTutorial.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ModeSelectionScreen.resx">
+    <EmbeddedResource Include="UI\Forms\ModeSelectionScreen.resx">
       <DependentUpon>ModeSelectionScreen.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\SettingScreen.resx">
+    <EmbeddedResource Include="UI\Forms\SettingScreen.resx">
       <DependentUpon>SettingScreen.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\WinScreen.resx">
+    <EmbeddedResource Include="UI\Forms\WinScreen.resx">
       <DependentUpon>WinScreen.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\GameOverScreen.resx">
+    <EmbeddedResource Include="UI\Forms\GameOverScreen.resx">
       <DependentUpon>GameOverScreen.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\MainMenu.resx">
+    <EmbeddedResource Include="UI\Forms\MainMenu.resx">
       <DependentUpon>MainMenu.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\GameController.resx">
-      <DependentUpon>GameController.cs</DependentUpon>
+    <EmbeddedResource Include="UI\Forms\GameForm.resx">
+      <DependentUpon>GameForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -150,7 +198,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="Audio\1-01. Opening.mp3" />
     <Content Include="Audio\Background.mp3">
@@ -226,5 +273,6 @@
     <None Include="Resources\5c2fa026-7bb3-47a1-8a8f-4c3ed1645775.png" />
     <None Include="Resources\462547649_1455548595122912_607459381853805725_n.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
