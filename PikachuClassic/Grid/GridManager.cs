@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.Diagnostics;
 using System.Security.Cryptography;
+using System.Xml.Linq;
 namespace PikachuClassic
 {
     public class GridManager
@@ -35,8 +36,8 @@ namespace PikachuClassic
         #endregion
         // Thuộc tính của màn chơi
         private Grid grid;
-        private int cols = 5;
-        private int rows = 4;
+        private int cols = 7;
+        private int rows = 6;
 
         //Logic matching
         private bool firstGuess, secondGuess;
@@ -44,12 +45,8 @@ namespace PikachuClassic
         private PictureBox[,] pictureGrid;
         private Dictionary<PictureBox, Image> originalImages = new Dictionary<PictureBox, Image>();
 
-        private Panel gridPanel; //Bảo thêm nhằm vẽ
-
         public void GenerateGrid(Panel panel)
         {
-            gridPanel = panel; //Bảo thêm để vẽ
-
             grid = new Grid(panel, rows, cols); 
             grid.GenerateGrid();
 
@@ -65,7 +62,16 @@ namespace PikachuClassic
 
             // Khởi tạo logic
             firstGuess = secondGuess = false;
+
+            /*
+            // Bảo, check thử originalImages
+            foreach (var image in originalImages)
+            {
+                Console.WriteLine(image);
+            }
+            */
         }
+
         #region Matching Logic and Tint Effect
         private void AddEventToPictureBoxes()
         {
@@ -145,9 +151,12 @@ namespace PikachuClassic
         {
             await Task.Delay(500);
 
+            // Ý tưởng: đẩy việc GetNode xuống dưới, HasPath áp dụng với guessBox thôi (hợp nhất 2 HasPath)
+
             // Lấy Node từ PictureBox
             Node firstNode = grid.GetNodeFromPictureBox(firstGuessBox);
             Node secondNode = grid.GetNodeFromPictureBox(secondGuessBox);
+            Console.WriteLine("CheckIfPuzzle goi HasPath");
             bool hasPath = grid.HasPath(firstNode, secondNode);
 
             // Kiểm tra xem hình ảnh của hai ô có khớp không bằng cách kiểm tra hình ảnh trc khi apply tint
@@ -160,19 +169,34 @@ namespace PikachuClassic
 
                 // Bảo thêm
                 // Vẽ đường đi
-                var path = grid.findPath(firstNode, secondNode);
-                List<Node> cutPath = grid.ExtractCutPath(path);
+                Console.WriteLine("Goi FindPath de ve duong di");
+                var path = grid.FindPath(firstNode, secondNode);
+                // var path = grid.FindPathDijkstra(firstNode, secondNode);
+                //List<Node> cutPath = grid.ExtractCutPath(path);
+                /* DrawPath cũ vẽ trên Panel
                 if (path != null)
                     await grid.DrawPath(cutPath, gridPanel);
+                */
+
+                //DrawPath mới vẽ trên PictureBox
+                await grid.DrawPath(path);
 
                 // Khiến node trở nên đi qua được
-                grid.RemoveNodes(firstGuessBox, secondGuessBox);
+                //grid.RemoveNodes(firstGuessBox, secondGuessBox);
 
                 ScoreGroup score= grid.GetScoreForImage(originalImages[firstGuessBox]);
                 // Thêm điểm
                 GameManager.Instance.AddScore((int)score, GameManager.Instance.GetCurrentPlayer());
 
-
+                // Bảo, kiểm tra xem có cần phải xáo lại vị trí các hình không (trường hợp không còn các hình hợp lệ)
+                grid.HandleRefresh(originalImages);
+                /*
+                // Bảo, check thử originalImages
+                foreach (var image in originalImages)
+                {
+                    Console.WriteLine(image.Value);
+                }
+                */
                 // Kiểm tra xem game đã kết thúc chưa
                 GameManager.Instance.CheckIfTheGameIsFinished();
             }
@@ -200,10 +224,12 @@ namespace PikachuClassic
             }
             return unmatchedBoxes;
         }
-        public bool AreImagesMatching(PictureBox first, PictureBox second)
+        public bool AreImagesMatching(PictureBox first, PictureBox second) // Bảo, đã thêm 3 đường 
         {
-            if (originalImages.ContainsKey(first) && originalImages.ContainsKey(second))
+            if (originalImages.ContainsKey(first) && originalImages.ContainsKey(second)
+                && grid.HasPath(first, second))
             {
+                Console.WriteLine("AreImagesMatching goi HasPath");
                 return originalImages[first] == originalImages[second];
             }
             Debug.WriteLine("Hình ảnh không trong dictionary");
