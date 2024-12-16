@@ -15,13 +15,13 @@ namespace PikachuClassic
         // tia y gióng sang phải
         public int X { get; set; }
         public int Y { get; set; }
-        public PictureBox PictureBox { get; set; }
+        public PictureBox pictureBox { get; set; }
         public List<Node> Neighbors { get; }
         public bool isTraversable { get; set; }
 
         public Node(PictureBox pictureBox, bool IsTraversable, int x, int y)
         {
-            PictureBox = pictureBox;
+            this.pictureBox = pictureBox;
             Neighbors = new List<Node>();
             isTraversable = IsTraversable;
             X = x;
