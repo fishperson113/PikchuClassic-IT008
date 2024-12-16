@@ -167,6 +167,9 @@ namespace PikachuClassic
                 firstGuessBox.Visible = false;
                 secondGuessBox.Visible = false;
 
+                // Phát âm thanh khi khớp
+                await AudioManager.Instance.PlaySoundAsync("Correct", 1);
+
                 // Bảo thêm
                 // Vẽ đường đi
                 Console.WriteLine("Goi FindPath de ve duong di");
@@ -202,6 +205,9 @@ namespace PikachuClassic
             }
             else
             {
+                // Phát âm thanh khi không khớp
+                await AudioManager.Instance.PlaySoundAsync("Wrong", 1);
+
                 // Nếu không khớp, đặt lại màu cho các ô
                 firstGuessBox.Image = originalImages[firstGuessBox];
                 secondGuessBox.Image = originalImages[secondGuessBox];
@@ -270,6 +276,10 @@ namespace PikachuClassic
             firstGuessBox = secondGuessBox = null;
             originalImages.Clear();
 
+        }
+        public Image GetOriginalImage(PictureBox pictureBox)
+        {
+            return originalImages.ContainsKey(pictureBox) ? originalImages[pictureBox] : null;
         }
     }
 }

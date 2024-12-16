@@ -32,21 +32,56 @@ namespace PikachuClassic
             formStack = new Stack<Form>();
         }
 
+        public void Initialize()
+        {
+            // Khởi tạo các thành phần cần thiết
+        }
+
+        // Các phương thức điều hướng
+        public void NavigateToMainMenu()
+        {
+            OpenForm(new MainMenu());
+        }
+
+        public void NavigateToGame(string gameMode)
+        {
+            var gameController = new GameController();
+            gameController.SetGameMode(gameMode);
+            OpenForm(gameController);
+        }
+
+        public void NavigateToSettings()
+        {
+            OpenForm(new SettingScreen());
+        }
+
+        public void NavigateToGameOver()
+        {
+            OpenForm(new GameOverScreen());
+        }
+
+        public void NavigateToWinScreen()
+        {
+            OpenForm(new WinScreen());
+        }
+
+        public void NavigateToModeSelection()
+        {
+            OpenForm(new ModeSelectionScreen());
+        }
+
         // Mở một form mới và lưu form cũ vào stack
-        public void OpenForm(Form newForm)
+        public void OpenForm(Form form)
         {
             if (formStack.Count > 0)
             {
-                // Nếu có form đang mở, đóng form hiện tại trước
-                formStack.Peek().Hide();
+                Form currentForm = formStack.Peek();
+                currentForm.Hide();
             }
-
-            // Đăng ký sự kiện khi form bị đóng
-            newForm.FormClosed += (sender, e) => OnFormClosed(newForm);
-
-            // Hiển thị form mới
-            newForm.Show();
-            formStack.Push(newForm);
+            
+            formStack.Push(form);
+            form.FormClosed += OnFormClosed;
+            form.Show();
         }
 
         // Quay lại form trước đó
@@ -54,16 +89,11 @@ namespace PikachuClassic
         {
             if (formStack.Count > 1)
             {
-                // Đóng form hiện tại
-                formStack.Pop().Close();
+                Form currentForm = formStack.Pop();
+                currentForm.Close();
 
-                // Hiển thị form trước đó
-                formStack.Peek().Show();
-            }
-            else
-            {
-                // Nếu không còn form nào trước đó, thoát ứng dụng
-                Application.Exit();
+                Form previousForm = formStack.Peek();
+                previousForm.Show();
             }
         }
 
@@ -77,12 +107,16 @@ namespace PikachuClassic
         }
 
         // Xử lý khi form đóng
-        private void OnFormClosed(Form form)
+        private void OnFormClosed(object sender, FormClosedEventArgs e)
         {
-            // Khi form đóng, loại bỏ form khỏi stack
-            if (formStack.Contains(form))
+            Form closedForm = sender as Form;
+            if (formStack.Count == 1 && formStack.Peek() == closedForm)
             {
-                formStack = new Stack<Form>(formStack.Where(f => f != form));
+                Application.Exit();
+            }
+            else if (formStack.Contains(closedForm))
+            {
+                formStack = new Stack<Form>(formStack.Where(f => f != closedForm));
             }
         }
     }

@@ -25,8 +25,7 @@ namespace PikachuClassic
         //Click Setting button
         private void button2_Click(object sender, EventArgs e)
         {
-            //SettingsScreen settingsScreen = new SettingsScreen();
-            //settingsScreen.ShowDialog(); // Mở màn hình cài đặt
+            FormManager.Instance.NavigateToSettings();
         }
 
         //Click Quit button
@@ -42,7 +41,7 @@ namespace PikachuClassic
         //Click Play button
         private void button1_Click(object sender, EventArgs e)
         {
-            FormManager.Instance.OpenForm(new ModeSelectionScreen());
+            FormManager.Instance.NavigateToModeSelection();
         }
 
         private void MainMenu_FormClosed(object sender, FormClosedEventArgs e)
@@ -53,7 +52,29 @@ namespace PikachuClassic
         //Click Tutorial icon
         private void button4_Click(object sender, EventArgs e)
         {
-            FormManager.Instance.OpenForm(new GameTutorial());
+            // Ẩn các nút của form cha khi form con mở
+            button1.Visible = false;
+            button2.Visible = false;
+            button3.Visible = false;
+            button4.Visible = false;
+
+            // Tạo instance của TutorialScreen
+            GameTutorial gameTutorial = new GameTutorial();
+
+            // Thiết lập GameTutorial là form con (MDI child)
+            gameTutorial.MdiParent = this;
+
+            // Đảm bảo khi form con đóng, nút của form cha sẽ hiển thị lại
+            gameTutorial.FormClosed += (s, args) =>
+            {
+                button1.Visible = true;
+                button2.Visible = true;
+                button3.Visible = true;
+                button4.Visible = true;
+            };
+
+            gameTutorial.Show(); // Hiển thị form Tutorial
+
         }
 
         //private void button4_Click(object sender, EventArgs e)

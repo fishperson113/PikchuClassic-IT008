@@ -53,11 +53,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.cs">
+    <Compile Include="Forms\GameTutorial.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Forms\GameTutorial.Designer.cs">
+      <DependentUpon>GameTutorial.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\ModeSelectionScreen.cs">
       <SubType>Form</SubType>
@@ -99,11 +99,20 @@
     <Compile Include="Players\Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Forms\SettingScreen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Form1.Designer.cs">
+      <DependentUpon>SettingScreen.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="Forms\GameTutorial.resx">
+      <DependentUpon>GameTutorial.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ModeSelectionScreen.resx">
       <DependentUpon>ModeSelectionScreen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SettingScreen.resx">
+      <DependentUpon>SettingScreen.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\WinScreen.resx">
       <DependentUpon>WinScreen.cs</DependentUpon>
@@ -197,6 +206,8 @@
     <Content Include="Images\9.png" />
     <Content Include="Images\BGs\BG1.png" />
     <Content Include="Images\hint.png" />
+    <None Include="Resources\sound.png" />
+    <None Include="Resources\musical-note.png" />
     <None Include="Resources\tutorial2.png" />
     <None Include="Resources\tutorial1.png" />
     <None Include="Resources\tutorial.png" />

@@ -135,7 +135,7 @@ namespace PikachuClassic
         public void AddScore(int points, Player player)
         {
             player.UpdateScore(points);
-            OnScoreUpdated?.Invoke(player.Score, player); // Gọi sự kiện để cập nhật điểm trên UI
+            OnScoreUpdated?.Invoke(player.Score, player);
         }
 
         public Player GetCurrentPlayer()
@@ -165,6 +165,25 @@ namespace PikachuClassic
         public string GetGameMode()
         {
             return gameMode;
+        }
+        public void StartGame(Panel gamePanel)
+        {
+            if (player1 == null || player2 == null)
+            {
+                throw new InvalidOperationException("Game not initialized. Call Initialize() first.");
+            }
+
+            // Reset data và grid
+            ResetData();
+            GridManager.Instance.GenerateGrid(gamePanel);
+
+            // Bắt đầu timer với 20s
+            StartTimer(20);
+
+            // Cập nhật UI ban đầu với điểm 0 cho cả hai player
+            OnScoreUpdated?.Invoke(0, player1);
+            OnScoreUpdated?.Invoke(0, player2);
+            SetPlayerTurn(true); // Bắt đầu với player1
         }
     }
 }
