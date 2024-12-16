@@ -36,8 +36,8 @@ namespace PikachuClassic
         #endregion
         // Thuộc tính của màn chơi
         private Grid grid;
-        private int cols = 7;
-        private int rows = 6;
+        private int cols = 10;
+        private int rows = 10;
 
         //Logic matching
         private bool firstGuess, secondGuess;
@@ -205,6 +205,10 @@ namespace PikachuClassic
                 // Nếu không khớp, đặt lại màu cho các ô
                 firstGuessBox.Image = originalImages[firstGuessBox];
                 secondGuessBox.Image = originalImages[secondGuessBox];
+
+                // Bảo, do sử dụng hàm FindPath mới nên phải khóa lại nếu 2 node ko có hình ảnh giống nhau
+                firstNode.isTraversable = false;
+                secondNode.isTraversable = false;
             }
 
             // Chuyển lượt sau mỗi lần đoán

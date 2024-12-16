@@ -154,21 +154,17 @@ namespace PikachuClassic
             List<Image> tempImagesList = new List<Image>();
             for (int i = 1; i < (totalCells / 2); i++) // i = 1 để ko xáo cặp đầu
             {
-                if (i % allImages.Count == 0)
-                    continue;
-
                 Image img = allImages[i % allImages.Count]; // Dương, i% allImages.Count để đảm bảo totalCells/2 < allImages.Count (tránh lỗi index out of range) nếu vượt quá thì nó quay về index=0
                 tempImagesList.Add(img);
                 tempImagesList.Add(img);
             }
             Shuffle(tempImagesList);
 
-            for (int i = 0; i < totalCells; i++)
+            imagesList.Add(allImages[0]);
+            imagesList.Add(allImages[0]);
+            for (int i = 0; i < (totalCells - 2); i++)
             {
-                if (i < 2)
-                    imagesList.Add(allImages[0]);
-                else
-                    imagesList.Add(tempImagesList[i - 2]);
+                imagesList.Add(tempImagesList[i]);
             }
 
             // Gán hình ảnh từ danh sách đã xáo trộn vào các PictureBox trong grid
@@ -780,6 +776,15 @@ namespace PikachuClassic
             int y = (type == -1) ? (nMinY_Y - 1) : (nMaxY_Y + 1);
             int row = (type == -1) ? nMaxY_X : nMinY_X;
 
+            while (y >= 0 && y <= (cols + 1)) // Để ko vượt ra ngoài nodes[]
+            {
+                if (Check_Ishape_X(nMinY_Y, y, nMinY_X) &&
+                    Check_Ishape_Y(nMinY_X, nMaxY_X, y) &&
+                    Check_Ishape_X(y, nMaxY_Y, nMaxY_X))
+                    return y;
+                y += type;
+            }
+            /*
             if (Check_Ishape_X(nMinY_Y, nMaxY_Y, row))
             {
                 while (y >= 0 && y <= (cols + 1)) // Để ko vượt ra ngoài nodes[]
@@ -792,6 +797,7 @@ namespace PikachuClassic
                     y += type;
                 }
             }
+            */
             return -1;
         }
 
@@ -810,6 +816,15 @@ namespace PikachuClassic
             int x = (type == -1) ? (nMinX_X - 1) : (nMaxX_X + 1);
             int col = (type == -1) ? nMaxX_Y : nMinX_Y;
 
+            while (x >= 0 && x <= (rows + 1))
+            {
+                if (Check_Ishape_Y(nMinX_X, x, nMinX_Y) &&
+                    Check_Ishape_X(nMinX_Y, nMaxX_Y, x) &&
+                    Check_Ishape_Y(x, nMaxX_X, nMaxX_Y))
+                    return x;
+                x += type;
+            }
+            /*
             if (Check_Ishape_Y(nMinX_X, nMaxX_X, col))
             {
                 while (x >= 0 && x <= (rows + 1))
@@ -822,7 +837,8 @@ namespace PikachuClassic
                     x += type;
                 }
             }
-            return -1;
+            */
+                return -1;
         }
 
         /*
