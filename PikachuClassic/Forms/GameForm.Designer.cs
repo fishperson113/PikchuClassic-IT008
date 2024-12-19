@@ -30,7 +30,6 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GameForm));
             this.infoPanel = new System.Windows.Forms.Panel();
-            this.button1 = new System.Windows.Forms.Button();
             this.scoreLbP2 = new System.Windows.Forms.Label();
             this.timeLb = new System.Windows.Forms.Label();
             this.scoreLbP1 = new System.Windows.Forms.Label();
@@ -42,7 +41,7 @@
             // 
             // infoPanel
             // 
-            this.infoPanel.Controls.Add(this.button1);
+            this.infoPanel.BackColor = System.Drawing.Color.White;
             this.infoPanel.Controls.Add(this.scoreLbP2);
             this.infoPanel.Controls.Add(this.timeLb);
             this.infoPanel.Controls.Add(this.scoreLbP1);
@@ -50,18 +49,6 @@
             this.infoPanel.Name = "infoPanel";
             this.infoPanel.Size = new System.Drawing.Size(902, 60);
             this.infoPanel.TabIndex = 0;
-            // 
-            // button1
-            // 
-            this.button1.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.button1.BackgroundImage = global::PikachuClassic.Properties.Resources.tutorial2;
-            this.button1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button1.Location = new System.Drawing.Point(645, 10);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(38, 38);
-            this.button1.TabIndex = 3;
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // scoreLbP2
             // 
@@ -112,6 +99,7 @@
             // 
             // gridPanel
             // 
+            this.gridPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.gridPanel.Location = new System.Drawing.Point(7, 70);
             this.gridPanel.Name = "gridPanel";
             this.gridPanel.Size = new System.Drawing.Size(898, 433);
@@ -120,8 +108,8 @@
             // 
             // GameController
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.AutoSize = true;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(932, 553);
@@ -131,6 +119,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "PikachuProMax";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.GameController_FormClosed);
+            this.Load += new System.EventHandler(this.GameController_Load);
             this.infoPanel.ResumeLayout(false);
             this.gamePanel.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -145,7 +134,6 @@
         private System.Windows.Forms.Panel gamePanel;
         private System.Windows.Forms.Panel gridPanel;
         private System.Windows.Forms.Label scoreLbP2;
-        private System.Windows.Forms.Button button1;
     }
 }
 

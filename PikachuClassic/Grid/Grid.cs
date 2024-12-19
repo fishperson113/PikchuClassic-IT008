@@ -43,14 +43,13 @@ namespace PikachuClassic
             this.rows = rows;
             this.cols = cols;
             this.pictureGrid = new PictureBox[rows + 2, cols + 2]; // 1 - Bảo thêm + 2
-            
             // Dương, đoạn này để DoubleBuffer
             typeof(Panel).InvokeMember("DoubleBuffered",
                 System.Reflection.BindingFlags.SetProperty |
                 System.Reflection.BindingFlags.Instance |
                 System.Reflection.BindingFlags.NonPublic,
                 null, gridPanel, new object[] { true });
-            
+
             CalculateCellSize();
             gridPanel.BackgroundImageLayout = ImageLayout.Stretch;
             if (!isScoreGroupsAssigned)
@@ -138,17 +137,6 @@ namespace PikachuClassic
                 return;
             }
             Shuffle(allImages);
-
-            /*
-            for (int i = 0; i < totalCells / 2; i++) // Chia đôi vì mỗi ảnh xuất hiện 2 lần
-            {
-                Image img = allImages[i % allImages.Count]; // i% allImages.Count để đảm bảo totalCells/2 < allImages.Count (tránh lỗi index out of range) nếu vượt quá thì nó quay về index=0
-                imagesList.Add(img); // Thêm lần 1
-                imagesList.Add(img); // Thêm lần 2 (tạo cặp)
-            }
-
-            Shuffle(imagesList);
-            */
 
             // Bảo, tạo ra tempImageList để fix cứng cặp đầu
             List<Image> tempImagesList = new List<Image>();
@@ -313,7 +301,7 @@ namespace PikachuClassic
             return null; // Trả về null nếu không tìm thấy
         }
 
-        // Sửa lại phần FindPath
+        // Sửa lại phần FindPath bfs
         public List<Node> FindPath(Node startNode, Node endNode)
         {
             if (startNode == null || endNode == null)
@@ -453,42 +441,6 @@ namespace PikachuClassic
             return HasPath(node1, node2);
         }
 
-        // Hàm DrawPath này vẽ trên cutPath
-        public async Task DrawPath(List<Node> path)
-        {
-            if (path == null || path.Count == 0)
-                return; // Không có đường đi hoặc đường đi không hợp lệ
-
-            // Duyệt qua các đoạn trong fullPath và vẽ từng đoạn
-            for (int i = 0; i < path.Count - 1; i++)
-            {
-                Node startNode = path[i];
-                Node endNode = path[i + 1];
-
-                // Lấy tọa độ trung tâm của hai PictureBox tư��ng ứng với startNode và endNode
-                Point start = GetCenterOfPictureBox(startNode.pictureBox);
-                Point end = GetCenterOfPictureBox(endNode.pictureBox);
-
-                if (startNode.pictureBox != null && endNode.pictureBox != null)
-                {
-                    using (Graphics g = startNode.pictureBox.Parent.CreateGraphics())
-                    {
-                        g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias; // Vẽ mượt hơn
-                        using (Pen pen = new Pen(Color.Red, 3))
-                        {
-                            g.DrawLine(pen, start, end); // Vẽ đoạn đường nối hai điểm
-                        }
-                    }
-                }
-            }
-
-            // Tạm dừng để người dùng có thể thấy đường đi
-            await Task.Delay(1000);
-
-            // Sau khi hiển thị, xóa đường đi
-            ClearPath(path);
-        }
-
         private Point GetCenterOfPictureBox(PictureBox pictureBox)
         {
             if (pictureBox == null)
@@ -497,18 +449,6 @@ namespace PikachuClassic
             int centerX = pictureBox.Location.X + pictureBox.Width / 2;
             int centerY = pictureBox.Location.Y + pictureBox.Height / 2;
             return new Point(centerX, centerY);
-        }
-        private void ClearPath(List<Node> path)
-        {
-            if (path == null || path.Count == 0)
-                return;
-
-            // Xóa đường đi bằng cách làm mới `Parent` của `PictureBox`
-            Control parent = path[0].pictureBox?.Parent;
-            if (parent != null)
-            {
-                parent.Refresh(); // Làm mới để xóa các đường vẽ
-            }
         }
 
         // Bảo, hàm này để gọi việc kiểm tra và xáo lại

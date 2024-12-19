@@ -14,84 +14,134 @@ namespace PikachuClassic
 {
     public partial class GameForm : Form
     {
-        private GridManager gridManager;
-        private GameManager gameManager;
-        private void UpdateScoreLabel(int score, Player player)
+        private string gameMode;
+        private List<Node> currentPath;
+
+        public GameForm()
         {
-            if (player == gameManager.Player1)
-            {
-                scoreLbP1.Text = $"Score P1: {gameManager.Player1.Score}";
-            }
-            else if (player == gameManager.Player2)
-            {
-                scoreLbP2.Text = $"Score P2: {gameManager.Player2.Score}";
-            }
+            InitializeComponent();
+            RegisterEvents();
+            
+            this.SetStyle(ControlStyles.OptimizedDoubleBuffer | 
+                         ControlStyles.AllPaintingInWmPaint | 
+                         ControlStyles.UserPaint, true);
         }
-        private void UpdateTimeLabel(int timeRemaining)
+
+        public void SetGameMode(string mode)
         {
-            timeLb.Text = $"Time Left: {timeRemaining}";
+            gameMode = mode;
+            GameManager.Instance.Initialize(mode);
+        }
+
+        private void RegisterEvents()
+        {
+            GameManager.Instance.OnScoreUpdated += UpdateScore;
+            GameManager.Instance.OnTimeUpdated += UpdateTime;
+            GameManager.Instance.OnGameFinished += HandleGameFinished;
+        }
+
+        private void UpdateScore(int score, Player player)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action(() => UpdateScore(score, player)));
+                return;
+            }
+            
+            if (player == GameManager.Instance.Player1)
+                scoreLbP1.Text = $"P1: {score}";
+            else
+                scoreLbP2.Text = $"P2: {score}";
+        }
+
+        private void UpdateTime(int timeRemaining)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action(() => UpdateTime(timeRemaining)));
+                return;
+            }
+            timeLb.Text = $"Time: {timeRemaining}s";
+        }
+
+        private void HandleGameFinished(bool player1Wins)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action(() => HandleGameFinished(player1Wins)));
+                return;
+            }
+
+            if (player1Wins)
+                FormManager.Instance.NavigateToWinScreen();
+            else
+                FormManager.Instance.NavigateToGameOver();
+        }
+
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            GameManager.Instance.StartGame(gridPanel);
+            GridManager.Instance.SetGameController(this);
+        }
+
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            base.OnFormClosing(e);
+            GameManager.Instance.OnScoreUpdated -= UpdateScore;
+            GameManager.Instance.OnTimeUpdated -= UpdateTime;
+            GameManager.Instance.OnGameFinished -= HandleGameFinished;
+        }
+
+        private void GameController_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            GameManager.Instance.OnScoreUpdated -= UpdateScore;
+            GameManager.Instance.OnTimeUpdated -= UpdateTime;
+            GameManager.Instance.OnGameFinished -= HandleGameFinished;
+            
+            FormManager.Instance.GoBack();
+        }
+
+        private void GameController_Load(object sender, EventArgs e)
+        {
+            // Xử lý khi form load
         }
 
         private void gridPanel_Paint(object sender, PaintEventArgs e)
         {
-
+            if (currentPath != null && currentPath.Count >= 2)
+            {
+                using (Pen pen = new Pen(Color.Red, 3))
+                {
+                    e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                    
+                    for (int i = 0; i < currentPath.Count - 1; i++)
+                    {
+                        Point start = GetCenterPoint(currentPath[i].pictureBox);
+                        Point end = GetCenterPoint(currentPath[i + 1].pictureBox);
+                        e.Graphics.DrawLine(pen, start, end);
+                    }
+                }
+            }
         }
 
-        //BACKUL
-        public GameForm()
+        private Point GetCenterPoint(PictureBox pictureBox)
         {
-            InitializeComponent();
-
-            // Khởi tạo GameManager với gameMode đã chọn
-            gameManager = GameManager.Instance;
-            gridManager = GridManager.Instance;
-
-            gridManager.GenerateGrid(gridPanel);
-
-            gameManager.OnScoreUpdated += UpdateScoreLabel;
-            gameManager.OnTimeUpdated += UpdateTimeLabel;
-            gameManager.OnGameFinished += EndGame;
-
-             // Bắt đầu đếm thời gian hoặc thiết lập trò chơi
-        }
-        ~GameForm()
-        {
-            gameManager.OnScoreUpdated -= UpdateScoreLabel;
-            gameManager.OnTimeUpdated -= UpdateTimeLabel;
-            gameManager.OnGameFinished -= EndGame;
-        }
-        public void EndGame(bool isWin)
-        {
-            ResetData();
-            Form endScreen = isWin ? (Form)new WinScreen() : new GameOverScreen();
-            
-            FormManager.Instance.OpenForm(endScreen);
-        }
-
-        private void ResetData()
-        {
-            gameManager.ResetData();
-            gridManager.ResetData();
-        }
-        public void SetGameMode(string gameMode)
-        {
-            gameManager.Initialize(gameMode);
-            gameManager.StartTimer(20);
-        }
-        private void GameController_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            Application.Exit(); 
-        }
-
-        //Click Tutorial icon
-        private void button1_Click(object sender, EventArgs e)
-        {
-            FormManager.Instance.OpenForm(new GameTutorial());
+            Point location = pictureBox.Location;
+            int centerX = location.X + pictureBox.Width / 2;
+            int centerY = location.Y + pictureBox.Height / 2;
+            return new Point(centerX, centerY);
         }
 
         private void timeLb_Click(object sender, EventArgs e)
         {
+            // Xử lý click vào label thời gian nếu cần
+        }
 
+        public void UpdatePath(List<Node> path)
+        {
+            currentPath = path;
+            gridPanel.Invalidate();
         }
     }
 }

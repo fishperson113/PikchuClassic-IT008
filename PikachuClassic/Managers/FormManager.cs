@@ -45,14 +45,14 @@ namespace PikachuClassic
 
         public void NavigateToGame(string gameMode)
         {
-            var gameController = new GameController();
+            var gameController = new GameForm();
             gameController.SetGameMode(gameMode);
             OpenForm(gameController);
         }
 
         public void NavigateToSettings()
         {
-            OpenForm(new SettingScreen());
+            //OpenForm(new SettingScreen());
         }
 
         public void NavigateToGameOver()

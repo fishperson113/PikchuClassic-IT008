@@ -38,18 +38,41 @@ namespace PikachuClassic
         private Grid grid;
         private int cols = 4;
         private int rows = 5;
-
+        private GameForm gameController;
         //Logic matching
         private bool firstGuess, secondGuess;
         private PictureBox firstGuessBox, secondGuessBox;
         private PictureBox[,] pictureGrid;
         private Dictionary<PictureBox, Image> originalImages = new Dictionary<PictureBox, Image>();
+        public void SetGameController(GameForm controller)
+        {
+            gameController = controller;
+        }
 
+        // Giữ nguyên method DrawPath
+        public async Task DrawPath(List<Node> path)
+        {
+            if (gameController == null) return;
+
+            try 
+            {
+                gameController.UpdatePath(path);
+                if (path != null) // Chỉ delay khi có path
+                {
+                    await Task.Delay(800);
+                    gameController.UpdatePath(null);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error drawing path: {ex.Message}");
+                gameController.UpdatePath(null); // Cleanup nếu có lỗi
+            }
+        }
         public void GenerateGrid(Panel panel)
         {
             grid = new Grid(panel, rows, cols); 
             grid.GenerateGrid();
-
             AddEventToPictureBoxes(); 
 
             foreach (PictureBox pictureBox in pictureGrid)
@@ -167,7 +190,7 @@ namespace PikachuClassic
                 firstGuessBox.Visible = false;
                 secondGuessBox.Visible = false;
 
-                await grid.DrawPath(path);
+                await DrawPath(path);
                 await AudioManager.Instance.PlaySoundAsync("Correct", 1);
           
                 grid.RemoveNodes(firstGuessBox, secondGuessBox);
@@ -244,11 +267,14 @@ namespace PikachuClassic
         }
         public void ResetData()
         {
+            if (gameController != null)
+            {
+                gameController.UpdatePath(null); // Clear path khi reset
+            }
             grid = null;
             firstGuess = secondGuess = false;
             firstGuessBox = secondGuessBox = null;
             originalImages.Clear();
-
         }
         public Image GetOriginalImage(PictureBox pictureBox)
         {

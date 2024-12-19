@@ -42,7 +42,7 @@ namespace PikachuClassic
         //Click Try Again button
         private void button1_Click(object sender, EventArgs e)
         {
-            GameController gameController = new GameController();
+            GameForm gameController = new GameForm();
             gameController.SetGameMode(GameManager.Instance.GetGameMode());  // Đảm bảo gameMode được thiết lập lại trong GameController
             FormManager.Instance.OpenForm(gameController);
         }
