@@ -313,184 +313,97 @@ namespace PikachuClassic
             return null; // Trả về null nếu không tìm thấy
         }
 
-        /*
-        //Bảo, hàm này để tìm đường đi và trả về danh sách các node đã đi qua
+        // Sửa lại phần FindPath
         public List<Node> FindPath(Node startNode, Node endNode)
         {
-            List<Node> path = new List<Node>();
-            if (startNode.isNeighbor(endNode)) // Nếu 2 node là hàng xóm
+            if (startNode == null || endNode == null)
             {
-                path.Add(startNode);
-                path.Add(endNode);
-                return path;
+                Console.WriteLine("Start or end node is null");
+                return null;
             }
 
-            Dictionary<Node, bool> visited = new Dictionary<Node, bool>();
+            if (startNode.isNeighbor(endNode))
+            {
+                Console.WriteLine($"Found adjacent nodes: [{startNode.X},{startNode.Y}] and [{endNode.X},{endNode.Y}]");
+                return new List<Node> { startNode, endNode };
+            }
+
+            Console.WriteLine($"Finding path from [{startNode.X},{startNode.Y}] to [{endNode.X},{endNode.Y}]");
+
             Queue<Node> queue = new Queue<Node>();
             Dictionary<Node, Node> cameFrom = new Dictionary<Node, Node>();
-            Dictionary<Node, Direction> directionFrom = new Dictionary<Node, Direction>();
+            HashSet<Node> visited = new HashSet<Node>();
 
             queue.Enqueue(startNode);
-            visited[startNode] = true;
+            visited.Add(startNode);
 
             while (queue.Count > 0)
             {
                 Node current = queue.Dequeue();
 
-                if (current == endNode) // Nếu đã tìm được đường đi
-                {
-                    Node temp = endNode;
-                    while (temp != startNode)
-                    {
-                        path.Add(temp);
-                        temp = cameFrom[temp];
-                    }
-                    path.Add(startNode);
-                    path.Reverse();
-                    return path;
-                }
+                if (current == endNode)
+                    break;
 
                 foreach (var neighbor in current.Neighbors)
                 {
-                    if (visited.ContainsKey(neighbor) && visited[neighbor])
+                    if (visited.Contains(neighbor) || (!neighbor.isTraversable && neighbor != endNode))
                         continue;
-                    if (!neighbor.isTraversable && neighbor != endNode)
-                        continue;
-                    visited[neighbor] = true;
-                    queue.Enqueue(neighbor);
+
+                    visited.Add(neighbor);
                     cameFrom[neighbor] = current;
-
-
-                    Direction direction = GetDirection(current, neighbor);
-                    if (directionFrom.ContainsKey(current) && directionFrom[current] != direction) // Vừa rẽ hướng
-                    {
-                        if (pathChangesExceeded(cameFrom, neighbor, 2))
-                        {
-                            visited[neighbor] = false;
-                            queue = new Queue<Node>(queue.Where(n => n != neighbor)); // Loại bỏ node
-                            continue;
-                        }
-                    }
-                    directionFrom[neighbor] = direction;
-
+                    queue.Enqueue(neighbor);
                 }
             }
 
-            return null; // Không tìm thấy đường đi
-        }
-        
-
-        private Direction GetDirection(Node from, Node to)
-        {
-            if (to.X > from.X) return Direction.Down;
-            if (to.X < from.X) return Direction.Up;
-            if (to.Y > from.Y) return Direction.Right;
-            return Direction.Left;
-        }
-
-        
-        private bool pathChangesExceeded(Dictionary<Node, Node> cameFrom, Node node, int maxChanges)
-        {
-            int changes = 0;
-            Node temp = node; // ý tưởng: temp = neighbor (ý tưởng lúc truyền tham số)
-            while (cameFrom.ContainsKey(temp))
-            {
-                Direction currentDirection = GetDirection(temp, cameFrom[temp]);
-                temp = cameFrom[temp];
-
-                if (cameFrom.ContainsKey(temp) && currentDirection != GetDirection(temp, cameFrom[temp]))
-                {
-                    changes++;
-                    if (changes > maxChanges)
-                        return true;
-                }
-            }
-            return false;
-        }
-        
-
-        public enum Direction
-        {
-            Up,
-            Down,
-            Left,
-            Right
-        }
-        */
-
-        /*
-        public List<Node> FindPathDijkstra(Node startNode, Node endNode)
-        {
-            if (startNode == null || endNode == null)
-                return null;
-
-            // Dictionary để lưu khoảng cách ngắn nhất đến từng node
-            Dictionary<Node, int> distances = new Dictionary<Node, int>();
-            // Dictionary để lưu node cha (truy vết đường đi)
-            Dictionary<Node, Node> cameFrom = new Dictionary<Node, Node>();
-            // Dictionary để lưu số lần rẽ hướng
-            Dictionary<Node, int> bends = new Dictionary<Node, int>();
-            // Priority Queue
-            SortedSet<(int distance, Node node)> priorityQueue = new SortedSet<(int distance, Node node)>();
-
-            // Khởi tạo
-            foreach (var neighbor in GetAllNodes())
-            {
-                distances[neighbor] = int.MaxValue;
-                bends[neighbor] = int.MaxValue;
-            }
-            distances[startNode] = 0;
-            bends[startNode] = 0;
-            priorityQueue.Add((0, startNode));
-
-            // Dijkstra
-            while (priorityQueue.Count > 0)
-            {
-                var (currentDistance, currentNode) = priorityQueue.Min;
-                priorityQueue.Remove(priorityQueue.Min);
-
-                if (currentNode == endNode)
-                    break;
-
-                foreach (var neighbor in currentNode.Neighbors)
-                {
-                    if (!neighbor.isTraversable && neighbor != endNode)
-                        continue;
-
-                    int newDistance = currentDistance + 1;
-                    int newBends = bends[currentNode];
-                    if (cameFrom.ContainsKey(currentNode) && GetDirection(cameFrom[currentNode], currentNode) != GetDirection(currentNode, neighbor))
-                    {
-                        newBends++;
-                    }
-
-                    if (newDistance < distances[neighbor] && newBends <= 2)
-                    {
-                        priorityQueue.Remove((distances[neighbor], neighbor)); // Loại node cũ khỏi hàng đợi
-                        distances[neighbor] = newDistance;
-                        bends[neighbor] = newBends;
-                        cameFrom[neighbor] = currentNode;
-                        priorityQueue.Add((newDistance, neighbor));
-                    }
-                }
-            }
-
-            // Truy ngược đường đi
             if (!cameFrom.ContainsKey(endNode))
-                return null;
-
-            List<Node> path = new List<Node>();
-            Node temp = endNode;
-            while (temp != null)
             {
-                path.Add(temp);
-                cameFrom.TryGetValue(temp, out temp);
+                Console.WriteLine("No path found");
+                return null;
+            }
+
+            // Tạo đường đi
+            List<Node> path = new List<Node>();
+            Node currentNode = endNode;
+            while (currentNode != null)
+            {
+                path.Add(currentNode);
+                cameFrom.TryGetValue(currentNode, out currentNode);
             }
             path.Reverse();
+
+            // Kiểm tra tính hợp lệ của đường đi
+            if (!IsValidPath(path))
+            {
+                Console.WriteLine("Found path is not valid (too many bends)");
+                return null;
+            }
+
+            Console.WriteLine($"Path found with {path.Count} nodes");
             return path;
         }
+        private bool IsValidPath(List<Node> path)
+        {
+            if (path == null || path.Count < 2) return false;
 
-        // Lấy hướng di chuyển giữa hai node
+            int bends = 0;
+            Direction? lastDirection = null;
+
+            for (int i = 0; i < path.Count - 1; i++)
+            {
+                Direction currentDirection = GetDirection(path[i], path[i + 1]);
+
+                if (lastDirection.HasValue && lastDirection.Value != currentDirection)
+                {
+                    bends++;
+                    if (bends > 2) return false;
+                }
+
+                lastDirection = currentDirection;
+            }
+
+            Console.WriteLine($"Path validation: Bends={bends}, Length={path.Count}");
+            return true;
+        }
         private Direction GetDirection(Node from, Node to)
         {
             if (to.X > from.X) return Direction.Down;
@@ -499,7 +412,6 @@ namespace PikachuClassic
             return Direction.Left;
         }
 
-        // Enum để biểu diễn hướng di chuyển
         public enum Direction
         {
             Up,
@@ -508,7 +420,6 @@ namespace PikachuClassic
             Right
         }
 
-        // Lấy tất cả các node trong đồ thị
         private List<Node> GetAllNodes()
         {
             List<Node> allNodes = new List<Node>();
@@ -522,358 +433,7 @@ namespace PikachuClassic
             }
             return allNodes;
         }
-        */
 
-        
-        public List<Node> FindPath(Node firstNode, Node secondNode)
-        {
-            Console.WriteLine("Create list path");
-            List<Node> path = new List<Node>();
-
-            Console.WriteLine("firstNode + secondNode isTraversable");
-            firstNode.isTraversable = true;
-            secondNode.isTraversable = true;
-
-            // Check I-shape
-            Console.WriteLine("Entering 1st condition check:");
-            if (firstNode.X == secondNode.X && Check_Ishape_X(firstNode.Y, secondNode.Y, firstNode.X))
-            {
-                path.Add(firstNode);
-                path.Add(secondNode);
-                
-                Console.WriteLine("1st condition clear");
-                return path;
-            }
-            Console.WriteLine("1st condition fail");
-
-            Console.WriteLine("Entering 2nd condition check:");
-            if (firstNode.Y == secondNode.Y && Check_Ishape_Y(firstNode.X, secondNode.X, firstNode.Y))
-            {
-                path.Add(firstNode);
-                path.Add(secondNode);
-                
-                Console.WriteLine("2nd condition clear");
-                return path;
-            }
-            Console.WriteLine("2nd condition fail");
-
-            // Check L-shape
-            Console.WriteLine("Entering 3rd condition check:");
-            if (Check_Lshape_X(firstNode, secondNode))
-            {
-                path.Add(firstNode);
-                path.Add(nodes[firstNode.X, secondNode.Y]);
-                path.Add(secondNode);
-                
-                Console.WriteLine("3rd condition clear");
-                return path;
-            }
-            Console.WriteLine("3rd condition fail");
-
-            Console.WriteLine("Entering 4th condition check:");
-            if (Check_Lshape_Y(firstNode, secondNode))
-            {
-                path.Add(firstNode);
-                path.Add(nodes[secondNode.X, firstNode.Y]);
-                path.Add(secondNode);
-                
-                Console.WriteLine("4th condition clear");
-                return path;
-            }
-            Console.WriteLine("4th condition fail");
-
-            // Check N-shape, U-shape
-            int t; // để thử ko gán -1 ở đây xem sao
-
-            // Check N-shape
-            Console.WriteLine("Entering 5th condition check:");
-            if ((t = Check_Nshape_X(firstNode, secondNode)) != -1)
-            {
-                path.Add(firstNode);
-                path.Add(nodes[firstNode.X, t]);
-                path.Add(nodes[secondNode.X, t]);
-                path.Add(secondNode);
-
-                Console.WriteLine("5th condition clear");
-                return path;
-            }
-            Console.WriteLine("5th condition fail");
-
-            Console.WriteLine("Entering 6th condition check:");
-            if ((t = Check_Nshape_Y(firstNode, secondNode)) != -1)
-            {
-                path.Add(firstNode);
-                path.Add(nodes[t, firstNode.Y]);
-                path.Add(nodes[t, secondNode.Y]);  
-                path.Add(secondNode);
-                
-                Console.WriteLine("6th condition clear");
-                return path;
-            }
-            Console.WriteLine("6th condition fail");
-
-            // Check U-shape
-            Console.WriteLine("Entering 7th condition check:");
-            if ((t = Check_Ushape_X(firstNode, secondNode, 1)) != -1)
-            {
-                path.Add(firstNode);
-                path.Add(nodes[firstNode.X, t]);
-                path.Add(nodes[secondNode.X, t]);
-                path.Add(secondNode);
-
-                Console.WriteLine("7th condition clear");
-                return path;
-            }
-            Console.WriteLine("7th condition fail");
-            
-            Console.WriteLine("Entering 8th condition check:");
-            if ((t = Check_Ushape_X(firstNode, secondNode, -1)) != -1)
-            {
-                path.Add(firstNode);
-                path.Add(nodes[firstNode.X, t]);
-                path.Add(nodes[secondNode.X, t]);
-                path.Add(secondNode);
-
-                Console.WriteLine("8th condition clear");
-                return path;
-            }
-            Console.WriteLine("8th condition fail");
-            
-            Console.WriteLine("Entering 9th condition check:");
-            if ((t = Check_Ushape_Y(firstNode, secondNode, 1)) != -1)
-            {
-                path.Add(firstNode);
-                path.Add(nodes[t, firstNode.Y]);
-                path.Add(nodes[t, secondNode.Y]);
-                path.Add(secondNode);
-                
-                Console.WriteLine("9th condition clear");
-                return path;
-            }
-            Console.WriteLine("9th condition fail");
-            
-            Console.WriteLine("Entering 10th condition check:");
-            if ((t = Check_Ushape_Y(firstNode, secondNode, -1)) != -1)
-            {
-                path.Add(firstNode);
-                path.Add(nodes[t, firstNode.Y]);
-                path.Add(nodes[t, secondNode.Y]);
-                path.Add(secondNode);
-                
-                Console.WriteLine("10th condition clear");
-                return path;
-            }
-            Console.WriteLine("10th condition fail");
-
-            Console.WriteLine("firstNode + secondNode is not Traversable");
-            firstNode.isTraversable = false;
-            secondNode.isTraversable = false;
-            return null;
-        }
-
-        // Kiểm tra dòng ngang từ cột y1 đến y2 tại hàng x
-        private bool Check_Ishape_X(int y1, int y2, int x)
-        {
-            int min = Math.Min(y1, y2);
-            int max = Math.Max(y1, y2);
-
-            for (int y = min; y <= max; y++)
-            {
-                if (nodes[x, y].isTraversable == false) // Nếu gặp vật cản, trả về false
-                    return false;
-            }
-            return true; // Không gặp vật cản, trả về true
-        }
-
-        // Kiểm tra dòng dọc từ hàng x1 đến x2 tại cột y
-        private bool Check_Ishape_Y(int x1, int x2, int y)
-        {
-            int min = Math.Min(x1, x2);
-            int max = Math.Max(x1, x2);
-
-            for (int x = (min); x <= max; x++)
-            {
-                if (nodes[x, y].isTraversable == false)
-                    return false;
-            }
-            return true;
-        }
-
-        // Kiểm tra đường đi hình chữ L theo hàng X
-        private bool Check_Lshape_X(Node n1, Node n2)
-        {
-            if (Check_Ishape_X(n1.Y, n2.Y, n1.X) &&
-                Check_Ishape_Y(n1.X, n2.X, n2.Y))
-                return true;
-            return false;
-        }
-
-        // Kiểm tra đường đi hình chữ L theo cột Y
-        private bool Check_Lshape_Y(Node n1, Node n2)
-        {
-            if (Check_Ishape_Y(n1.X, n2.X, n1.Y) &&
-                Check_Ishape_X(n1.Y, n2.Y, n2.X))
-                return true;
-            return false;
-        }
-
-        // Kiểm tra hình chữ nhật bằng cách chia theo trục X
-        private int Check_Nshape_X(Node n1, Node n2)
-        {
-            int nMinY_Y = n1.Y, nMaxY_Y = n2.Y;
-            int nMinY_X = n1.X, nMaxY_X = n2.X;
-
-            if (n1.Y > n2.Y)
-            {
-                nMinY_Y = n2.Y; nMaxY_Y = n1.Y;
-                nMinY_X = n2.X; nMaxY_X = n1.X;
-            }
-
-            for (int y = nMinY_Y + 1; y < nMaxY_Y; y++)
-            {
-                if (Check_Ishape_X(nMinY_Y, y, nMinY_X) &&
-                    Check_Ishape_Y(nMinY_X, nMaxY_X, y) &&
-                    Check_Ishape_X(y, nMaxY_Y, nMaxY_X))
-                    return y;
-            }
-            return -1;
-        }
-
-        // Kiểm tra hình chữ nhật bằng cách chia theo trục Y
-        private int Check_Nshape_Y(Node n1, Node n2)
-        {
-            int nMinX_X = n1.X, nMaxX_X = n2.X;
-            int nMinX_Y = n1.Y, nMaxX_Y = n2.Y;
-
-            if (n1.X > n2.X)
-            {
-                nMinX_X = n2.X; nMaxX_X = n1.X;
-                nMinX_Y = n2.Y; nMaxX_Y = n1.Y;
-            }
-
-            for (int x = nMinX_X + 1; x < nMaxX_X; x++)
-            {
-                if (Check_Ishape_Y(nMinX_X, x, nMinX_Y) &&
-                    Check_Ishape_X(nMinX_Y, nMaxX_Y, x) &&
-                    Check_Ishape_Y(x, nMaxX_X, nMaxX_Y))
-                    return x;
-            }
-            return -1;
-        }
-
-        // Kiểm tra thêm các đường ngang
-        private int Check_Ushape_X(Node n1, Node n2, int type)
-        {
-            int nMinY_Y = n1.Y, nMaxY_Y = n2.Y;
-            int nMinY_X = n1.X, nMaxY_X = n2.X;
-
-            if (n1.Y > n2.Y)
-            {
-                nMinY_Y = n2.Y; nMaxY_Y = n1.Y;
-                nMinY_X = n2.X; nMaxY_X = n1.X;
-            }
-
-            int y = (type == -1) ? (nMinY_Y - 1) : (nMaxY_Y + 1);
-            int row = (type == -1) ? nMaxY_X : nMinY_X;
-
-            while (y >= 0 && y <= (cols + 1)) // Để ko vượt ra ngoài nodes[]
-            {
-                if (Check_Ishape_X(nMinY_Y, y, nMinY_X) &&
-                    Check_Ishape_Y(nMinY_X, nMaxY_X, y) &&
-                    Check_Ishape_X(y, nMaxY_Y, nMaxY_X))
-                    return y;
-                y += type;
-            }
-            /*
-            if (Check_Ishape_X(nMinY_Y, nMaxY_Y, row))
-            {
-                while (y >= 0 && y <= (cols + 1)) // Để ko vượt ra ngoài nodes[]
-                {
-                    if (Check_Ishape_Y(nMinY_X, nMaxY_X, y))
-                    {
-                        // Console.WriteLine($"TH X {type}: ({pMinY.X}, {pMinY.Y}) -> ({pMinY.X}, {y}) -> ({pMaxY.X}, {y}) -> ({pMaxY.X}, {pMaxY.Y})");
-                        return y;
-                    }
-                    y += type;
-                }
-            }
-            */
-            return -1;
-        }
-
-        // Kiểm tra thêm các đường dọc
-        private int Check_Ushape_Y(Node n1, Node n2, int type)
-        {
-            int nMinX_X = n1.X, nMaxX_X = n2.X;
-            int nMinX_Y = n1.Y, nMaxX_Y = n2.Y;
-
-            if (n1.X > n2.X)
-            {
-                nMinX_X = n2.X; nMaxX_X = n1.X;
-                nMinX_Y = n2.Y; nMaxX_Y = n1.Y;
-            }
-
-            int x = (type == -1) ? (nMinX_X - 1) : (nMaxX_X + 1);
-            int col = (type == -1) ? nMaxX_Y : nMinX_Y;
-
-            while (x >= 0 && x <= (rows + 1))
-            {
-                if (Check_Ishape_Y(nMinX_X, x, nMinX_Y) &&
-                    Check_Ishape_X(nMinX_Y, nMaxX_Y, x) &&
-                    Check_Ishape_Y(x, nMaxX_X, nMaxX_Y))
-                    return x;
-                x += type;
-            }
-            /*
-            if (Check_Ishape_Y(nMinX_X, nMaxX_X, col))
-            {
-                while (x >= 0 && x <= (rows + 1))
-                {
-                    if (Check_Ishape_X(nMinX_Y, nMaxX_Y, x))
-                    {
-                        // Console.WriteLine($"TH Y {type}: ({pMinX.X}, {pMinX.Y}) -> ({x}, {pMinX.Y}) -> ({x}, {pMaxX.Y}) -> ({pMaxX.X}, {pMaxX.Y})");
-                        return x;
-                    }
-                    x += type;
-                }
-            }
-            */
-                return -1;
-        }
-
-        /*
-        // Bảo, hàm tạo cutPath từ danh sách đường đi đầy đủ
-        public List<Node> ExtractCutPath(List<Node> fullPath)
-        {
-            List<Node> cutPath = new List<Node>();
-            if (fullPath == null || fullPath.Count == 0)
-                return cutPath;
-
-            // Thêm node đầu tiên
-            cutPath.Add(fullPath[0]);
-
-            // Tìm các điểm rẽ nhánh
-            for (int i = 1; i < fullPath.Count - 1; i++)
-            {
-                Direction dir1 = GetDirection(fullPath[i - 1], fullPath[i]);
-                Direction dir2 = GetDirection(fullPath[i], fullPath[i + 1]);
-
-                if (dir1 != dir2) // Phát hiện rẽ nhánh
-                {
-                    cutPath.Add(fullPath[i]);
-                    if (cutPath.Count == 3) // Đảm bảo chỉ lấy tối đa 2 điểm rẽ nhánh
-                        break;
-                }
-            }
-
-            // Thêm node cuối cùng
-            cutPath.Add(fullPath[fullPath.Count - 1]);
-
-            return cutPath;
-        }
-        */
-
-        //Bảo, hàm này để nhận biết giữa 2 node được chọn có đường đi hay không
         public bool HasPath(Node startNode, Node endNode)
         {
             // Gọi hàm FindPath để tìm đường đi
@@ -896,7 +456,7 @@ namespace PikachuClassic
         // Hàm DrawPath này vẽ trên cutPath
         public async Task DrawPath(List<Node> path)
         {
-            if (path == null || path.Count < 2)
+            if (path == null || path.Count == 0)
                 return; // Không có đường đi hoặc đường đi không hợp lệ
 
             // Duyệt qua các đoạn trong fullPath và vẽ từng đoạn
@@ -905,7 +465,7 @@ namespace PikachuClassic
                 Node startNode = path[i];
                 Node endNode = path[i + 1];
 
-                // Lấy tọa độ trung tâm của hai PictureBox tương ứng với startNode và endNode
+                // Lấy tọa độ trung tâm của hai PictureBox tư��ng ứng với startNode và endNode
                 Point start = GetCenterOfPictureBox(startNode.pictureBox);
                 Point end = GetCenterOfPictureBox(endNode.pictureBox);
 
@@ -923,7 +483,7 @@ namespace PikachuClassic
             }
 
             // Tạm dừng để người dùng có thể thấy đường đi
-            await Task.Delay(500);
+            await Task.Delay(1000);
 
             // Sau khi hiển thị, xóa đường đi
             ClearPath(path);

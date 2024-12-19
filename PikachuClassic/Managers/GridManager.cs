@@ -36,8 +36,8 @@ namespace PikachuClassic
         #endregion
         // Thuộc tính của màn chơi
         private Grid grid;
-        private int cols = 10;
-        private int rows = 10;
+        private int cols = 4;
+        private int rows = 5;
 
         //Logic matching
         private bool firstGuess, secondGuess;
@@ -151,13 +151,13 @@ namespace PikachuClassic
         {
             await Task.Delay(500);
 
-            // Ý tưởng: đẩy việc GetNode xuống dưới, HasPath áp dụng với guessBox thôi (hợp nhất 2 HasPath)
-
-            // Lấy Node từ PictureBox
             Node firstNode = grid.GetNodeFromPictureBox(firstGuessBox);
             Node secondNode = grid.GetNodeFromPictureBox(secondGuessBox);
-            Console.WriteLine("CheckIfPuzzle goi HasPath");
-            bool hasPath = grid.HasPath(firstNode, secondNode);
+            Console.WriteLine($"First Node: Visible={firstGuessBox.Visible}, Traversable={firstNode.isTraversable}");
+            Console.WriteLine($"Second Node: Visible={secondGuessBox.Visible}, Traversable={secondNode.isTraversable}");
+            // Gọi FindPath một lần và sử dụng kết quả
+            var path = grid.FindPath(firstNode, secondNode);
+            bool hasPath = path != null && path.Count > 0;
 
             // Kiểm tra xem hình ảnh của hai ô có khớp không bằng cách kiểm tra hình ảnh trc khi apply tint
             if ((originalImages[firstGuessBox] == originalImages[secondGuessBox])
@@ -167,40 +167,17 @@ namespace PikachuClassic
                 firstGuessBox.Visible = false;
                 secondGuessBox.Visible = false;
 
-                // Phát âm thanh khi khớp
-                await AudioManager.Instance.PlaySoundAsync("Correct", 1);
-
-                // Bảo thêm
-                // Vẽ đường đi
-                Console.WriteLine("Goi FindPath de ve duong di");
-                var path = grid.FindPath(firstNode, secondNode);
-                // var path = grid.FindPathDijkstra(firstNode, secondNode);
-                //List<Node> cutPath = grid.ExtractCutPath(path);
-                /* DrawPath cũ vẽ trên Panel
-                if (path != null)
-                    await grid.DrawPath(cutPath, gridPanel);
-                */
-
-                //DrawPath mới vẽ trên PictureBox
                 await grid.DrawPath(path);
-
-                // Khiến node trở nên đi qua được
-                //grid.RemoveNodes(firstGuessBox, secondGuessBox);
+                await AudioManager.Instance.PlaySoundAsync("Correct", 1);
+          
+                grid.RemoveNodes(firstGuessBox, secondGuessBox);
 
                 ScoreGroup score= grid.GetScoreForImage(originalImages[firstGuessBox]);
                 // Thêm điểm
                 GameManager.Instance.AddScore((int)score, GameManager.Instance.GetCurrentPlayer());
 
-                // Bảo, kiểm tra xem có cần phải xáo lại vị trí các hình không (trường hợp không còn các hình hợp lệ)
                 grid.HandleRefresh(originalImages);
-                /*
-                // Bảo, check thử originalImages
-                foreach (var image in originalImages)
-                {
-                    Console.WriteLine(image.Value);
-                }
-                */
-                // Kiểm tra xem game đã kết thúc chưa
+
                 GameManager.Instance.CheckIfTheGameIsFinished();
             }
             else
@@ -211,10 +188,6 @@ namespace PikachuClassic
                 // Nếu không khớp, đặt lại màu cho các ô
                 firstGuessBox.Image = originalImages[firstGuessBox];
                 secondGuessBox.Image = originalImages[secondGuessBox];
-
-                // Bảo, do sử dụng hàm FindPath mới nên phải khóa lại nếu 2 node ko có hình ảnh giống nhau
-                firstNode.isTraversable = false;
-                secondNode.isTraversable = false;
             }
 
             // Chuyển lượt sau mỗi lần đoán
