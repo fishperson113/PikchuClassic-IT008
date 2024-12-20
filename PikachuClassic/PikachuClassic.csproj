@@ -68,6 +68,12 @@
     <Compile Include="Forms\ModeSelectionScreen.Designer.cs">
       <DependentUpon>ModeSelectionScreen.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\SettingScreen.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SettingScreen.Designer.cs">
+      <DependentUpon>SettingScreen.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\WinScreen.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -107,6 +113,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ModeSelectionScreen.resx">
       <DependentUpon>ModeSelectionScreen.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SettingScreen.resx">
+      <DependentUpon>SettingScreen.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\WinScreen.resx">
       <DependentUpon>WinScreen.cs</DependentUpon>
