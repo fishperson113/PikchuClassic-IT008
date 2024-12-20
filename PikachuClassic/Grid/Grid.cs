@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -300,7 +301,7 @@ namespace PikachuClassic
             }
             return null; // Trả về null nếu không tìm thấy
         }
-
+        /*
         // Sửa lại phần FindPath bfs
         public List<Node> FindPath(Node startNode, Node endNode)
         {
@@ -392,6 +393,150 @@ namespace PikachuClassic
             Console.WriteLine($"Path validation: Bends={bends}, Length={path.Count}");
             return true;
         }
+        */
+
+        public List<Node> FindPath(Node startNode, Node endNode)
+        {
+            List<Node> path = new List<Node>(); // Lưu trữ đường đi tìm được
+            Stack<Node> stack = new Stack<Node>(); // Stack để lưu các node trong quá trình duyệt
+            Dictionary<Node, Node> parentMap = new Dictionary<Node, Node>(); // Lưu cha của mỗi node
+            Dictionary<Node, Direction> directionMap = new Dictionary<Node, Direction>(); // Lưu hướng đi của mỗi node
+            List<Node> visited = new List<Node>(); // Danh sách các node đã duyệt
+            int currentTurns = 0; // Số lần rẽ
+
+            // Trường hợp đặc biệt: endNode là neighbor của startNode
+            if (startNode.isNeighbor(endNode))
+            {
+                path.Add(startNode);
+                path.Add(endNode);
+                return path;
+            }
+
+            // Bắt đầu từ node đầu tiên
+            stack.Push(startNode);
+            parentMap[startNode] = null;
+            directionMap[startNode] = Direction.None;
+            visited.Add(startNode);
+
+            while (stack.Count > 0)
+            {
+                Node current = stack.Pop();
+
+                // Nếu đã đến node đích
+                if (current == endNode)
+                {
+                    Node temp = current;
+                    while (temp != null)
+                    {
+                        path.Add(temp);
+                        temp = parentMap[temp];
+                    }
+                    path.Reverse();
+                    return path;
+                }
+
+                bool flag = false; // Biến này để xác định có đi vào ngõ cụt chưa
+                foreach (var neighbor in current.Neighbors)
+                {
+                    if ((neighbor.isTraversable || neighbor == endNode) && !visited.Contains(neighbor))
+                    {
+                        // Xác định hướng đi từ current đến neighbor
+                        Direction direction = GetDirection(current, neighbor);
+
+                        // Kiểm tra nếu có sự thay đổi hướng so với hướng trước đó
+                        if (parentMap[current] != null && directionMap[current] != direction)
+                        {
+                            currentTurns++;
+
+                            // Nếu vượt quá 2 lần rẽ, loại bỏ các node trong visited về lần rẽ gần nhất
+                            if (currentTurns > 2)
+                            {
+                                Node lastTurnNode = FindLastTurnNode(parentMap, neighbor, directionMap);
+                                currentTurns--;
+
+                                // Loại bỏ các node trong visited từ current về lastTurnNode
+                                RemoveVisitedNodes(visited, neighbor, lastTurnNode, parentMap, directionMap);
+                                continue;
+                            }
+                        }
+
+                        // Đánh dấu cha, hướng, và thêm vào stack
+                        parentMap[neighbor] = current;
+                        directionMap[neighbor] = direction;
+                        stack.Push(neighbor);
+                        visited.Add(neighbor);
+                        flag = true; // đã add đc ít nhất 1 neighbor vào stack nên ko current ko phải ngõ cụt
+                    }
+                }
+
+                while (flag == false)
+                {
+                    // Vấn đề là cần xác định liệu current có bị biến đổi sau khi thực thi hàm RemoveVisitedNodes hay không (nên là có)
+                    Node lastTurnNode = FindLastTurnNode(parentMap, current, directionMap);
+                    if (lastTurnNode == current)
+                    {
+                        RemoveVisitedNodes(visited, current, startNode, parentMap, directionMap);
+                        foreach (var neighbor in startNode.Neighbors)
+                        {
+                            if (stack.Contains(neighbor))
+                            {
+                                flag = true;
+                                break;
+                            }
+                        }
+
+                        if (flag == false)
+                            return null;
+                    }
+                    else
+                    {
+                        RemoveVisitedNodes(visited, current, lastTurnNode, parentMap, directionMap);
+                        foreach (var neighbor in lastTurnNode.Neighbors)
+                        {
+                            if (stack.Contains(neighbor))
+                            {
+                                flag = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return null; // Không tìm thấy đường đi hợp lệ
+        }
+
+        // Hàm tìm lần rẽ gần nhất trước đó
+        private Node FindLastTurnNode(Dictionary<Node, Node> parentMap, Node nowNode, Dictionary<Node, Direction> directionMap)
+        {
+            Node temp = nowNode;
+            while (parentMap[temp] != null)
+            {
+                Direction currentDirection = GetDirection(parentMap[temp], temp);
+                Direction parentDirection = directionMap[parentMap[temp]];
+
+                if (currentDirection != parentDirection)
+                {
+                    return parentMap[temp]; // Tìm thấy lần rẽ gần nhất
+                }
+
+                temp = parentMap[temp];
+            }
+            return nowNode; // Nếu không tìm thấy lần rẽ nào
+        }
+        
+        // Hàm loại bỏ các node trong visited từ current về lastTurnNode
+        private void RemoveVisitedNodes(List<Node> visited, Node nowNode, Node lastTurnNode, Dictionary<Node, Node> parentMap, Dictionary<Node, Direction> directionMap)
+        {
+            while (nowNode != lastTurnNode)
+            {
+                visited.Remove(nowNode);
+                parentMap.Remove(nowNode);
+                directionMap.Remove(nowNode);
+                nowNode = visited.LastOrDefault(node => node != null);
+            }
+        }
+
         private Direction GetDirection(Node from, Node to)
         {
             if (to.X > from.X) return Direction.Down;
@@ -402,6 +547,7 @@ namespace PikachuClassic
 
         public enum Direction
         {
+            None,
             Up,
             Down,
             Left,
