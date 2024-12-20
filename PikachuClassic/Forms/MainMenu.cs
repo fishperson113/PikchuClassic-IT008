@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PikachuClassic.Forms;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -25,7 +26,28 @@ namespace PikachuClassic
         //Click Setting button
         private void button2_Click(object sender, EventArgs e)
         {
-            FormManager.Instance.NavigateToSettings();
+            // Ẩn các nút của form cha khi form con mở
+            button1.Visible = false;
+            button2.Visible = false;
+            button3.Visible = false;
+            button4.Visible = false;
+
+            // Tạo instance của SettingScreen
+            SettingScreen settingScreen = new SettingScreen();
+
+            // Thiết lập GameTutorial là form con (MDI child)
+            settingScreen.MdiParent = this;
+
+            // Đảm bảo khi form con đóng, nút của form cha sẽ hiển thị lại
+            settingScreen.FormClosed += (s, args) =>
+            {
+                button1.Visible = true;
+                button2.Visible = true;
+                button3.Visible = true;
+                button4.Visible = true;
+            };
+
+            settingScreen.Show(); // Hiển thị form Tutorial
         }
 
         //Click Quit button
