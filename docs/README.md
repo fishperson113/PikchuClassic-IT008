@@ -20,7 +20,7 @@ classDiagram
         +OnFormClosed()
     }
 
-    class GameController {
+    class GameForm {
         -Panel gamePanel
         -Label scoreLbP1
         -Label scoreLbP2
