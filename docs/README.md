@@ -20,7 +20,7 @@ classDiagram
         +OnFormClosed()
     }
 
-    class GameController {
+    class GameForm {
         -Panel gamePanel
         -Label scoreLbP1
         -Label scoreLbP2
@@ -109,7 +109,7 @@ classDiagram
     %% Inheritance
     Bot --|> Player
     ModeSelectionScreen --|> Form
-    GameController --|> Form
+    GameForm --|> Form
 
     %% Composition
     GameManager "1" *-- "2" Player
@@ -118,8 +118,8 @@ classDiagram
 
     %% Dependencies & Associations
     FormManager ..> Form : manages
-    GameController --> GameManager : uses
-    GameController --> GridManager : uses
+    GameForm --> GameManager : uses
+    GameForm --> GridManager : uses
     Bot ..> GridManager : uses
     GridManager ..> GameManager : uses
     Grid ..> AudioManager : uses
