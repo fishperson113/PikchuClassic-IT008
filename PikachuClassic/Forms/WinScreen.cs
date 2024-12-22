@@ -32,6 +32,10 @@ namespace PikachuClassic
             button1.Visible = false;
             button2.Visible = false;
             button3.Visible = false;
+            pictureBox1.Visible = false;
+            pictureBox2.Visible = false;
+            pictureBox3.Visible = false;
+
 
             // Tạo instance của SettingScreen
             SettingScreen settingScreen = new SettingScreen();
@@ -45,6 +49,9 @@ namespace PikachuClassic
                 button1.Visible = true;
                 button2.Visible = true;
                 button3.Visible = true;
+                pictureBox1.Visible = true;
+                pictureBox2.Visible = true;
+                pictureBox3.Visible = true;
             };
 
             settingScreen.Show(); // Hiển thị form Tutorial
