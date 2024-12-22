@@ -117,6 +117,7 @@
             // textBox1
             // 
             this.textBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(128)))), ((int)(((byte)(255)))), ((int)(((byte)(128)))));
+            this.textBox1.Enabled = false;
             this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox1.Location = new System.Drawing.Point(11, 173);
             this.textBox1.Margin = new System.Windows.Forms.Padding(20, 3, 3, 20);
@@ -150,10 +151,13 @@
             // 
             // textBox2
             // 
+            this.textBox2.AcceptsTab = true;
+            this.textBox2.Enabled = false;
             this.textBox2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox2.Location = new System.Drawing.Point(376, 177);
             this.textBox2.Margin = new System.Windows.Forms.Padding(3, 3, 3, 20);
             this.textBox2.Name = "textBox2";
+            this.textBox2.ReadOnly = true;
             this.textBox2.Size = new System.Drawing.Size(65, 27);
             this.textBox2.TabIndex = 3;
             this.textBox2.TabStop = false;
@@ -161,10 +165,12 @@
             // 
             // textBox3
             // 
+            this.textBox3.Enabled = false;
             this.textBox3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox3.Location = new System.Drawing.Point(376, 227);
             this.textBox3.Margin = new System.Windows.Forms.Padding(3, 3, 3, 20);
             this.textBox3.Name = "textBox3";
+            this.textBox3.ReadOnly = true;
             this.textBox3.Size = new System.Drawing.Size(65, 27);
             this.textBox3.TabIndex = 4;
             this.textBox3.TabStop = false;
@@ -172,10 +178,12 @@
             // 
             // textBox4
             // 
+            this.textBox4.Enabled = false;
             this.textBox4.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox4.Location = new System.Drawing.Point(376, 277);
             this.textBox4.Margin = new System.Windows.Forms.Padding(3, 3, 3, 20);
             this.textBox4.Name = "textBox4";
+            this.textBox4.ReadOnly = true;
             this.textBox4.Size = new System.Drawing.Size(65, 27);
             this.textBox4.TabIndex = 5;
             this.textBox4.TabStop = false;
@@ -183,10 +191,12 @@
             // 
             // textBox5
             // 
+            this.textBox5.Enabled = false;
             this.textBox5.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox5.Location = new System.Drawing.Point(376, 327);
             this.textBox5.Margin = new System.Windows.Forms.Padding(3, 3, 3, 20);
             this.textBox5.Name = "textBox5";
+            this.textBox5.ReadOnly = true;
             this.textBox5.Size = new System.Drawing.Size(65, 27);
             this.textBox5.TabIndex = 6;
             this.textBox5.TabStop = false;
@@ -194,10 +204,12 @@
             // 
             // textBox6
             // 
+            this.textBox6.Enabled = false;
             this.textBox6.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox6.Location = new System.Drawing.Point(376, 377);
             this.textBox6.Margin = new System.Windows.Forms.Padding(3, 3, 3, 20);
             this.textBox6.Name = "textBox6";
+            this.textBox6.ReadOnly = true;
             this.textBox6.Size = new System.Drawing.Size(65, 27);
             this.textBox6.TabIndex = 7;
             this.textBox6.TabStop = false;
@@ -205,10 +217,12 @@
             // 
             // textBox7
             // 
+            this.textBox7.Enabled = false;
             this.textBox7.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox7.Location = new System.Drawing.Point(376, 427);
             this.textBox7.Margin = new System.Windows.Forms.Padding(3, 3, 3, 20);
             this.textBox7.Name = "textBox7";
+            this.textBox7.ReadOnly = true;
             this.textBox7.Size = new System.Drawing.Size(65, 27);
             this.textBox7.TabIndex = 8;
             this.textBox7.TabStop = false;
