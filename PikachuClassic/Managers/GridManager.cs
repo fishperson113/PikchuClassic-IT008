@@ -180,7 +180,7 @@ namespace PikachuClassic
             Console.WriteLine($"Second Node: Visible={secondGuessBox.Visible}, Traversable={secondNode.isTraversable}");
             // Gọi FindPath một lần và sử dụng kết quả
             var path = grid.FindPath(firstNode, secondNode);
-            bool hasPath = path != null && path.Count > 0;
+            bool hasPath = (path!=null)?true:false;
 
             // Kiểm tra xem hình ảnh của hai ô có khớp không bằng cách kiểm tra hình ảnh trc khi apply tint
             if ((originalImages[firstGuessBox] == originalImages[secondGuessBox])

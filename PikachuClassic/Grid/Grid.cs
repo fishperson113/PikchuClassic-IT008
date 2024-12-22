@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -37,6 +38,14 @@ namespace PikachuClassic
         private static ScoreGroup[] scoreGroups = (ScoreGroup[])Enum.GetValues(typeof(ScoreGroup));
         private static bool isScoreGroupsAssigned = false;
         #endregion
+        // Cache cho 24 hoán vị
+        private static readonly List<int[]> neighborPermutations;
+
+        static Grid()
+        {
+            // Khởi tạo 24 hoán vị của [0,1,2,3]
+            neighborPermutations = GeneratePermutations(new int[] { 0, 1, 2, 3 }).ToList();
+        }
         public Grid(Panel panel, int rows, int cols)
         {
             this.gridPanel = panel;
@@ -102,7 +111,7 @@ namespace PikachuClassic
 
                 }
             }
-            
+
             AssignImagesToGrid();
 
             // Bảo thêm
@@ -216,7 +225,7 @@ namespace PikachuClassic
                     {
                         nodes[i, j] = new Node(pictureGrid[i, j], true, i, j); // Viền ngoài
                         nodes[i, j].pictureBox.Visible = false;
-                    }    
+                    }
                     else
                     {
                         nodes[i, j] = new Node(pictureGrid[i, j], false, i, j); // Bên trong
@@ -249,7 +258,7 @@ namespace PikachuClassic
         {
             return pictureGrid;
         }
-        
+
         public bool AllPictureBoxesHidden() // Dương
         {
             // Duyệt qua tất cả các PictureBox trong grid
@@ -301,22 +310,22 @@ namespace PikachuClassic
             return null; // Trả về null nếu không tìm thấy
         }
 
-        // Sửa lại phần FindPath bfs
-        public List<Node> FindPath(Node startNode, Node endNode)
+        private List<Node> FindPath(Node startNode, Node endNode, int[] permutation = null)
         {
             if (startNode == null || endNode == null)
-            {
-                Console.WriteLine("Start or end node is null");
                 return null;
-            }
 
             if (startNode.isNeighbor(endNode))
-            {
-                Console.WriteLine($"Found adjacent nodes: [{startNode.X},{startNode.Y}] and [{endNode.X},{endNode.Y}]");
                 return new List<Node> { startNode, endNode };
-            }
 
-            Console.WriteLine($"Finding path from [{startNode.X},{startNode.Y}] to [{endNode.X},{endNode.Y}]");
+            // Áp dụng permutation nếu được chỉ định
+            if (permutation != null)
+            {
+                foreach (var node in GetAllNodes())
+                {
+                    node.ApplyPermutation(permutation);
+                }
+            }
 
             Queue<Node> queue = new Queue<Node>();
             Dictionary<Node, Node> cameFrom = new Dictionary<Node, Node>();
@@ -342,14 +351,17 @@ namespace PikachuClassic
                     queue.Enqueue(neighbor);
                 }
             }
-
-            if (!cameFrom.ContainsKey(endNode))
+            if (permutation != null)
             {
-                Console.WriteLine("No path found");
-                return null;
+                foreach (var node in GetAllNodes())
+                {
+                    node.ResetNeighbors();
+                }
             }
 
-            // Tạo đường đi
+            if (!cameFrom.ContainsKey(endNode))
+                return null;
+
             List<Node> path = new List<Node>();
             Node currentNode = endNode;
             while (currentNode != null)
@@ -359,14 +371,6 @@ namespace PikachuClassic
             }
             path.Reverse();
 
-            // Kiểm tra tính hợp lệ của đường đi
-            if (!IsValidPath(path))
-            {
-                Console.WriteLine("Found path is not valid (too many bends)");
-                return null;
-            }
-
-            Console.WriteLine($"Path found with {path.Count} nodes");
             return path;
         }
         private bool IsValidPath(List<Node> path)
@@ -424,13 +428,8 @@ namespace PikachuClassic
 
         public bool HasPath(Node startNode, Node endNode)
         {
-            // Gọi hàm FindPath để tìm đường đi
-            Console.WriteLine("HasPath goi FindPath");
-            var path = FindPath(startNode, endNode);
-            // var path = FindPathDijkstra(startNode, endNode);
-
-            // Kiểm tra nếu có đường đi (nếu path không null và có ít nhất 1 node)
-            return (path != null && path.Count > 0);
+            var allPaths = GetAllPossiblePaths(startNode, endNode);
+            return ValidatePaths(allPaths);
         }
 
         public bool HasPath(PictureBox picBox1, PictureBox picBox2)
@@ -454,7 +453,7 @@ namespace PikachuClassic
         // Bảo, hàm này để gọi việc kiểm tra và xáo lại
         public void HandleRefresh(Dictionary<PictureBox, Image> originalImages)
         {
-            
+
             int cnt = 0;
             foreach (var node in nodes)
             {
@@ -464,7 +463,7 @@ namespace PikachuClassic
             }
             if (cnt == (rows + 2) * (cols + 2)) // Để ko phải kiểm tra khi đã hoàn thành trò chơi
                 return;
-            
+
             bool flag = HasValidPairs();
             while (flag == false)
             {
@@ -478,7 +477,7 @@ namespace PikachuClassic
             {
                 Console.Write($"Node [{node.X}, {node.Y}]: ");
                 Console.WriteLine(node.isTraversable);
-            }    
+            }
         }
 
         public bool HasValidPairs() // Bảo, hàm này để kiểm tra còn cặp nào hợp lệ không
@@ -498,7 +497,7 @@ namespace PikachuClassic
                 {
                     if (visibleBoxes[i].Image != visibleBoxes[j].Image)
                         continue;
-                    
+
                     Node node1 = GetNodeFromPictureBox(visibleBoxes[i]);
                     Node node2 = GetNodeFromPictureBox(visibleBoxes[j]);
 
@@ -511,7 +510,7 @@ namespace PikachuClassic
                         node2.isTraversable = false;
 
                         return true; // Tìm thấy cặp hợp lệ
-                    }    
+                    }
                 }
             }
 
@@ -523,7 +522,7 @@ namespace PikachuClassic
         {
             // Xóa toàn bộ trong Dictionary của originalImages
             originalImages.Clear();
-            
+
             // Lấy danh sách các hình ảnh (được gắn vào các picBox) còn lại
             List<Image> availableImages = new List<Image>();
 
@@ -574,7 +573,7 @@ namespace PikachuClassic
             */
             for (int i = 1; i < (rows + 1); i++) // Tái thiết lại thuộc tính isTraversable của từng node
             {
-                for (int j = 1;  j < (cols + 1); j++)
+                for (int j = 1; j < (cols + 1); j++)
                 {
                     if (nodes[i, j].pictureBox.Visible)
                         nodes[i, j].isTraversable = false;
@@ -583,7 +582,7 @@ namespace PikachuClassic
                 }
             }
         }
-        
+
         // Bảo, hàm ánh xạ từ số ngẫu nhiên sang tọa độ (không tính viền)
         Tuple<int, int> CalculatePosition(int num)
         {
@@ -592,6 +591,62 @@ namespace PikachuClassic
 
             return new Tuple<int, int>(rowPos, colPos);
         }
-    }
+        private static IEnumerable<int[]> GeneratePermutations(int[] array)
+        {
+            if (array.Length == 1)
+                yield return array;
+            else
+            {
+                for (int i = 0; i < array.Length; i++)
+                {
+                    var remaining = new int[array.Length - 1];
+                    Array.Copy(array, 0, remaining, 0, i);
+                    Array.Copy(array, i + 1, remaining, i, array.Length - i - 1);
+                    foreach (var permutation in GeneratePermutations(remaining))
+                    {
+                        var result = new int[array.Length];
+                        result[0] = array[i];
+                        Array.Copy(permutation, 0, result, 1, permutation.Length);
+                        yield return result;
+                    }
+                }
+            }
+        }
+        private List<List<Node>> GetAllPossiblePaths(Node startNode, Node endNode)
+        {
+            List<List<Node>> allPaths = new List<List<Node>>();
 
+            foreach (var permutation in neighborPermutations)
+            {
+                var path = FindPath(startNode, endNode, permutation);
+                if (path != null)
+                {
+                    allPaths.Add(path);
+                }
+            }
+
+            return allPaths;
+        }
+
+        // Validate paths và trả về true ngay khi tìm thấy đường hợp lệ
+        private bool ValidatePaths(List<List<Node>> paths)
+        {
+            foreach (var path in paths)
+            {
+                if (IsValidPath(path))
+                    return true;
+            }
+            return false;
+        }
+        public List<Node> FindPath(Node startNode, Node endNode)
+        {
+            var allPaths = GetAllPossiblePaths(startNode, endNode);
+            foreach (var path in allPaths)
+            {
+                if (IsValidPath(path))
+                    return path;
+            }
+            return null;
+        }
+    }
 }

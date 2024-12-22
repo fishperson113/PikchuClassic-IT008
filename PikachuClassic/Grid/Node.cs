@@ -16,6 +16,7 @@ namespace PikachuClassic
         public int X { get; set; }
         public int Y { get; set; }
         public PictureBox pictureBox { get; set; }
+        private List<Node> originalNeighbors;
         public List<Node> Neighbors { get; }
         public bool isTraversable { get; set; }
 
@@ -23,6 +24,7 @@ namespace PikachuClassic
         {
             this.pictureBox = pictureBox;
             Neighbors = new List<Node>();
+            originalNeighbors = new List<Node>();
             isTraversable = IsTraversable;
             X = x;
             Y = y;
@@ -31,11 +33,27 @@ namespace PikachuClassic
         public void AddNeighbor(Node neighbor)
         {
             Neighbors.Add(neighbor);
+            originalNeighbors.Add(neighbor);
         }
-
+        public void ApplyPermutation(int[] permutation)
+        {
+            Neighbors.Clear();
+            foreach (int index in permutation)
+            {
+                if (index < originalNeighbors.Count)
+                {
+                    Neighbors.Add(originalNeighbors[index]);
+                }
+            }
+        }
         public bool isNeighbor(Node neighbor)
         {
             return Neighbors.Contains(neighbor);
+        }
+        public void ResetNeighbors()
+        {
+            Neighbors.Clear();
+            Neighbors.AddRange(originalNeighbors);
         }
 
     }
