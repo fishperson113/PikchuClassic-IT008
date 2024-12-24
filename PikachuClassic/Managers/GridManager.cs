@@ -36,8 +36,8 @@ namespace PikachuClassic
         #endregion
         // Thuộc tính của màn chơi
         private Grid grid;
-        private int cols = 4;
-        private int rows = 5;
+        private int cols = 10;
+        private int rows = 10;
         private GameForm gameController;
         //Logic matching
         private bool firstGuess, secondGuess;
@@ -232,14 +232,24 @@ namespace PikachuClassic
         }
         public bool AreImagesMatching(PictureBox first, PictureBox second) // Bảo, đã thêm 3 đường 
         {
-            if (originalImages.ContainsKey(first) && originalImages.ContainsKey(second)
-                && grid.HasPath(first, second))
+            // Kiểm tra hình ảnh có trong dictionary không
+            if (!originalImages.ContainsKey(first) || !originalImages.ContainsKey(second))
             {
-                Console.WriteLine("AreImagesMatching goi HasPath");
-                return originalImages[first] == originalImages[second];
+                Debug.WriteLine("Hình ảnh không trong dictionary");
+                return false;
             }
-            Debug.WriteLine("Hình ảnh không trong dictionary");
-            return false;
+
+            // So sánh hình ảnh trước (operation nhanh)
+            if (originalImages[first] != originalImages[second])
+            {
+                return false;
+            }
+
+            // Chỉ khi hình ảnh khớp mới check path (operation chậm)
+            Node firstNode = grid.GetNodeFromPictureBox(first);
+            Node secondNode = grid.GetNodeFromPictureBox(second);
+            return grid.HasPath(firstNode, secondNode);
+
         }
         public async Task BotClickCell(PictureBox clickedBox)
         {

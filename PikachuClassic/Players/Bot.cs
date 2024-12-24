@@ -11,6 +11,7 @@ namespace PikachuClassic
     {
         private Random random = new Random();
         private float IQ; // 0 đến 1
+        private GridSection gridSection;
 
         public Bot(float IQ)
         {
@@ -19,12 +20,19 @@ namespace PikachuClassic
 
         public async Task MakeMove(GridManager gridManager)
         {
-            var unmatchedBoxes = gridManager.GetUnmatchedBoxes();
+            // Khởi tạo GridSection nếu chưa có
+            if (gridSection == null)
+            {
+                var grid = gridManager.Grid;
+                int rows = grid.GetRows();
+                int cols = grid.GetCols();
+                gridSection = new GridSection(rows, cols);
+            }
 
-            Debug.WriteLine($"Số ô chưa khớp: {unmatchedBoxes.Count}");
-            if (unmatchedBoxes.Count < 2) return;
+            // Lấy các section cần kiểm tra dựa trên IQ
+            var sectionsToCheck = gridSection.GetSectionsForIQ(IQ);
+            var matchedPairs = FindMatchingPairsInSections(gridManager, sectionsToCheck);
 
-            var matchedPairs = FindMatchingPairs(unmatchedBoxes);
             Debug.WriteLine($"Số cặp khớp tìm thấy: {matchedPairs.Count}");
 
             if (matchedPairs.Count > 0)
@@ -48,7 +56,7 @@ namespace PikachuClassic
                 }
                 else
                 {
-                    // Chọn ngẫu nhiên
+                    // Chọn ngẫu nhiên từ các cặp tìm được
                     var selectedPair = sortedPairs[random.Next(sortedPairs.Count)];
                     firstBox = selectedPair.Item1;
                     secondBox = selectedPair.Item2;
@@ -57,36 +65,62 @@ namespace PikachuClassic
 
                 // Thực hiện click
                 await gridManager.BotClickCell(firstBox);
-                await Task.Delay(300); // Độ trễ tự nhiên
+                await Task.Delay(300);
                 await gridManager.BotClickCell(secondBox);
             }
         }
 
-        private List<Tuple<PictureBox, PictureBox>> FindMatchingPairs(List<PictureBox> unmatchedBoxes)
+        private List<Tuple<PictureBox, PictureBox>> FindMatchingPairsInSections(
+            GridManager gridManager, 
+            List<GridSection.Section> sections)
         {
             var matchedPairs = new List<Tuple<PictureBox, PictureBox>>();
+var checkedBoxes = new HashSet<PictureBox>(); // Tránh check trùng
 
-            for (int i = 0; i < unmatchedBoxes.Count; i++)
+            foreach (var section in sections)
             {
-                for (int j = i + 1; j < unmatchedBoxes.Count; j++)
+                // Lấy các PictureBox trong section hiện tại
+                var boxesInSection = GetPictureBoxesInSection(gridManager, section);
+
+                foreach (var box1 in boxesInSection)
                 {
-                    var box1 = unmatchedBoxes[i];
-                    var box2 = unmatchedBoxes[j];
+                    if (!box1.Visible || checkedBoxes.Contains(box1)) continue;
 
-                    if (GridManager.Instance.AreImagesMatching(box1, box2))
+                    foreach (var box2 in boxesInSection)
                     {
-                        Node node1 = GridManager.Instance.Grid.GetNodeFromPictureBox(box1);
-                        Node node2 = GridManager.Instance.Grid.GetNodeFromPictureBox(box2);
+                        if (!box2.Visible || box1 == box2 || checkedBoxes.Contains(box2)) continue;
 
-                        if (GridManager.Instance.Grid.HasPath(node1, node2))
+                        if (gridManager.AreImagesMatching(box1, box2))
                         {
                             matchedPairs.Add(Tuple.Create(box1, box2));
                         }
                     }
+                    checkedBoxes.Add(box1);
                 }
             }
 
             return matchedPairs;
+        }
+
+        private List<PictureBox> GetPictureBoxesInSection(
+            GridManager gridManager, 
+            GridSection.Section section)
+        {
+            var result = new List<PictureBox>();
+            var pictureGrid = gridManager.GetPictureBoxes();
+
+            for (int i = section.StartRow; i <= section.EndRow; i++)
+            {
+                for (int j = section.StartCol; j <= section.EndCol; j++)
+                {
+                    if (pictureGrid[i, j].Visible)
+                    {
+                        result.Add(pictureGrid[i, j]);
+                    }
+                }
+            }
+
+            return result;
         }
     }
 }

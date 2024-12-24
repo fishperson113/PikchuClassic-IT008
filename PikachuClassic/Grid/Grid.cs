@@ -648,5 +648,13 @@ namespace PikachuClassic
             }
             return null;
         }
+        public int GetRows()
+        {
+            return rows+2;
+        }
+        public int GetCols()
+        {
+            return cols+2;
+        }
     }
 }

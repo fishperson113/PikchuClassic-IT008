@@ -92,6 +92,7 @@
     <Compile Include="Forms\MainMenu.Designer.cs">
       <DependentUpon>MainMenu.cs</DependentUpon>
     </Compile>
+    <Compile Include="Grid\GridSection.cs" />
     <Compile Include="Managers\AudioManager.cs" />
     <Compile Include="Managers\FormManager.cs" />
     <Compile Include="Managers\GameManager.cs" />
