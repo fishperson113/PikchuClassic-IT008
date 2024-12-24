@@ -16,7 +16,7 @@ namespace PikachuClassic
     {
         private string gameMode;
         private List<Node> currentPath;
-
+        private GameTutorial gameTutorial;
         public GameForm()
         {
             InitializeComponent();
@@ -76,6 +76,7 @@ namespace PikachuClassic
                 FormManager.Instance.NavigateToWinScreen();
             else
                 FormManager.Instance.NavigateToGameOver();
+            gameTutorial?.Close();
         }
 
         protected override void OnLoad(EventArgs e)
@@ -91,6 +92,7 @@ namespace PikachuClassic
             GameManager.Instance.OnScoreUpdated -= UpdateScore;
             GameManager.Instance.OnTimeUpdated -= UpdateTime;
             GameManager.Instance.OnGameFinished -= HandleGameFinished;
+            gameTutorial?.Close();
         }
 
         private void GameController_FormClosed(object sender, FormClosedEventArgs e)
@@ -98,7 +100,7 @@ namespace PikachuClassic
             GameManager.Instance.OnScoreUpdated -= UpdateScore;
             GameManager.Instance.OnTimeUpdated -= UpdateTime;
             GameManager.Instance.OnGameFinished -= HandleGameFinished;
-            
+            gameTutorial?.Close();
             FormManager.Instance.GoBack();
         }
 
@@ -142,6 +144,20 @@ namespace PikachuClassic
         {
             currentPath = path;
             gridPanel.Invalidate();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            if (gameTutorial == null)
+            {
+                gameTutorial = new GameTutorial();
+                gameTutorial.Show();
+
+            }
+            else
+            {
+                gameTutorial.Visible = !gameTutorial.Visible;
+            }
         }
     }
 }

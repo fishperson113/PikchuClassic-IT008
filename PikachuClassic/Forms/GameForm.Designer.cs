@@ -35,6 +35,7 @@
             this.scoreLbP1 = new System.Windows.Forms.Label();
             this.gamePanel = new System.Windows.Forms.Panel();
             this.gridPanel = new System.Windows.Forms.Panel();
+            this.button4 = new System.Windows.Forms.Button();
             this.infoPanel.SuspendLayout();
             this.gamePanel.SuspendLayout();
             this.SuspendLayout();
@@ -42,6 +43,7 @@
             // infoPanel
             // 
             this.infoPanel.BackColor = System.Drawing.Color.White;
+            this.infoPanel.Controls.Add(this.button4);
             this.infoPanel.Controls.Add(this.scoreLbP2);
             this.infoPanel.Controls.Add(this.timeLb);
             this.infoPanel.Controls.Add(this.scoreLbP1);
@@ -106,7 +108,19 @@
             this.gridPanel.TabIndex = 1;
             this.gridPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.gridPanel_Paint);
             // 
-            // GameController
+            // button4
+            // 
+            this.button4.BackgroundImage = global::PikachuClassic.Properties.Resources.tutorial1;
+            this.button4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button4.Location = new System.Drawing.Point(590, 0);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(57, 57);
+            this.button4.TabIndex = 4;
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // GameForm
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoSize = true;
@@ -115,7 +129,7 @@
             this.ClientSize = new System.Drawing.Size(932, 553);
             this.Controls.Add(this.gamePanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
-            this.Name = "GameController";
+            this.Name = "GameForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "PikachuProMax";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.GameController_FormClosed);
@@ -134,6 +148,7 @@
         private System.Windows.Forms.Panel gamePanel;
         private System.Windows.Forms.Panel gridPanel;
         private System.Windows.Forms.Label scoreLbP2;
+        private System.Windows.Forms.Button button4;
     }
 }
 
