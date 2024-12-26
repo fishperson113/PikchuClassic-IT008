@@ -1,3 +1,4 @@
+```mermaid
 flowchart TD
 A[Bắt đầu] --> B{Còn thời gian?}
 B -->|Không| C[Chuyển lượt]
