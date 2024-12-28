@@ -558,6 +558,7 @@
             this.BackgroundImage = global::PikachuClassic.Properties.Resources.Screenshot_2024_11_15_2111062;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(662, 493);
+            this.ControlBox = false;
             this.Controls.Add(this.pictureBox40);
             this.Controls.Add(this.pictureBox39);
             this.Controls.Add(this.pictureBox37);
