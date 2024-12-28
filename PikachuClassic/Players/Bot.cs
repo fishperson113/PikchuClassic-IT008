@@ -29,9 +29,8 @@ namespace PikachuClassic
                 gridSection = new GridSection(rows, cols);
             }
 
-            // Lấy các section cần kiểm tra dựa trên IQ
-            var sectionsToCheck = gridSection.GetSectionsForIQ(IQ);
-            var matchedPairs = FindMatchingPairsInSections(gridManager, sectionsToCheck);
+            var sectionsToCheck = gridSection.GetSectionsForIQ(IQ, gridManager.Grid);
+            var matchedPairs = gridSection.FindMatchingPairsInSections(gridManager.Grid, sectionsToCheck);
 
             Debug.WriteLine($"Số cặp khớp tìm thấy: {matchedPairs.Count}");
 
@@ -68,59 +67,6 @@ namespace PikachuClassic
                 await Task.Delay(300);
                 await gridManager.BotClickCell(secondBox);
             }
-        }
-
-        private List<Tuple<PictureBox, PictureBox>> FindMatchingPairsInSections(
-            GridManager gridManager, 
-            List<GridSection.Section> sections)
-        {
-            var matchedPairs = new List<Tuple<PictureBox, PictureBox>>();
-var checkedBoxes = new HashSet<PictureBox>(); // Tránh check trùng
-
-            foreach (var section in sections)
-            {
-                // Lấy các PictureBox trong section hiện tại
-                var boxesInSection = GetPictureBoxesInSection(gridManager, section);
-
-                foreach (var box1 in boxesInSection)
-                {
-                    if (!box1.Visible || checkedBoxes.Contains(box1)) continue;
-
-                    foreach (var box2 in boxesInSection)
-                    {
-                        if (!box2.Visible || box1 == box2 || checkedBoxes.Contains(box2)) continue;
-
-                        if (gridManager.AreImagesMatching(box1, box2))
-                        {
-                            matchedPairs.Add(Tuple.Create(box1, box2));
-                        }
-                    }
-                    checkedBoxes.Add(box1);
-                }
-            }
-
-            return matchedPairs;
-        }
-
-        private List<PictureBox> GetPictureBoxesInSection(
-            GridManager gridManager, 
-            GridSection.Section section)
-        {
-            var result = new List<PictureBox>();
-            var pictureGrid = gridManager.GetPictureBoxes();
-
-            for (int i = section.StartRow; i <= section.EndRow; i++)
-            {
-                for (int j = section.StartCol; j <= section.EndCol; j++)
-                {
-                    if (pictureGrid[i, j].Visible)
-                    {
-                        result.Add(pictureGrid[i, j]);
-                    }
-                }
-            }
-
-            return result;
         }
     }
 }
