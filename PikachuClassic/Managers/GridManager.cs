@@ -85,14 +85,6 @@ namespace PikachuClassic
 
             // Khởi tạo logic
             firstGuess = secondGuess = false;
-
-            /*
-            // Bảo, check thử originalImages
-            foreach (var image in originalImages)
-            {
-                Console.WriteLine(image);
-            }
-            */
         }
 
         #region Matching Logic and Tint Effect
@@ -176,8 +168,6 @@ namespace PikachuClassic
 
             Node firstNode = grid.GetNodeFromPictureBox(firstGuessBox);
             Node secondNode = grid.GetNodeFromPictureBox(secondGuessBox);
-            Console.WriteLine($"First Node: Visible={firstGuessBox.Visible}, Traversable={firstNode.isTraversable}");
-            Console.WriteLine($"Second Node: Visible={secondGuessBox.Visible}, Traversable={secondNode.isTraversable}");
             // Gọi FindPath một lần và sử dụng kết quả
             var path = grid.FindPath(firstNode, secondNode);
             bool hasPath = (path!=null)?true:false;
@@ -199,9 +189,7 @@ namespace PikachuClassic
                 // Thêm điểm
                 GameManager.Instance.AddScore((int)score, GameManager.Instance.GetCurrentPlayer());
 
-                grid.HandleRefresh(originalImages);
 
-                GameManager.Instance.CheckIfTheGameIsFinished();
             }
             else
             {
@@ -213,6 +201,8 @@ namespace PikachuClassic
                 secondGuessBox.Image = originalImages[secondGuessBox];
             }
 
+            grid.HandleRefresh(originalImages);
+            GameManager.Instance.CheckIfTheGameIsFinished();
             // Chuyển lượt sau mỗi lần đoán
             GameManager.Instance.SwitchTurn();
 

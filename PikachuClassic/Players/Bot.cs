@@ -64,7 +64,6 @@ namespace PikachuClassic
 
                 // Thực hiện click
                 await gridManager.BotClickCell(firstBox);
-                await Task.Delay(300);
                 await gridManager.BotClickCell(secondBox);
             }
         }

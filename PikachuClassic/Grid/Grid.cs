@@ -118,14 +118,7 @@ namespace PikachuClassic
             nodes = new Node[rows + 2, cols + 2];
             InitializeNodes();
             SetNeighbors();
-            // Hết Bảo
-
-            // Debug isTraversable
-            foreach (var node in nodes)
-            {
-                Console.Write($"Node [{node.X}, {node.Y}]: ");
-                Console.WriteLine(node.isTraversable);
-            }
+            
         }
         private void LoadResource()
         {
@@ -279,10 +272,8 @@ namespace PikachuClassic
         {
             if (imageScoreGroups.TryGetValue(image, out ScoreGroup score))
             {
-                Console.WriteLine($"Điểm của ảnh: {score}");
                 return score;
             }
-            Console.WriteLine("Không tìm thấy ảnh trong dictionary");
             return ScoreGroup.Group10; // Điểm mặc định nếu không tìm thấy ảnh
         }
 
@@ -392,8 +383,6 @@ namespace PikachuClassic
 
                 lastDirection = currentDirection;
             }
-
-            Console.WriteLine($"Path validation: Bends={bends}, Length={path.Count}");
             return true;
         }
         private Direction GetDirection(Node from, Node to)
@@ -471,13 +460,6 @@ namespace PikachuClassic
                 if (HasValidPairs())
                     flag = true;
             }
-
-            // Debug isTraversable
-            foreach (var node in nodes)
-            {
-                Console.Write($"Node [{node.X}, {node.Y}]: ");
-                Console.WriteLine(node.isTraversable);
-            }
         }
 
         public bool HasValidPairs() // Bảo, hàm này để kiểm tra còn cặp nào hợp lệ không
@@ -500,9 +482,6 @@ namespace PikachuClassic
 
                     Node node1 = GetNodeFromPictureBox(visibleBoxes[i]);
                     Node node2 = GetNodeFromPictureBox(visibleBoxes[j]);
-
-                    // Sử dụng HasPath để kiểm tra đường đi
-                    Console.WriteLine("HasValidPair goi HasPath");
                     if (node1 != null && node2 != null && HasPath(node1, node2))
                     {
                         // Thao tác này đảm bảo trả hiện trạng node về như cũ sau khi gọi FindPath
@@ -564,13 +543,7 @@ namespace PikachuClassic
                     originalImages[pictureBox] = pictureBox.Image;
                 }
             }
-            /*
-            // Bảo, check thử originalImages
-            foreach (var image in originalImages)
-            {
-                Console.WriteLine(image.Value);
-            }
-            */
+            
             for (int i = 1; i < (rows + 1); i++) // Tái thiết lại thuộc tính isTraversable của từng node
             {
                 for (int j = 1; j < (cols + 1); j++)

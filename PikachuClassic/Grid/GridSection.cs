@@ -84,19 +84,34 @@ namespace PikachuClassic
             // Sắp xếp sections theo priority
             var sortedSections = sections.OrderBy(s => s.Priority).ToList();
 
-            // Tính số sections tối đa cần quét dựa vào IQ (1-4 sections)
+            // Tính số sections tối đa được phép quét dựa vào IQ (1-4 sections)
             int maxSectionsToCheck = Math.Max(1, Math.Min(4, (int)(SECTION_COUNT * IQ)));
 
-            // Lấy tất cả các section có thể quét
-            var availableSections = sortedSections.Take(maxSectionsToCheck).ToList();
+            var result = new List<Section>();
 
-            // Nếu không tìm thấy cặp ghép trong các section ưu tiên,
-            // thêm các section còn lại vào để tìm kiếm
-            if (!HasValidPairsInSections(availableSections, grid))
+            // Duyệt qua từng section theo thứ tự ưu tiên
+            foreach (var section in sortedSections)
             {
-                availableSections = sortedSections;
+                // Kiểm tra xem section hiện tại có cặp trùng không
+                if (HasValidPairsInSections(new List<Section> { section }, grid))
+                {
+                    result.Add(section);
+                }
+
+                // Nếu đã đủ số lượng section cho phép và có ít nhất 1 section có cặp trùng
+                if (result.Count >= maxSectionsToCheck && HasValidPairsInSections(result, grid))
+                {
+                    break;
+                }
             }
-            return availableSections;
+
+            // Nếu không tìm thấy cặp ghép trong các section đã chọn, trả về tất cả các section
+            if (!HasValidPairsInSections(result, grid))
+            {
+                return sortedSections;
+            }
+
+            return result;
         }
 
         public bool IsInSection(int row, int col, Section section)
