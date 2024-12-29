@@ -442,28 +442,42 @@ namespace PikachuClassic
         // Bảo, hàm này để gọi việc kiểm tra và xáo lại
         public void HandleRefresh(Dictionary<PictureBox, Image> originalImages)
         {
-
-            int cnt = 0;
-            foreach (var node in nodes)
+            Console.WriteLine("HandleRefresh");
+            // Kiểm tra xem còn PictureBox visible nào không
+            bool hasVisibleBoxes = false;
+            for (int i = 1; i < rows + 1; i++)
             {
-                if (node.isTraversable == false)
-                    break;
-                cnt++;
+                for (int j = 1; j < cols + 1; j++)
+                {
+                    if (pictureGrid[i, j].Visible)
+                    {
+                        hasVisibleBoxes = true;
+                        break;
+                    }
+                }
             }
-            if (cnt == (rows + 2) * (cols + 2)) // Để ko phải kiểm tra khi đã hoàn thành trò chơi
-                return;
-
-            bool flag = HasValidPairs();
-            while (flag == false)
+            // Nếu không còn PictureBox visible nào, không cần refresh
+            if (!hasVisibleBoxes)
             {
-                RepositionImages(originalImages); // Xáo trộn lại hình ảnh
-                if (HasValidPairs())
-                    flag = true;
+                Console.WriteLine("Không còn PictureBox visible nào");
+                return;
+            }
+
+            // Kiểm tra xem còn cặp ghép hợp lệ không
+            if (!HasValidPairs())
+            {
+                Console.WriteLine("Không còn cặp hợp lệ");
+                // Thử xáo trộn lại cho đến khi tìm được cấu hình hợp lệ
+                do
+                {
+                    RepositionImages(originalImages);
+                } while (!HasValidPairs());
             }
         }
 
         public bool HasValidPairs() // Bảo, hàm này để kiểm tra còn cặp nào hợp lệ không
         {
+            Console.WriteLine("HasValidPairs");
             // Lấy danh sách tất cả các PictureBox còn hiển thị
             List<PictureBox> visibleBoxes = new List<PictureBox>();
             foreach (var pictureBox in pictureGrid)
@@ -471,7 +485,6 @@ namespace PikachuClassic
                 if (pictureBox.Visible)
                     visibleBoxes.Add(pictureBox);
             }
-
             // Duyệt qua tất cả các cặp và kiểm tra
             for (int i = 0; i < visibleBoxes.Count; i++)
             {
@@ -487,12 +500,13 @@ namespace PikachuClassic
                         // Thao tác này đảm bảo trả hiện trạng node về như cũ sau khi gọi FindPath
                         node1.isTraversable = false;
                         node2.isTraversable = false;
-
+                        Console.WriteLine("Tìm thấy cặp hợp lệ");
                         return true; // Tìm thấy cặp hợp lệ
                     }
                 }
             }
 
+            Console.WriteLine("Không tìm thấy cặp hợp lệ");
             return false; // Không tìm thấy cặp hợp lệ
         }
 

@@ -11,7 +11,6 @@ namespace PikachuClassic
     {
         private Random random = new Random();
         private float IQ; // 0 đến 1
-        private GridSection gridSection;
 
         public Bot(float IQ)
         {
@@ -20,18 +19,7 @@ namespace PikachuClassic
 
         public async Task MakeMove(GridManager gridManager)
         {
-            // Khởi tạo GridSection nếu chưa có
-            if (gridSection == null)
-            {
-                var grid = gridManager.Grid;
-                int rows = grid.GetRows();
-                int cols = grid.GetCols();
-                gridSection = new GridSection(rows, cols);
-            }
-
-            var sectionsToCheck = gridSection.GetSectionsForIQ(IQ, gridManager.Grid);
-            var matchedPairs = gridSection.FindMatchingPairsInSections(gridManager.Grid, sectionsToCheck);
-
+            var matchedPairs = FindAllMatchingPairs(gridManager);
             Debug.WriteLine($"Số cặp khớp tìm thấy: {matchedPairs.Count}");
 
             if (matchedPairs.Count > 0)
@@ -66,6 +54,42 @@ namespace PikachuClassic
                 await gridManager.BotClickCell(firstBox);
                 await gridManager.BotClickCell(secondBox);
             }
+        }
+
+        private List<Tuple<PictureBox, PictureBox>> FindAllMatchingPairs(GridManager gridManager)
+        {
+            var matchingPairs = new List<Tuple<PictureBox, PictureBox>>();
+            var pictureBoxes = gridManager.GetPictureBoxes();
+            var rows = gridManager.Grid.GetRows();
+            var cols = gridManager.Grid.GetCols();
+
+            // Duyệt qua tất cả các cặp PictureBox có thể
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < cols; j++)
+                {
+                    if (!pictureBoxes[i, j].Visible) continue;
+
+                    // Kiểm tra với tất cả các PictureBox còn lại
+                    for (int m = 0; m < rows; m++)
+                    {
+                        for (int n = 0; n < cols; n++)
+                        {
+                            if (!pictureBoxes[m, n].Visible) continue;
+                            if (i == m && j == n) continue; // Không so sánh với chính nó
+
+                            // Kiểm tra nếu hai PictureBox có thể ghép cặp
+                            if (gridManager.AreImagesMatching(pictureBoxes[i, j], pictureBoxes[m, n]))
+                            {
+                                matchingPairs.Add(new Tuple<PictureBox, PictureBox>(
+                                    pictureBoxes[i, j], pictureBoxes[m, n]));
+                            }
+                        }
+                    }
+                }
+            }
+
+            return matchingPairs;
         }
     }
 }

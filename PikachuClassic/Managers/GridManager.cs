@@ -188,6 +188,7 @@ namespace PikachuClassic
                 ScoreGroup score= grid.GetScoreForImage(originalImages[firstGuessBox]);
                 // Thêm điểm
                 GameManager.Instance.AddScore((int)score, GameManager.Instance.GetCurrentPlayer());
+                //grid.HandleRefresh(originalImages);
 
 
             }
@@ -201,8 +202,8 @@ namespace PikachuClassic
                 secondGuessBox.Image = originalImages[secondGuessBox];
             }
 
-            grid.HandleRefresh(originalImages);
             GameManager.Instance.CheckIfTheGameIsFinished();
+            grid.HandleRefresh(originalImages);
             // Chuyển lượt sau mỗi lần đoán
             GameManager.Instance.SwitchTurn();
 
