@@ -36,8 +36,8 @@ namespace PikachuClassic
         #endregion
         // Thuộc tính của màn chơi
         private Grid grid;
-        private int cols = 10;
-        private int rows = 10;
+        private int cols = 8;
+        private int rows = 7;
         private GameForm gameController;
         //Logic matching
         private bool firstGuess, secondGuess;
